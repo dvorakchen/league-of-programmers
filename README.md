@@ -1,1 +1,1 @@
-# league-of-programmers
+# League-of-programmers
