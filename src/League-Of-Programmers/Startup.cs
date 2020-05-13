@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
+using System.IO;
 
 namespace League_Of_Programmers
 {
@@ -56,6 +58,13 @@ namespace League_Of_Programmers
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory() + "/files/"),
+                RequestPath = "/files"
+            });
+
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();

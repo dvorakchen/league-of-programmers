@@ -50,7 +50,7 @@ namespace League_Of_Programmers.Controllers
         {
             if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
-                ModelState.AddModelError("File",
+                ModelState.AddModelError("message",
                     $"The request couldn't be processed (Error 1).");
                 logger.LogWarning("ContentType mistake: {0}", Request.ContentType);
 
@@ -68,15 +68,24 @@ namespace League_Of_Programmers.Controllers
                 var hasContentDispositionHeader =
                     ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
 
-                var trustedFileNameForFileStorage = Path.GetRandomFileName();
                 var trustedFileNameForDisplay = WebUtility.HtmlEncode(contentDisposition.FileName.Value);
+                var trustedFileNameForFileStorage = Path.GetRandomFileName();
+                string extension = Path.GetExtension(trustedFileNameForDisplay);
+                string fileName = Path.GetFileNameWithoutExtension(trustedFileNameForFileStorage);
+                trustedFileNameForFileStorage = fileName + extension;
+
+                if (!Domain.Files.Validation.ValidateExtension(trustedFileNameForFileStorage))
+                {
+                    ModelState.AddModelError("message", "不允许的文件扩展名");
+                    return BadRequest(ModelState);
+                }
 
                 if (hasContentDispositionHeader)
                 {
                     if (!MultipartRequestHelper
                         .HasFileContentDisposition(contentDisposition))
                     {
-                        ModelState.AddModelError("File",
+                        ModelState.AddModelError("message",
                             $"The request couldn't be processed (Error 2).");
                         logger.LogWarning("have no content disposition header");
 
@@ -90,7 +99,16 @@ namespace League_Of_Programmers.Controllers
                         await using var fileStream = System.IO.File.Create(saveFullPath);
                         await section.Body.CopyToAsync(fileStream);
 
-                        return Created(saveFullPath, null);
+                        //  validation file safe
+                        //bool isSafe = Domain.Files.Validation.SignatureValidation(fileStream);
+                        //if (!isSafe)
+                        //{
+                        //    System.IO.File.Delete(saveFullPath);
+                        //    ModelState.AddModelError("message", "文件签名有误");
+                        //    return BadRequest(ModelState);
+                        //}
+
+                        return Created(saveWebPath, null);
                     }
                 }
                 //  section = await reader.ReadNextSectionAsync();
