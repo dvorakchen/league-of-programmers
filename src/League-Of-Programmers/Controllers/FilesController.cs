@@ -27,22 +27,45 @@ namespace League_Of_Programmers.Controllers
         }
 
         /*
-         * 上传单个文件
+         * 上传单个小文件
          */
         [HttpPost]
         public async Task<IActionResult> UploadFileAsync(IFormFile file)
         {
-            bool t = Domain.Files.Validation.ValidateExtension("a.png");
-            t = Domain.Files.Validation.ValidateExtension("a.png");
+            if (file is null)
+                return BadRequest(ModelState.AddMessageError("没有上传文件"));
 
-            throw new NotImplementedException();
+            var trustedFileNameForDisplay = WebUtility.HtmlEncode(file.FileName);
+            var trustedFileNameForFileStorage = Path.GetRandomFileName();
+            string extension = Path.GetExtension(trustedFileNameForDisplay);
+            string fileName = Path.GetFileNameWithoutExtension(trustedFileNameForFileStorage);
+            trustedFileNameForFileStorage = fileName + extension;
+
+            if (!Domain.Files.Validation.ValidateExtension(trustedFileNameForFileStorage))
+            {
+                return BadRequest(ModelState.AddMessageError("不允许的文件扩展名"));
+            }
+
+            string saveWebPath = configuration.GetSection("File:SaveWebPath").Value;
+            string saveFullPath = Path.Combine(Directory.GetCurrentDirectory(), saveWebPath, trustedFileNameForFileStorage);
+
+            await using var fileStream = System.IO.File.Create(saveFullPath);
+            await file.CopyToAsync(fileStream);
+
+            (bool isSuccess, int id) = await Domain.Files.File.SaveToDBAsync(trustedFileNameForDisplay, trustedFileNameForFileStorage, file.Length);
+            if (isSuccess)
+                return Created(saveWebPath, id);
+
+            //  delete the save file if save to DB fault
+            System.IO.File.Delete(saveFullPath);
+            return Accepted();
         }
 
         /*
          * 流式上传单个大文件
          */
-        [HttpPost("stream"), 
-            Filters.DisableFormValueModelBinding, 
+        [HttpPost("stream"),
+            Filters.DisableFormValueModelBinding,
             //Filters.GenerateAntiforgeryTokenCookie, 
             //ValidateAntiForgeryToken]
             ]
@@ -50,11 +73,8 @@ namespace League_Of_Programmers.Controllers
         {
             if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
-                ModelState.AddModelError("message",
-                    $"The request couldn't be processed (Error 1).");
                 logger.LogWarning("ContentType mistake: {0}", Request.ContentType);
-
-                return BadRequest(ModelState);
+                return BadRequest(ModelState.AddMessageError($"文件媒体类型不允许: {Request.ContentType}"));
             }
 
             var boundary = MultipartRequestHelper.GetBoundary(
@@ -76,20 +96,16 @@ namespace League_Of_Programmers.Controllers
 
                 if (!Domain.Files.Validation.ValidateExtension(trustedFileNameForFileStorage))
                 {
-                    ModelState.AddModelError("message", "不允许的文件扩展名");
-                    return BadRequest(ModelState);
+                    return BadRequest(ModelState.AddMessageError("不允许的文件扩展名"));
                 }
 
                 if (hasContentDispositionHeader)
                 {
-                    if (!MultipartRequestHelper
-                        .HasFileContentDisposition(contentDisposition))
+                    if (!MultipartRequestHelper.HasFileContentDisposition(contentDisposition))
                     {
-                        ModelState.AddModelError("message",
-                            $"The request couldn't be processed (Error 2).");
                         logger.LogWarning("have no content disposition header");
 
-                        return BadRequest(ModelState);
+                        return BadRequest(ModelState.AddMessageError("have no content disposition header"));
                     }
                     else
                     {
@@ -111,7 +127,6 @@ namespace League_Of_Programmers.Controllers
                         return Created(saveWebPath, null);
                     }
                 }
-                //  section = await reader.ReadNextSectionAsync();
             }
 
             return BadRequest();

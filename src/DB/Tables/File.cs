@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DB.Tables
 {
@@ -10,7 +7,7 @@ namespace DB.Tables
         [Required, StringLength(64)]
         public string Name { get; set; } = "";
         [Required, StringLength(8)]
-        public string ExtensionName { get; set; } = "";
+        public string Extension { get; set; } = "";
         [Required, StringLength(64)]
         public string SaveName { get; set; } = "";
         [Required]
