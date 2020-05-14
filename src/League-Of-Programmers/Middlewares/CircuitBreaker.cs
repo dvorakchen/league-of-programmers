@@ -25,13 +25,11 @@ namespace League_Of_Programmers.Middlewares
     {
         private readonly RequestDelegate _next;
         private readonly IMemoryCache _cache;
-        private readonly IHttpContextAccessor _contextAccessor;
         private readonly IConfiguration _configuration;
-        public CircuitBreaker(RequestDelegate _next, IMemoryCache _cache, IHttpContextAccessor _contextAccessor, IConfiguration _configuration)
+        public CircuitBreaker(RequestDelegate _next, IMemoryCache _cache, IConfiguration _configuration)
         {
             this._cache = _cache;
             this._next = _next;
-            this._contextAccessor = _contextAccessor;
             this._configuration = _configuration;
         }
 
@@ -47,7 +45,7 @@ namespace League_Of_Programmers.Middlewares
             var limitCount = CricuitBreaker.GetValue<int>("LimitCount");
 
             var path = context.Request.Path;
-            var clientAddress = _contextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+            var clientAddress = context.Connection.RemoteIpAddress.ToString();
             var key = string.Concat(clientAddress, path);
 
             _ = _cache.TryGetValue(key, out byte currentCount);

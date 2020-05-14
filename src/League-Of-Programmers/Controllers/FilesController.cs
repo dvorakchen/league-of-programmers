@@ -64,11 +64,7 @@ namespace League_Of_Programmers.Controllers
         /*
          * 流式上传单个大文件
          */
-        [HttpPost("stream"),
-            Filters.DisableFormValueModelBinding,
-            //Filters.GenerateAntiforgeryTokenCookie, 
-            //ValidateAntiForgeryToken]
-            ]
+        [HttpPost("stream"), Filters.DisableFormValueModelBinding]
         public async Task<IActionResult> StreamUploadFileAsync()
         {
             if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))

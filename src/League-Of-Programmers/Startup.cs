@@ -27,12 +27,14 @@ namespace League_Of_Programmers
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(typeof(Filters.ExceptionHandleAttribute));
             });
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -54,6 +56,7 @@ namespace League_Of_Programmers
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseMiddleware<Middlewares.CircuitBreaker>();
 
             app.UseHttpsRedirection();
@@ -69,6 +72,8 @@ namespace League_Of_Programmers
             {
                 app.UseSpaStaticFiles();
             }
+
+            app.UseMiddleware<Middlewares.AntiForgery>();
 
             app.UseRouting();
 

@@ -17,9 +17,9 @@ namespace League_Of_Programmers.Filters
             var tokens = antiforgery.GetAndStoreTokens(context.HttpContext);
 
             context.HttpContext.Response.Cookies.Append(
-                "RequestVerificationToken",
+                "XSRF-TOKEN",
                 tokens.RequestToken,
-                new CookieOptions() { HttpOnly = false });
+                new CookieOptions() { HttpOnly = false, Secure = true });
         }
 
         public override void OnResultExecuted(ResultExecutedContext context)

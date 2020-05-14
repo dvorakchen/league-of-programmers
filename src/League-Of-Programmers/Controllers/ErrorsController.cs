@@ -17,6 +17,7 @@ namespace League_Of_Programmers.Controllers
         /// </summary>
         [Conditional("DEBUG")]
         [HttpGet]
+        [ValidateAntiForgeryToken]
         public void Index()
         {
             throw new NotImplementedException();
