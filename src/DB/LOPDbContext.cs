@@ -7,7 +7,7 @@ namespace DB
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(Config.GetConnectionString("LeagueOfProgrammers"));
+            optionsBuilder.UseSqlite(Config.GetConnectionString("LeagueOfProgrammers"));
         }
 
         public DbSet<Tables.File> Files { get; set; }

@@ -73,7 +73,7 @@ namespace League_Of_Programmers
                 app.UseSpaStaticFiles();
             }
 
-            app.UseMiddleware<Middlewares.AntiForgery>();
+            app.UseMiddleware<Middlewares.Antiforgery>();
 
             app.UseRouting();
 

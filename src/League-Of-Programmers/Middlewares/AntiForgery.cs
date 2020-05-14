@@ -1,6 +1,7 @@
 ﻿/*
- * this middleware will set the cookie of anti forgery when the client sent request to the server
+ * this middleware will set the cookie of antiforgery when the client sent request to the server
  * and make the anti forgery to header named X-XSRF-TOKEN
+ * the antiforgery source code: https://github.com/myfor/AspNetCore/tree/master/src/Antiforgery
  */
 
 using Microsoft.AspNetCore.Antiforgery;
@@ -10,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace League_Of_Programmers.Middlewares
 {
-    public class AntiForgery
+    public class Antiforgery
     {
         private readonly RequestDelegate _next;
         private readonly IAntiforgery _antiforgery;
-        public AntiForgery(RequestDelegate _next, IAntiforgery _antiforgery)
+        public Antiforgery(RequestDelegate _next, IAntiforgery _antiforgery)
         {
             this._next = _next;
             this._antiforgery = _antiforgery;
@@ -34,10 +35,16 @@ namespace League_Of_Programmers.Middlewares
                 context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
                     new CookieOptions() { HttpOnly = false });
             }
-
-            if (context.Request.Cookies.TryGetValue("XSRF-TOKEN", out string antiForgery))
+            else
             {
-                context.Request.Headers.Add("X-XSRF-TOKEN", antiForgery);
+                if (context.Request.Cookies.TryGetValue("XSRF-TOKEN", out string antiForgery))
+                {
+                    context.Request.Headers.Add("X-XSRF-TOKEN", antiForgery);
+                }
+                else
+                {
+                    context.Request.Path = "/";
+                }
             }
 
             await _next(context);
