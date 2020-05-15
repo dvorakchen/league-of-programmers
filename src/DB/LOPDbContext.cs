@@ -11,5 +11,6 @@ namespace DB
         }
 
         public DbSet<Tables.File> Files { get; set; }
+        public DbSet<Tables.User> Users { get; set; }
     }
 }

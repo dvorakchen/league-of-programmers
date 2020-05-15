@@ -1,4 +1,6 @@
 using Common;
+using Domain.Users;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,11 +31,16 @@ namespace League_Of_Programmers
         {
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
+            services.AddDbContext<DB.LOPDbContext>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => Configuration.Bind("JwtSettings", options));
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(typeof(Filters.ExceptionHandleAttribute));
             });
 
+            services.AddScoped<IUserManager, UserManager>();
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // In production, the Angular files will be served from this directory
@@ -76,6 +83,9 @@ namespace League_Of_Programmers
             app.UseMiddleware<Middlewares.Antiforgery>();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
