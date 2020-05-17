@@ -1,7 +1,9 @@
 ﻿using Common;
 using DB;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Domain.Users
 {
@@ -18,14 +20,14 @@ namespace Domain.Users
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        internal static DB.Tables.User GetUserModel(int id)
+        internal static async Task<DB.Tables.User> GetUserModelAsync(int id)
         {
             string key = USER_CACHE_KEY + id;
             (bool hasValue, DB.Tables.User value) = Cache.TryGet<DB.Tables.User>(key);
             if (hasValue)
                 return value;
             using var db = new LOPDbContext();
-            value = db.Users.FirstOrDefault(user => user.Id == id);
+            value = await db.Users.FirstOrDefaultAsync(user => user.Id == id);
             Cache.Set(key, value, TimeSpan.FromSeconds(30));
             return value;
         }
