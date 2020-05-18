@@ -8,11 +8,15 @@ namespace Domain.Users
     {
         private User(DB.Tables.User userModel)
         {
+            if (userModel is null)
+                throw new ArgumentNullException("user model not found");
             Id = userModel.Id;
             _name = userModel.Name;
+
+            UserCache.SetUserModel(userModel);
         }
 
-        private string _name = "";
+        private readonly string _name = "";
 
         /// <summary>
         /// user name

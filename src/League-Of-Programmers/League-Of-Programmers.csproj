@@ -32,12 +32,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\routers.module.ts" />
+    <None Remove="ClientApp\src\app\shared\common.module.ts" />
+    <None Remove="ClientApp\src\app\shared\material.module.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\AdministratorsSide\" />
     <Folder Include="files\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\routers.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\common.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

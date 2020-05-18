@@ -15,6 +15,11 @@ namespace Domain.Users
         private const string USER_CACHE_KEY = "6930a2a7-7614-4d03-b6d8-f29d1cca28d2";
 
         /// <summary>
+        /// the default cache time span
+        /// </summary>
+        private static readonly TimeSpan Default_Cache_Time = TimeSpan.FromSeconds(30);
+
+        /// <summary>
         /// get user DB model by user id, 
         /// if not in cache, then will get the new model
         /// </summary>
@@ -28,8 +33,38 @@ namespace Domain.Users
                 return value;
             using var db = new LOPDbContext();
             value = await db.Users.FirstOrDefaultAsync(user => user.Id == id);
-            Cache.Set(key, value, TimeSpan.FromSeconds(30));
+            Cache.Set(key, value, Default_Cache_Time);
             return value;
+        }
+
+        /// <summary>
+        /// cache user model with default cache time span
+        /// </summary>
+        /// <param name="userModel"></param>
+        internal static void SetUserModel(DB.Tables.User userModel)
+        {
+            SetUserModel(userModel, Default_Cache_Time);
+        }
+
+        /// <summary>
+        /// cache user model with cache time span
+        /// </summary>
+        /// <param name="userModel"></param>
+        internal static void SetUserModel(DB.Tables.User userModel, TimeSpan cacheTime)
+        {
+            if (userModel is null)
+                throw new ArgumentNullException("cache user model should not null");
+
+            Cache.Set(USER_CACHE_KEY + userModel.Id, userModel, cacheTime);
+        }
+
+        /// <summary>
+        /// remove the user model by id
+        /// </summary>
+        /// <param name="id"></param>
+        internal static void Remove(int id)
+        {
+            Cache.Remove(USER_CACHE_KEY + id);
         }
     }
 }
