@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RoutesModule } from './routers.module';
 
+import { MaterialModule } from './shared/material.module';
+
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 
@@ -18,7 +20,8 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
-    RoutesModule
+    RoutesModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
