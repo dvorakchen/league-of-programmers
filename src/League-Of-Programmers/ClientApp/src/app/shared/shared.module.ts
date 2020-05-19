@@ -17,4 +17,4 @@ const EXPORTS_MODULE = [
   imports: [...EXPORTS_MODULE],
   exports: [...EXPORTS_MODULE]
 })
-export class CommonModules { }
+export class SharedModule { }
