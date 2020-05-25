@@ -16,12 +16,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Design" Version="1.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.5.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +32,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\interceptors\barrel.ts" />
+    <None Remove="ClientApp\src\app\interceptors\default-interceptors.ts" />
     <None Remove="ClientApp\src\app\routers.module.ts" />
+    <None Remove="ClientApp\src\app\services\common.ts" />
+    <None Remove="ClientApp\src\app\services\identity.service.ts" />
     <None Remove="ClientApp\src\app\shared\material.module.ts" />
     <None Remove="ClientApp\src\app\shared\shared.module.ts" />
   </ItemGroup>
@@ -42,13 +46,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\core\" />
     <Folder Include="Controllers\AdministratorsSide\" />
     <Folder Include="files\" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\interceptors\barrel.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interceptors\default-interceptors.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\routers.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\common.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\identity.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\shared.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\material.module.ts" />
   </ItemGroup>

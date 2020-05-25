@@ -1,0 +1,13 @@
+<header>
+  <mat-toolbar class="toolbar">
+    <mat-toolbar-row>
+      <a class="title" mat-button [routerLink]="['/']">League Of Programmers</a>
+      <div class="remaining-space"></div>
+      <span class="actions-space" *ngIf="showActions">
+        <button mat-flat-button color="primary" (click)="writeBlog()">写博文</button>
+        &nbsp;&nbsp;
+        <a [routerLink]="['identity']" mat-flat-button>登录</a>
+      </span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</header>

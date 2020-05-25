@@ -10,24 +10,33 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Logging;
 
 namespace League_Of_Programmers.Controllers.Clients.Identity
 {
     public class LoginController : ClientsSideController
     {
         private readonly IConfiguration _configuration;
-        public LoginController(IConfiguration _configuration)
+        ILogger _logger;
+        public LoginController(IConfiguration _configuration, ILogger<LoginController> _logger)
         {
             this._configuration = _configuration;
+            this._logger = _logger;
         }
 
+        /*
+         * return: 
+         *  -   200: login success, the token in body
+         *  -   400: login fault, the reason in body
+         */
+        //  patch: /api/clients/login
         [HttpPatch]
         public async Task<IActionResult> IndexAsync([FromBody]Domain.Users.Models.Login model)
         {
             Domain.Users.UserManager userManager = new Domain.Users.UserManager();
             (var user, string msg) = await userManager.LoginAsync(model);
             if (user is null)
-                return BadRequest(ModelState.AddMessageError(msg));
+                return BadRequest(msg);
 
             //  build JWT
             var claims = new[]

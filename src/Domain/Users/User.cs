@@ -6,6 +6,8 @@ namespace Domain.Users
 {
     public class User : EntityBase
     {
+        public const int ACCOUNT_MIN_LENGTH = 2;
+
         private User(DB.Tables.User userModel)
         {
             if (userModel is null)

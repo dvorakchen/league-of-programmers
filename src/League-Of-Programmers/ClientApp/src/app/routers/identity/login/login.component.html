@@ -1,0 +1,21 @@
+<div class="login-box">
+  <form class="login-form" [formGroup]="loginInfo">
+    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    <div class="input-form">
+      <mat-form-field>
+        <input type="text" matInput placeholder="账号" formControlName="account" required />
+        <mat-error *ngIf="account.invalid && (account.dirty || account.touched)">请输入账号</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input type="password" matInput [type]="hide ? 'password' : 'text'" formControlName="password" placeholder="密码" required />
+        <mat-icon matSuffix (click)="hide = !hide" style="cursor: default">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">请输入密码</mat-error>
+      </mat-form-field>
+      <br />
+      <button mat-flat-button color="primary" [disabled]="loading" (click)="login()">登录</button>
+      <div class="action">
+        <a mat-stroked-button [routerLink]="['/identity/register']">注册</a>
+      </div>
+    </div>
+  </form>
+</div>

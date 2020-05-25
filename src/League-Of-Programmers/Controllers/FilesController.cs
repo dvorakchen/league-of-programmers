@@ -12,8 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace League_Of_Programmers.Controllers
 {
     public class FilesController : LOPController
@@ -33,7 +31,7 @@ namespace League_Of_Programmers.Controllers
         public async Task<IActionResult> UploadFileAsync(IFormFile file)
         {
             if (file is null)
-                return BadRequest(ModelState.AddMessageError("没有上传文件"));
+                return BadRequest("没有上传文件");
 
             var trustedFileNameForDisplay = WebUtility.HtmlEncode(file.FileName);
             var trustedFileNameForFileStorage = Path.GetRandomFileName();
@@ -43,7 +41,7 @@ namespace League_Of_Programmers.Controllers
 
             if (!Domain.Files.Validation.ValidateExtension(trustedFileNameForFileStorage))
             {
-                return BadRequest(ModelState.AddMessageError("不允许的文件扩展名"));
+                return BadRequest("不允许的文件扩展名");
             }
 
             string saveWebPath = configuration.GetSection("File:SaveWebPath").Value;
@@ -70,7 +68,7 @@ namespace League_Of_Programmers.Controllers
             if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
                 logger.LogWarning("ContentType mistake: {0}", Request.ContentType);
-                return BadRequest(ModelState.AddMessageError($"文件媒体类型不允许: {Request.ContentType}"));
+                return BadRequest($"文件媒体类型不允许: {Request.ContentType}");
             }
 
             var boundary = MultipartRequestHelper.GetBoundary(
@@ -92,7 +90,7 @@ namespace League_Of_Programmers.Controllers
 
                 if (!Domain.Files.Validation.ValidateExtension(trustedFileNameForFileStorage))
                 {
-                    return BadRequest(ModelState.AddMessageError("不允许的文件扩展名"));
+                    return BadRequest("不允许的文件扩展名");
                 }
 
                 if (hasContentDispositionHeader)
@@ -101,7 +99,7 @@ namespace League_Of_Programmers.Controllers
                     {
                         logger.LogWarning("have no content disposition header");
 
-                        return BadRequest(ModelState.AddMessageError("have no content disposition header"));
+                        return BadRequest("have no content disposition header");
                     }
                     else
                     {
@@ -110,15 +108,6 @@ namespace League_Of_Programmers.Controllers
 
                         await using var fileStream = System.IO.File.Create(saveFullPath);
                         await section.Body.CopyToAsync(fileStream);
-
-                        //  validation file safe
-                        //bool isSafe = Domain.Files.Validation.SignatureValidation(fileStream);
-                        //if (!isSafe)
-                        //{
-                        //    System.IO.File.Delete(saveFullPath);
-                        //    ModelState.AddModelError("message", "文件签名有误");
-                        //    return BadRequest(ModelState);
-                        //}
 
                         return Created(saveWebPath, null);
                     }

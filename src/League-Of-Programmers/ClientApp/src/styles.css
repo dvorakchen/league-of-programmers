@@ -6,6 +6,11 @@ html {
   font-size: 14px;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
-  margin: auto
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

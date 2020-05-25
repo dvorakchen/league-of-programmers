@@ -1,0 +1,13 @@
+.register-container {
+  width: 100%;
+  align-items: center;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  min-width: 400px;
+  padding: 35px 32px 16px 32px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 10px #a7a7a7;
+}

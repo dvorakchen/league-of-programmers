@@ -14,5 +14,12 @@ namespace Domain.Users
             public string Account { get; set; } = "";
             public string Password { get; set; } = "";
         }
+
+        public class Register
+        {
+            public string Account { get; set; } = "";
+            public string Password { get; set; } = "";
+            public string ConfirmPassword { get; set; } = "";
+        }
     }
 }
