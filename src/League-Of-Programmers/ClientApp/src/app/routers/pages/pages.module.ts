@@ -4,10 +4,11 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { Page404Component } from './page404/page404.component';
+import { Page429Component } from './page429/page429.component';
 
 
 @NgModule({
-  declarations: [Page404Component],
+  declarations: [Page404Component, Page429Component],
   imports: [
     SharedModule,
     PagesRoutingModule
