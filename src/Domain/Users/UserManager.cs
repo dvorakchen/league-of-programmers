@@ -1,15 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DB;
+﻿using DB;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 
 namespace Domain.Users
 {
     public class UserManager : IUserManager
     {
+        /// <summary>
+        /// get user by user id
+        /// </summary>
+        /// <param name="id">user id</param>
+        /// <returns>user or null if not exist</returns>
+        public async Task<User> GetUser(int id)
+        {
+            var userModel = await UserCache.GetUserModelAsync(id);
+            return userModel == null ? null : User.Parse(userModel);
+        }
+
         /// <summary>
         /// user login
         /// </summary>

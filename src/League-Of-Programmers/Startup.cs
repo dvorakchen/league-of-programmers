@@ -41,7 +41,6 @@ namespace League_Of_Programmers
             });
 
             services.AddScoped<IUserManager, UserManager>();
-            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

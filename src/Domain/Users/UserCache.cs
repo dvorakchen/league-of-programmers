@@ -11,7 +11,7 @@ namespace Domain.Users
     /// </summary>
     internal static class UserCache
     {
-        private const string USER_CACHE_KEY = "6930a2a7";
+        private const string USER_CACHE_KEY = "cachekey690a2a7";
 
         /// <summary>
         /// the default cache time span
@@ -20,7 +20,8 @@ namespace Domain.Users
 
         /// <summary>
         /// get user DB model by user id, 
-        /// if not in cache, then will get the new model
+        /// if not in cache, then will get the new model,
+        /// if null, then cache too
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

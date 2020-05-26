@@ -6,7 +6,6 @@ namespace League_Of_Programmers.Controllers
     /// 控制器的基类
     /// </summary>
     [ApiController]
-    //[ValidateAntiForgeryToken]
     [AutoValidateAntiforgeryToken]
     [Route("api/[controller]")]
     public abstract class LOPController : ControllerBase
