@@ -17,6 +17,11 @@
 }
 
 .toolbar {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 1000;
   background-color: #3f51b5;
   box-shadow: 0 .25rem 1rem rgba(0, 0, 0, .15);
 }

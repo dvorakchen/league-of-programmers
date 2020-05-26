@@ -1,6 +1,6 @@
 ﻿namespace Domain
 {
-    public abstract class EntityBase : Info
+    public abstract class EntityBase
     {
         public int Id { get; protected set; }
 

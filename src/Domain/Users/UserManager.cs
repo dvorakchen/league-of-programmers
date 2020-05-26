@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Users
 {
-    public class UserManager : Info, IUserManager
+    public class UserManager : IUserManager
     {
         /// <summary>
         /// user login
@@ -27,7 +27,7 @@ namespace Domain.Users
                 user.Account.Equals(model.Account, StringComparison.OrdinalIgnoreCase) && user.Password.Equals(model.Password, StringComparison.OrdinalIgnoreCase));
             if (userModel is null)
                 return (null, "账号不存在或密码不正确");
-            return (User.Parse(userModel), NOT_MESSAGE);
+            return (User.Parse(userModel), "");
         }
 
         public async Task<(bool, string)> RegisterAsync(Models.Register model)

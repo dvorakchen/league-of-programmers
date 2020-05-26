@@ -1,34 +1,63 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
+import { Location } from '@angular/common';
 import {
   HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse, HttpResponse
 } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
-import { FAULT, CommonService } from '../services/common';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
 
   constructor(
-    private common: CommonService,
-    private router: Router
+    private router: Router,
+    private loc: Location
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(req)
+    let newUrl = environment.SERVER_HOST;
+    if (!req.url.startsWith('/')) {
+      newUrl += '/';
+    }
+    newUrl += req.url;
+    if (isDevMode()) {
+      console.warn(`request: ${newUrl}`);
+    }
+
+    const SERVER_REQ = req.clone({url: newUrl});
+
+    return next.handle(SERVER_REQ)
       .pipe(
-        catchError((err: HttpErrorResponse) => {
-          switch (err.status) {
-            case 401: {
-              this.router.navigateByUrl('/identity');
-            } break;
-            default: {
-              this.common.snackOpen(err.message);
-              return throwError(err);
+        mergeMap((resp) => {
+          if (resp instanceof HttpResponse) {
+            resp.body.status = resp.status;
+            if (!resp.body) {
+              resp.body.data = null;
+            } else {
+              resp.body.data = resp.body;
             }
           }
-        })
-      );
+          return of(resp);
+      }),
+      catchError((err: HttpErrorResponse) => {
+        if (isDevMode()) {
+          console.error(`DEV: backend returned code ${err.status}`);
+          console.error(`DEV: message: ${err.message}`);
+          console.error(`DEV: error: ${err.error}`);
+        }
+        switch (err.status) {
+          case 401: {
+            this.router.navigate(['/login', { redirect: this.loc.path(true) }]);
+          } break;
+          case 429: {
+            //  熔断页面
+          } break;
+          default: {
+            return throwError(err);
+          }
+        }
+      }));
   }
 }

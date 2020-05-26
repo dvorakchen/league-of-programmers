@@ -2,7 +2,6 @@
 using DB;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Domain.Users
@@ -12,7 +11,7 @@ namespace Domain.Users
     /// </summary>
     internal static class UserCache
     {
-        private const string USER_CACHE_KEY = "6930a2a7-7614-4d03-b6d8-f29d1cca28d2";
+        private const string USER_CACHE_KEY = "6930a2a7";
 
         /// <summary>
         /// the default cache time span
@@ -32,7 +31,7 @@ namespace Domain.Users
             if (hasValue)
                 return value;
             using var db = new LOPDbContext();
-            value = await db.Users.FirstOrDefaultAsync(user => user.Id == id);
+            value = await db.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == id);
             Cache.Set(key, value, Default_Cache_Time);
             return value;
         }

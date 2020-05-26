@@ -146,5 +146,8 @@
       }
     }
   },
-  "defaultProject": "League_Of_Programmers"
+  "defaultProject": "League_Of_Programmers",
+  "cli": {
+    "analytics": "0d52569e-f521-4696-9875-b42834d074fe"
+  }
 }

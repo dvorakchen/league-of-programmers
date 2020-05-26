@@ -45,10 +45,9 @@ export class LoginComponent implements OnInit {
         if (!red) {
           red = '/';
         }
-        console.log(data.data);
         this.router.navigateByUrl(red);
       } else {
-        this.common.snackOpen(data.data);
+        this.common.snackOpen(data.data, 10000);
       }
       this.loading = false;
     });

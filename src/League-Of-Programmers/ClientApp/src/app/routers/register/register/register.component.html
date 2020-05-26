@@ -1,0 +1,30 @@
+<div class="register-container">
+  <div class="title-box"><span class="title">注册</span></div>
+  <form class="register-form" [formGroup]="registerInfo">
+    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    <div class="input-form">
+      <mat-form-field appearance="outline">
+        <mat-label>账号</mat-label>
+        <input matInput formControlName="account" required />
+        <mat-hint>账号长度必须2位以上</mat-hint>
+        <mat-error *ngIf="account.invalid">
+          账号长度必须2位以上
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>密码</mat-label>
+        <input matInput type="password" formControlName="password" required />
+        <mat-hint>密码长度必须6位以上</mat-hint>
+        <mat-error *ngIf="password.invalid">
+          密码长度必须6位以上
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>确认密码</mat-label>
+        <input matInput type="password" formControlName="confirmPassword" required />
+        <mat-error *ngIf="confirmPassword.invalid || (confirmPassword.value !== password.value)">两次密码不同</mat-error>
+      </mat-form-field>
+      <button mat-flat-button color="primary" [disabled]="loading" (click)="register()">注册</button>
+    </div>
+  </form>
+</div>

@@ -10,11 +10,6 @@ export interface Result<T = any> {
 }
 
 /**
- * 请求失败, 可以和 Result 的 data 对比
- */
-export const FAULT: undefined = undefined;
-
-/**
  * 分页模型
  */
 export interface Paginator<T = any> {
@@ -25,6 +20,9 @@ export interface Paginator<T = any> {
   list: T[];
 }
 
+/**
+ * 重定向标识
+ */
 export const REDIRECT = 'redirect';
 
 //  基本服务
@@ -37,21 +35,25 @@ export class ServicesBase {
     private router: Router
   ) { }
 
+  /**
+   * 在这个错误处理中，只负责返回一个合法的值，
+   * 如果需要打印，跳转等其他操作，在拦截器中定义
+   */
   handleError(error: HttpErrorResponse): Observable<Result> {
     const R: Result = {
-      status: 200,
-      data: ''
+      status: error.status,
+      data: '请求失败'
     };
     switch (error.status) {
+      case 400:
+        R.data = error.message;
+      break;
       case 401: {
-        //  跳到登录页
-        this.router.navigate(['/identity', { REDIRECT: location.href }]);
+        R.data = '请先登录';
         return of(R);
       }
       default: break;
     }
-    console.error(`backend returned code ${error.status}`);
-    console.error(`error: ${error.error}`);
     return of(R);
   }
 }

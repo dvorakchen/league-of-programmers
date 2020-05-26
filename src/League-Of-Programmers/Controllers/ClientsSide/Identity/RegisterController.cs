@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using League_Of_Programmers.Controllers.Clients;
-using Microsoft.AspNetCore.Http;
+﻿using League_Of_Programmers.Controllers.Clients;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace League_Of_Programmers.Controllers.ClientsSide.Identity
 {
@@ -14,6 +10,9 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Identity
         /// <summary>
         /// register a new account
         /// </summary>
+        //  return: 
+        //      201:    created successfully
+        //      400:    defeated
         // /api/clients/register
         [HttpPost]
         public async Task<IActionResult> IndexAsync([FromBody]Domain.Users.Models.Register model)

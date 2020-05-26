@@ -21,7 +21,7 @@ export class NavMenuComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const ROUTER = event.url.split(';')[0];
-        this.showActions = ROUTER !== '/identity';
+        this.showActions = ROUTER !== '/login';
       }
     });
   }
@@ -31,6 +31,6 @@ export class NavMenuComponent implements OnInit {
      * 没有登陆就跳到登录页再去写博文
      */
 
-    this.router.navigate(['/identity', { redirect: location.pathname + location.search }]);
+    this.router.navigate(['/login', { redirect: location.pathname + location.search }]);
   }
 }

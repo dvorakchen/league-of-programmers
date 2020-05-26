@@ -31,20 +31,12 @@ namespace League_Of_Programmers.Middlewares
             {
                 // The request token can be sent as a JavaScript-readable cookie, 
                 // and Angular uses it by default.
+                //  angular 会自动将 cookie 中 XSRF-TOKEN 的防伪内容在请求时自动加在 X-XSRF-TOKEN 请求头上
+                //  服务器接受到请求时会进行防伪检查，在 LOPController 的特性 [AutoValidateAntiforgeryToken] 中指定
+                //  若不需要进行防伪检查，可在不需要检查的控制器上添加特性 [IgnoreAntiforgeryToken]
                 var tokens = _antiforgery.GetAndStoreTokens(context);
                 context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
                     new CookieOptions() { HttpOnly = false });
-            }
-            else
-            {
-                if (context.Request.Cookies.TryGetValue("XSRF-TOKEN", out string antiForgery))
-                {
-                    context.Request.Headers.Add("X-XSRF-TOKEN", antiForgery);
-                }
-                else
-                {
-                    context.Request.Path = "/";
-                }
             }
 
             await _next(context);

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ServicesBase, CommonService, Result } from './common';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, debounceTime, retry } from 'rxjs/operators';
 
 import sha256 from 'crypto-js/sha256';
 
-export interface registerModel {
+export interface RegisterModel {
   account: string;
   password: string;
   confirmPassword: string;
@@ -36,29 +36,44 @@ export class IdentityService {
     );
   }
 
-  register(model: registerModel): Observable<Result> {
+  register(model: RegisterModel): Observable<Result> {
+    const RESULT: Result = {
+      status: 400,
+      data: ''
+    };
+
     if (!model.account) {
       this.common.snackOpen('账号不能为空');
-      return;
+      RESULT.data = '账号不能为空';
+      return of(RESULT);
     }
     if (model.account.length < 2) {
       this.common.snackOpen(`账号长度不能小于2位`);
-      return;
+      RESULT.data = '账号长度不能小于2位';
+      return of(RESULT);
     }
     if (!model.password) {
       this.common.snackOpen('密码不能为空');
-      return;
+      RESULT.data = '密码不能为空';
+      return of(RESULT);
     }
     if (model.password.length < 6) {
       this.common.snackOpen(`密码长度不能小于6位`);
-      return;
+      RESULT.data = '密码长度不能小于6位';
+      return of(RESULT);
     }
-    if (model.password != model.confirmPassword) {
+    if (model.password !== model.confirmPassword) {
       this.common.snackOpen('两次密码不一致');
-      return;
+      RESULT.data = '两次密码不一致';
+      return of(RESULT);
     }
+
+    model.password = sha256(model.password).toString();
+    model.confirmPassword = sha256(model.confirmPassword).toString();
+
     return this.http.post<Result>('/api/clients/register', model)
       .pipe(
+        debounceTime(1000),
         retry(1),
         catchError(this.base.handleError)
       );
