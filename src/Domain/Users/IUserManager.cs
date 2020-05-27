@@ -2,6 +2,10 @@
 
 namespace Domain.Users
 {
+    /// <summary>
+    /// the user manager usage DI，
+    /// 该接口用户依赖注入
+    /// </summary>
     public interface IUserManager
     {
         /// <summary>

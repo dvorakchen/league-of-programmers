@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DB.Tables
 {
@@ -23,11 +20,10 @@ namespace DB.Tables
         [Required, StringLength(64)]
         public string Email { get; set; } = "";
         /// <summary>
-        /// 头像以二进制数据存储，最大 64 字节
+        /// 头像
         /// </summary>
-        [MaxLength(64)]
-        public byte[] Avatar { get; set; }
-        
+        public int AvatarId { get; set; } = 1;
+        public File Avatar { get; set; }
         [Required, StringLength(512)]
         public string Introduction { get; set; } = "";
     }

@@ -88,10 +88,10 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
          *      400:    defeated
          */
         [HttpPatch("email")]
-        public async Task<IActionResult> ModifyAvatarAsync([FromBody]byte[] avatar)
+        public async Task<IActionResult> ModifyAvatarAsync([FromBody]int avatarId)
         {
             var currentUser = await _userManager.GetUser(CurrentUserId);
-            (bool isSuccessfully, string msg) = await currentUser.ModifyAvatarAsync(avatar);
+            (bool isSuccessfully, string msg) = await currentUser.ModifyAvatarAsync(avatarId);
             if (isSuccessfully)
                 return Ok();
             return BadRequest(msg);

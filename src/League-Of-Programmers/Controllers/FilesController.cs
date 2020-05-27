@@ -25,13 +25,25 @@ namespace League_Of_Programmers.Controllers
         }
 
         /*
-         * 上传单个小文件
+         *  上传单个小文件
+         *  文件大小限制 64 KB
+         * 
+         *  return:
+         *      400:    fail
+         *      201:    created
+         *      202:    accepted file but create fail
          */
         [HttpPost]
         public async Task<IActionResult> UploadFileAsync(IFormFile file)
         {
             if (file is null)
                 return BadRequest("没有上传文件");
+
+            if (!int.TryParse(configuration.GetSection("File:AvatarFileSizeLimet").Value, out int smallFileMaxLength))
+                smallFileMaxLength = 64;
+
+            if (file.Length > smallFileMaxLength)
+                return BadRequest("上传的文件最大只能限制在64字节");
 
             var trustedFileNameForDisplay = WebUtility.HtmlEncode(file.FileName);
             var trustedFileNameForFileStorage = Path.GetRandomFileName();
@@ -60,7 +72,11 @@ namespace League_Of_Programmers.Controllers
         }
 
         /*
-         * 流式上传单个大文件
+         *  流式上传单个大文件
+         *  return:
+         *      400:    fail
+         *      201:    created
+         *      202:    accepted file but create fail
          */
         [HttpPost("stream"), Filters.DisableFormValueModelBinding]
         public async Task<IActionResult> StreamUploadFileAsync()
@@ -98,7 +114,6 @@ namespace League_Of_Programmers.Controllers
                     if (!MultipartRequestHelper.HasFileContentDisposition(contentDisposition))
                     {
                         logger.LogWarning("have no content disposition header");
-
                         return BadRequest("have no content disposition header");
                     }
                     else
@@ -109,12 +124,14 @@ namespace League_Of_Programmers.Controllers
                         await using var fileStream = System.IO.File.Create(saveFullPath);
                         await section.Body.CopyToAsync(fileStream);
 
-                        return Created(saveWebPath, null);
+                        (bool isSuccess, int id) = await Domain.Files.File.SaveToDBAsync(trustedFileNameForDisplay, trustedFileNameForFileStorage, fileStream.Length);
+                        if (isSuccess)
+                            return Created(saveWebPath, id);
                     }
                 }
             }
 
-            return BadRequest();
+            return Accepted();
         }
     }
 }

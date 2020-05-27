@@ -16,7 +16,7 @@ namespace Domain.Users
         /// <summary>
         /// the default cache time span
         /// </summary>
-        private static readonly TimeSpan Default_Cache_Time = TimeSpan.FromSeconds(30);
+        private static readonly TimeSpan Default_Cache_Time = TimeSpan.FromSeconds(10);
 
         /// <summary>
         /// get user DB model by user id, 
@@ -24,16 +24,33 @@ namespace Domain.Users
         /// if null, then cache too
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="includeAvatar">is need include avatar</param>
         /// <returns></returns>
-        internal static async Task<DB.Tables.User> GetUserModelAsync(int id)
+        internal static async Task<DB.Tables.User> GetUserModelAsync(int id, bool includeAvatar = false)
         {
             string key = USER_CACHE_KEY + id;
             (bool hasValue, DB.Tables.User value) = Cache.TryGet<DB.Tables.User>(key);
-            if (hasValue)
-                return value;
             using var db = new LOPDbContext();
-            value = await db.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == id);
-            Cache.Set(key, value, Default_Cache_Time);
+
+            if (hasValue)
+            {
+                if (includeAvatar)
+                {
+                    if (value.Avatar != null)
+                        return value;
+                    value = await db.Users.AsNoTracking().Include(user => user.Avatar).FirstOrDefaultAsync(user => user.Id == id);
+                    Cache.Set(key, value, Default_Cache_Time);
+                }
+                return value;
+            }
+            else
+            {
+                if (includeAvatar)
+                    value = await db.Users.AsNoTracking().Include(user => user.Avatar).FirstOrDefaultAsync(user => user.Id == id);
+                else
+                    value = await db.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == id);
+                Cache.Set(key, value, Default_Cache_Time);
+            }
             return value;
         }
 

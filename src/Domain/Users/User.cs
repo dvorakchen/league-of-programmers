@@ -60,6 +60,7 @@ namespace Domain.Users
             int changeCount = await db.SaveChangesAsync();
             if (changeCount == 1)
             {
+                UserCache.SetUserModel(user);
                 Name = name;
                 return (true, "");
             }
@@ -85,7 +86,10 @@ namespace Domain.Users
             db.Users.Update(user);
             int changeCount = await db.SaveChangesAsync();
             if (changeCount == 1)
+            {
+                UserCache.SetUserModel(user);
                 return (true, "");
+            }
             throw new Exception("修改邮箱失败");
         }
 
@@ -105,7 +109,10 @@ namespace Domain.Users
             db.Users.Update(user);
             int changeCount = await db.SaveChangesAsync();
             if (changeCount == 1)
+            {
+                UserCache.SetUserModel(user);
                 return (true, "");
+            }
             throw new Exception("修改密码失败");
         }
 
@@ -113,23 +120,39 @@ namespace Domain.Users
         /// modify the user avatar
         /// </summary>
         /// <returns></returns>
-        public async Task<(bool, string)> ModifyAvatarAsync(byte[] avatar)
+        public async Task<(bool, string)> ModifyAvatarAsync(int avatarId)
         {
-            if (avatar.Length > AVATAR_MAX_BYTES_COUNT)
-                return (false, $"头像不能大于{AVATAR_MAX_BYTES_COUNT}字节");
-            
-            DB.Tables.User user = await UserCache.GetUserModelAsync(Id);
+            DB.Tables.User user = await UserCache.GetUserModelAsync(Id, true);
             if (user is null)
                 return (false, "该用户不存在");
-            if (Enumerable.SequenceEqual(user.Avatar, avatar))
+            if (user.AvatarId == avatarId)
                 return (true, "");
 
             await using var db = new LOPDbContext();
-            user.Avatar = avatar;
+
+            var sourceAvatar = user.Avatar;
+            if (sourceAvatar is null)
+                sourceAvatar = await db.Files.AsNoTracking().FirstOrDefaultAsync(file => file.Id == user.AvatarId);
+
+            user.AvatarId = avatarId;
             db.Users.Update(user);
+            int shouldChangeCount = 1;
+            //  删除原头像
+            if (sourceAvatar != null)
+            {
+                db.Files.Remove(sourceAvatar);
+                shouldChangeCount++;
+            }
+
             int changeCount = await db.SaveChangesAsync();
-            if (changeCount == 1)
+            if (changeCount == shouldChangeCount)
+            {
+                //  删除原头像文件
+                Files.File.Delete(sourceAvatar.SaveName);
+                //  缓存用户更新后的数据
+                UserCache.SetUserModel(user);
                 return (true, "");
+            }
             throw new Exception("修改头像失败");
         }
     }
