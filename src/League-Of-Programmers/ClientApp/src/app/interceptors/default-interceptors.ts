@@ -8,6 +8,13 @@ import { catchError, mergeMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
+interface AntiForgery {
+  status: number;
+  title: string;
+  traceId: string;
+  type: string;
+}
+
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
 
@@ -36,9 +43,6 @@ export class DefaultInterceptor implements HttpInterceptor {
               resp.body.status = resp.status;
               resp.body.data = resp.body;
             }
-            // } else {
-            //   resp.body.data = resp.body;
-            // }
           }
           return of(resp);
       }),
@@ -49,6 +53,7 @@ export class DefaultInterceptor implements HttpInterceptor {
           console.error(`DEV: error: ${err.error}`);
         }
         switch (err.status) {
+          //  case 400: { } break;
           case 401: {
             this.router.navigate(['/login', { redirect: this.loc.path(true) }]);
           } break;
