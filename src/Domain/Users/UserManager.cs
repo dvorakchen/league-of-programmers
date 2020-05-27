@@ -31,11 +31,12 @@ namespace Domain.Users
                 return (null, "密码不能为空");
 
             await using var db = new LOPDbContext();
-            var userModel = await db.Users.FirstOrDefaultAsync(user => 
+            var userModel = await db.Users.FirstOrDefaultAsync(user =>
                 user.Account.Equals(model.Account, StringComparison.OrdinalIgnoreCase) && user.Password.Equals(model.Password, StringComparison.OrdinalIgnoreCase));
             if (userModel is null)
                 return (null, "账号不存在或密码不正确");
-            return (User.Parse(userModel), "");
+            else
+                return (User.Parse(userModel), "");
         }
 
         public async Task<(bool, string)> RegisterAsync(Models.Register model)
@@ -52,7 +53,7 @@ namespace Domain.Users
                 return (false, $"账号已经被使用");
 
             DB.Tables.User newUser = new DB.Tables.User
-            { 
+            {
                 Account = model.Account,
                 Password = model.Password
             };
@@ -60,7 +61,8 @@ namespace Domain.Users
             int changeCount = await db.SaveChangesAsync();
             if (changeCount == 1)
                 return (true, "");
-            return (false, "注册失败，请重试");
+            else
+                return (false, "注册失败，请重试");
         }
     }
 }

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
-import { Router } from '@angular/router';
 
 export interface Result<T = any> {
   status: number;
@@ -31,9 +30,7 @@ export const REDIRECT = 'redirect';
 })
 export class ServicesBase {
 
-  constructor(
-    private router: Router
-  ) { }
+  constructor() { }
 
   /**
    * 在这个错误处理中，只负责返回一个合法的值，
@@ -42,15 +39,15 @@ export class ServicesBase {
   handleError(error: HttpErrorResponse): Observable<Result> {
     const R: Result = {
       status: error.status,
-      data: '请求失败'
+      data: ''
     };
     switch (error.status) {
       case 400:
-        R.data = error.message;
-      break;
+        R.data = error.error;
+        break;
       case 401: {
         R.data = '请先登录';
-        return of(R);
+        break;
       }
       default: break;
     }

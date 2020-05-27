@@ -74,7 +74,6 @@ export class IdentityService {
     return this.http.post<Result>('/api/clients/register', model)
       .pipe(
         debounceTime(1000),
-        retry(1),
         catchError(this.base.handleError)
       );
   }

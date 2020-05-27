@@ -8,8 +8,5 @@ namespace League_Of_Programmers.Controllers
     [ApiController]
     [AutoValidateAntiforgeryToken]
     [Route("api/[controller]")]
-    public abstract class LOPController : ControllerBase
-    {
-
-    }
+    public abstract class LOPController : ControllerBase { }
 }

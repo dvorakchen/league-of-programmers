@@ -32,12 +32,13 @@ export class DefaultInterceptor implements HttpInterceptor {
       .pipe(
         mergeMap((resp) => {
           if (resp instanceof HttpResponse) {
-            resp.body.status = resp.status;
-            if (!resp.body) {
-              resp.body.data = null;
-            } else {
+            if (resp.body !== null) {
+              resp.body.status = resp.status;
               resp.body.data = resp.body;
             }
+            // } else {
+            //   resp.body.data = resp.body;
+            // }
           }
           return of(resp);
       }),

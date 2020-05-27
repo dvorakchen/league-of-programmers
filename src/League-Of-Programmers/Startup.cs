@@ -38,6 +38,8 @@ namespace League_Of_Programmers
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(typeof(Filters.ExceptionHandleAttribute));
+                //  如果返回的结果是空值，null，就填充进一个空对象
+                options.Filters.Add(typeof(Filters.FillDefaultResultInResponseIfNullAttribute));
             });
 
             services.AddScoped<IUserManager, UserManager>();
