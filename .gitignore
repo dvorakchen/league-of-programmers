@@ -35,7 +35,7 @@ bld/
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
-League-Of-Programmers/files/*
+src/League-Of-Programmers/files/
 
 # Visual Studio 2017 auto generated files
 Generated\ Files/
@@ -169,7 +169,6 @@ DocProject/Help/html
 
 # Click-Once directory
 publish/
-files/
 dump/
 Migrations/
 

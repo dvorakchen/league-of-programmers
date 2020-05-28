@@ -130,7 +130,7 @@ DocProject/Help/html
 
 # Click-Once directory
 publish/
-files/
+src/League-Of-Programmers/files/
 
 # Publish Web Output
 *.[Pp]ublish.xml
