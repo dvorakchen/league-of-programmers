@@ -12,6 +12,34 @@ namespace Domain.Files
     public class File
     {
         /// <summary>
+        /// 获取临时文件夹的绝对路径
+        /// </summary>
+        public static string SaveTemplateAbsoluteDirectory
+        {
+            get
+            {
+                var temp = Directory.GetCurrentDirectory() + Config.GetValue("File:Template");
+                if (!Directory.Exists(temp))
+                    Directory.CreateDirectory(temp);
+                return temp;
+            }
+        }
+
+        /// <summary>
+        /// 获取缩略图文件夹的绝对路径
+        /// </summary>
+        public static string SaveThumbnailAbsoluteDirectory
+        {
+            get
+            {
+                var temp = Directory.GetCurrentDirectory() + Config.GetValue("File:SaveThumbnailWebPath");
+                if (!Directory.Exists(temp))
+                    Directory.CreateDirectory(temp);
+                return temp;
+            }
+        }
+
+        /// <summary>
         /// save file info to DB
         /// </summary>
         /// <param name="fileInfo">file info</param>
@@ -44,6 +72,23 @@ namespace Domain.Files
             string fullFileName = Path.Combine(currentDirectory + saveWebPath, saveFileName);
             if (System.IO.File.Exists(fullFileName))
                 System.IO.File.Delete(fullFileName);
+        }
+
+        /// <summary>
+        /// 获取缩略图
+        /// </summary>
+        /// <returns>缩略图保存文件名</returns>
+        public static string GetThumbnail(string filePath)
+        {
+            Compress fileCompress = new Compress();
+
+            var extension = Path.GetExtension(filePath);
+            string thumbnailName = extension.ToLower() switch
+            {
+                ".gif" => fileCompress.GetGIFThumbnail(filePath),
+                _ => fileCompress.MakeThumbnail(filePath)
+            };
+            return thumbnailName;
         }
     }
 }

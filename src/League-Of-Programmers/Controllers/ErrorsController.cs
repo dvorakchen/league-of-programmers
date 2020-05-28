@@ -16,9 +16,9 @@ namespace League_Of_Programmers.Controllers
         /// 测试用，用于出发异常
         /// </summary>
         [Conditional("DEBUG")]
-        [HttpPatch]
+        [HttpGet]
         [IgnoreAntiforgeryToken]
-        public void Index([FromBody]byte[] arr)
+        public void Index()
         {
             throw new NotImplementedException();
         }

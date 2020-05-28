@@ -47,8 +47,6 @@ namespace League_Of_Programmers.Middlewares
 
             await _next(context);
 
-            //  由于使用的是 [AutoValidateAntiforgeryToken]
-
         }
     }
 }
