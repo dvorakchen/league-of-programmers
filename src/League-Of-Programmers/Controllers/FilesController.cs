@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using League_Of_Programmers.Utilities;
+﻿using League_Of_Programmers.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace League_Of_Programmers.Controllers
 {
@@ -51,7 +48,7 @@ namespace League_Of_Programmers.Controllers
             string fileName = Path.GetFileNameWithoutExtension(trustedFileNameForFileStorage);
             trustedFileNameForFileStorage = fileName + extension;
 
-            if (!Domain.Files.Validation.ValidateExtension(trustedFileNameForFileStorage))
+            if (!Files.Validation.ValidateExtension(trustedFileNameForFileStorage))
             {
                 return BadRequest("不允许的文件扩展名");
             }
@@ -62,7 +59,7 @@ namespace League_Of_Programmers.Controllers
             await using var fileStream = System.IO.File.Create(saveFullPath);
             await file.CopyToAsync(fileStream);
 
-            (bool isSuccess, int id) = await Domain.Files.File.SaveToDBAsync(trustedFileNameForDisplay, trustedFileNameForFileStorage, file.Length);
+            (bool isSuccess, int id) = await Files.File.SaveToDBAsync(trustedFileNameForDisplay, trustedFileNameForFileStorage, file.Length);
             if (isSuccess)
                 return Created(saveWebPath, id);
 
@@ -104,7 +101,7 @@ namespace League_Of_Programmers.Controllers
                 string fileName = Path.GetFileNameWithoutExtension(trustedFileNameForFileStorage);
                 trustedFileNameForFileStorage = fileName + extension;
 
-                if (!Domain.Files.Validation.ValidateExtension(trustedFileNameForFileStorage))
+                if (!Files.Validation.ValidateExtension(trustedFileNameForFileStorage))
                 {
                     return BadRequest("不允许的文件扩展名");
                 }
@@ -130,7 +127,7 @@ namespace League_Of_Programmers.Controllers
                         await using var fileStream = System.IO.File.Create(saveFullPath);
                         await section.Body.CopyToAsync(fileStream);
 
-                        (bool isSuccess, int id) = await Domain.Files.File.SaveToDBAsync(trustedFileNameForDisplay, trustedFileNameForFileStorage, fileStream.Length);
+                        (bool isSuccess, int id) = await Files.File.SaveToDBAsync(trustedFileNameForDisplay, trustedFileNameForFileStorage, fileStream.Length);
                         if (isSuccess)
                             return Created(saveWebPath, id);
                     }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using DB;
 using Common;
+using DB;
 
-namespace Domain.Files
+namespace Files
 {
 
     public class File

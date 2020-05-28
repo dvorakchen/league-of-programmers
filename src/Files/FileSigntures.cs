@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Domain.Files
+namespace Files
 {
     /// <summary>
     /// use this to get the file signture

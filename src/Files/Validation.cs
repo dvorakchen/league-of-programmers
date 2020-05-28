@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using Common;
 using System.Linq;
 
-namespace Domain.Files
+namespace Files
 {
     /// <summary>
     /// 文件验证

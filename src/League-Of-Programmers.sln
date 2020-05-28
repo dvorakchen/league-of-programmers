@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "League-Of-Programmers", "League-Of-Programmers\League-Of-Programmers.csproj", "{B602F66A-9653-4131-A564-C15DA7ABF7DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB", "DB\DB.csproj", "{655F7CBE-848A-4D1A-8D95-06781F6D549C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB", "DB\DB.csproj", "{655F7CBE-848A-4D1A-8D95-06781F6D549C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{EE9E6ECE-F6F2-4DF9-A405-2393101C8F42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{EE9E6ECE-F6F2-4DF9-A405-2393101C8F42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{470A3A63-B0F2-4843-8568-404080AA12E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{470A3A63-B0F2-4843-8568-404080AA12E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Files", "Files\Files.csproj", "{8087E8FC-8EFF-4C13-BA52-323371B8B8A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{470A3A63-B0F2-4843-8568-404080AA12E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{470A3A63-B0F2-4843-8568-404080AA12E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{470A3A63-B0F2-4843-8568-404080AA12E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8087E8FC-8EFF-4C13-BA52-323371B8B8A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8087E8FC-8EFF-4C13-BA52-323371B8B8A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8087E8FC-8EFF-4C13-BA52-323371B8B8A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8087E8FC-8EFF-4C13-BA52-323371B8B8A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Domain.Files
+namespace Files
 {
     /// <summary>
     /// 文件压缩，缩略图
