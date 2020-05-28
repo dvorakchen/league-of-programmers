@@ -43,7 +43,7 @@ namespace League_Of_Programmers.Controllers
                 smallFileMaxLength = 64;
 
             if (file.Length > smallFileMaxLength)
-                return BadRequest("上传的文件最大只能限制在64字节");
+                return BadRequest($"上传的文件最大只能限制在{smallFileMaxLength}字节");
 
             var trustedFileNameForDisplay = WebUtility.HtmlEncode(file.FileName);
             var trustedFileNameForFileStorage = Path.GetRandomFileName();
@@ -118,6 +118,12 @@ namespace League_Of_Programmers.Controllers
                     }
                     else
                     {
+                        if (!int.TryParse(configuration.GetSection("File:FileSizeLimit").Value, out int FileMaxLength))
+                            FileMaxLength = 9 << 10 << 10;
+
+                        if (section.Body.Length > FileMaxLength)
+                            return BadRequest($"上传的文件最大只能限制在{FileMaxLength}字节");
+
                         string saveWebPath = configuration.GetSection("File:SaveWebPath").Value;
                         string saveFullPath = Path.Combine(Directory.GetCurrentDirectory(), saveWebPath, trustedFileNameForFileStorage);
 
