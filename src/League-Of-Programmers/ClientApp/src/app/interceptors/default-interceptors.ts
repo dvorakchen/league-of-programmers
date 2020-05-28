@@ -59,11 +59,11 @@ export class DefaultInterceptor implements HttpInterceptor {
           } break;
           case 429: {
             //  熔断页面
+            this.router.navigate(['/pages', '429']);
           } break;
-          default: {
-            return throwError(err);
-          }
+          default: break;
         }
+        return throwError(err);
       }));
   }
 }
