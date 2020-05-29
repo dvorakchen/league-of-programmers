@@ -1,7 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Domain
 {
@@ -33,8 +30,8 @@ namespace Domain
         /// <returns></returns>
         public bool ValidateUserName(string userName)
         {
-            return (userName.Length <= Users.User.NAME_MAX_LENGTH && userName.Length >= Users.User.NAME_MIN_LENGTH 
-                || !new Regex("[" + Users.User.NAME_NOT_ALLOW_CHAR + "]+").IsMatch(userName)) ;
+            return userName.Length <= Users.User.NAME_MAX_LENGTH && userName.Length >= Users.User.NAME_MIN_LENGTH
+                || !new Regex("[" + Users.User.NAME_NOT_ALLOW_CHAR + "]+").IsMatch(userName);
         }
     }
 }

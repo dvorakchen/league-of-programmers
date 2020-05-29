@@ -11,7 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System.IO;
+using System.Security.Claims;
+using System.Text;
 
 namespace League_Of_Programmers
 {
@@ -32,16 +35,37 @@ namespace League_Of_Programmers
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
             services.AddDbContext<DB.LOPDbContext>();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => Configuration.Bind("JwtSettings", options));
+            //  JWT 验证规则
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(JWTOption =>
+            {
+                JWTOption.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = Configuration.GetSection("JwtSettings:Issuer").Value,
+                    ValidAudience = Configuration.GetSection("JwtSettings:Audience").Value,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("JwtSettings:Secret").Value))
+                };
+            });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("need-id", policy =>
+                {
+                    policy.RequireClaim(ClaimTypes.PrimarySid);
+                });
+            });
+            //  配置过滤器
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(typeof(Filters.ExceptionHandleAttribute));
                 //  如果返回的结果是空值，null，就填充进一个空对象
                 options.Filters.Add(typeof(Filters.FillDefaultResultInResponseIfNullAttribute));
             });
-
+            //  配置 DI
             services.AddScoped<IUserManager, UserManager>();
 
             // In production, the Angular files will be served from this directory
@@ -82,6 +106,7 @@ namespace League_Of_Programmers
             }
 
             app.UseMiddleware<Middlewares.Antiforgery>();
+            app.UseMiddleware<Middlewares.JWTToHeader>();
 
             app.UseRouting();
 

@@ -23,6 +23,10 @@ export class IdentityService {
     private http: HttpClient
   ) { }
 
+  checkIsLoggedIn(): Observable<Result> {
+    return this.http.get<Result>('/api/clients/login/check');
+  }
+
   login(account: string, password: string): Observable<Result> {
     password = sha256(password).toString();
 

@@ -7,20 +7,15 @@ import { Observable, throwError, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-
-interface AntiForgery {
-  status: number;
-  title: string;
-  traceId: string;
-  type: string;
-}
+import { CommonService } from '../services/common';
 
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
 
   constructor(
     private router: Router,
-    private loc: Location
+    private loc: Location,
+    private common: CommonService
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -55,6 +50,7 @@ export class DefaultInterceptor implements HttpInterceptor {
         switch (err.status) {
           //  case 400: { } break;
           case 401: {
+            this.common.snackOpen('请先登录', 3000);
             this.router.navigate(['/login', { redirect: this.loc.path(true) }]);
           } break;
           case 429: {

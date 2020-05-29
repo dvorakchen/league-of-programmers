@@ -3,6 +3,7 @@ import { IdentityService } from '../../../services/identity.service';
 import { CommonService, REDIRECT } from '../../../services/common';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Global } from '../../../global';
 
 @Component({
   selector: 'app-login',
@@ -41,12 +42,14 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.identity.login(this.account.value.trim(), this.password.value.trim()).subscribe(data => {
       if (data.status === 200) {
+        Global.userName = data.data;
         let red = this.route.snapshot.paramMap.get(REDIRECT);
         if (!red) {
           red = '/';
         }
         this.router.navigateByUrl(red);
       } else {
+        Global.userName = null;
         this.common.snackOpen(data.data, 10000);
       }
       this.loading = false;
