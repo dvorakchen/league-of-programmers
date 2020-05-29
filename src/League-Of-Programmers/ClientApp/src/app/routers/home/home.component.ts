@@ -8,14 +8,14 @@ import { IdentityService } from '../../services/identity.service';
 export class HomeComponent {
 
   constructor(
-    private identity: IdentityService
+    private identity: IdentityService,
   ) { }
 
   check() {
-    this.identity.checkIsLoggedIn().subscribe(resp => {
-      if (resp.status === 200) {
-        alert(resp.data);
-      }
-    });
+    // this.identity.checkIsLoggedIn().subscribe(resp => {
+    //   if (resp.status === 200) {
+    //     alert(resp.data);
+    //   }
+    // });
   }
 }
