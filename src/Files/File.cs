@@ -70,8 +70,24 @@ namespace Files
             string saveWebPath = Config.GetValue("File:SaveWebPath");
             var currentDirectory = Directory.GetCurrentDirectory();
             string fullFileName = Path.Combine(currentDirectory + saveWebPath, saveFileName);
-            if (System.IO.File.Exists(fullFileName))
-                System.IO.File.Delete(fullFileName);
+            DeleteFile(fullFileName);
+        }
+        /// <summary>
+        /// 删除缩略图
+        /// </summary>
+        /// <param name="saveFileName"></param>
+        public static void DeleteThumbnail(string saveFileName)
+        {
+            string saveWebPath = Config.GetValue("File:SaveThumbnailWebPath");
+            var currentDirectory = Directory.GetCurrentDirectory();
+            string fullFileName = Path.Combine(currentDirectory + saveWebPath, saveFileName);
+            DeleteFile(fullFileName);
+        }
+
+        private static void DeleteFile(string path)
+        {
+            if (System.IO.File.Exists(path))
+                System.IO.File.Delete(path);
         }
 
         /// <summary>

@@ -149,6 +149,8 @@ namespace Domain.Users
             {
                 //  删除原头像文件
                 Files.File.Delete(sourceAvatar.SaveName);
+                //  删除缩略图
+                Files.File.DeleteThumbnail(sourceAvatar.Thumbnail);
                 //  缓存用户更新后的数据
                 UserCache.SetUserModel(user);
                 return (true, "");
