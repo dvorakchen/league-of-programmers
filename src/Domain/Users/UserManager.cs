@@ -39,10 +39,16 @@ namespace Domain.Users
                 return (User.Parse(userModel), "");
         }
 
-        public async Task<(bool, string)> RegisterAsync(Models.Register model)
+        /// <summary>
+        /// 注册客户，只能注册客户
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<(bool, string)> RegisterClientAsync(Models.Register model)
         {
-            if (model.Account.Length < User.ACCOUNT_MIN_LENGTH)
-                return (false, $"注册账号长度不能小于{User.ACCOUNT_MIN_LENGTH}位");
+            var validation = new Validation();
+            if (!validation.ValidateAccount(model.Account))
+                return (false, $"注册账号长度不能大于{User.ACCOUNT_MAX_LENGTH}位小于{User.ACCOUNT_MIN_LENGTH}位");
             if (string.IsNullOrWhiteSpace(model.Password))
                 return (false, $"密码不能为空");
             if (model.Password != model.ConfirmPassword)
@@ -55,7 +61,9 @@ namespace Domain.Users
             DB.Tables.User newUser = new DB.Tables.User
             {
                 Account = model.Account,
-                Password = model.Password
+                Name = model.Account,
+                Password = model.Password,
+                Roles = (int)User.RoleCategories.Client
             };
             db.Users.Add(newUser);
             int changeCount = await db.SaveChangesAsync();

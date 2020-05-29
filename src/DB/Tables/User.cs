@@ -17,7 +17,9 @@ namespace DB.Tables
 
         [Required, StringLength(64)]
         public string Password { get; set; } = "";
-        [Required, StringLength(64)]
+        [Required]
+        public int Roles { get; set; } = 1;
+        [Required, StringLength(64), EmailAddress]
         public string Email { get; set; } = "";
         /// <summary>
         /// 头像

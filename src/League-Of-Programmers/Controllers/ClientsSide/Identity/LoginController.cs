@@ -17,11 +17,11 @@ namespace League_Of_Programmers.Controllers.Clients.Identity
     public class LoginController : ClientsSideController
     {
         private readonly IConfiguration _configuration;
-        ILogger _logger;
-        public LoginController(IConfiguration _configuration, ILogger<LoginController> _logger)
+        //ILogger _logger;
+        public LoginController(IConfiguration _configuration/*, ILogger<LoginController> _logger*/)
         {
             this._configuration = _configuration;
-            this._logger = _logger;
+            //this._logger = _logger;
         }
 
         /*

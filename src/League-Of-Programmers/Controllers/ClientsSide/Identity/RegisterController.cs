@@ -18,7 +18,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Identity
         public async Task<IActionResult> IndexAsync([FromBody]Domain.Users.Models.Register model)
         {
             Domain.Users.UserManager userManager = new Domain.Users.UserManager();
-            (bool isSuccess, string msg) = await userManager.RegisterAsync(model);
+            (bool isSuccess, string msg) = await userManager.RegisterClientAsync(model);
             if (isSuccess)
                 return Created("", null);
             return BadRequest(msg);
