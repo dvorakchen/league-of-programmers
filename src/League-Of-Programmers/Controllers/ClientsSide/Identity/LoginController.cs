@@ -13,7 +13,7 @@ namespace League_Of_Programmers.Controllers.Clients.Identity
     public class LoginController : ClientsSideController
     {
         private readonly IConfiguration _configuration;
-        
+
         public LoginController(IConfiguration _configuration)
         {
             this._configuration = _configuration;
@@ -29,8 +29,10 @@ namespace League_Of_Programmers.Controllers.Clients.Identity
         public async Task<IActionResult> IsLoggedIn()
         {
             Domain.Users.UserManager userManager = new Domain.Users.UserManager();
-            var user = await userManager.GetUser(CurrentUserId);
-            return Ok(user.Name);
+            (bool user, string name) = await userManager.HasUser(CurrentUserId);
+            if (user)
+                return Ok(name);
+            return Unauthorized();
         }
 
         /*
@@ -40,7 +42,7 @@ namespace League_Of_Programmers.Controllers.Clients.Identity
          */
         //  patch: /api/clients/login
         [HttpPatch]
-        public async Task<IActionResult> IndexAsync([FromBody]Domain.Users.Models.Login model)
+        public async Task<IActionResult> IndexAsync([FromBody] Domain.Users.Models.Login model)
         {
             Domain.Users.UserManager userManager = new Domain.Users.UserManager();
             (var user, string msg) = await userManager.LoginAsync(model);

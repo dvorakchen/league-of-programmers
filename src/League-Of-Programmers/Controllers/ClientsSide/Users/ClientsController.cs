@@ -13,10 +13,10 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
     /// 当前用户，代表当前登录用户自己的操作
     /// </summary>
     [Authorize]
-    public class UsersController : ClientsSideController
+    public class ClientsController : ClientsSideController
     {
         private readonly IUserManager _userManager;
-        public UsersController(IUserManager _userManager)
+        public ClientsController(IUserManager _userManager)
         {
             this._userManager = _userManager;
         }
@@ -33,7 +33,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
         [HttpPatch("password")]
         public async Task<IActionResult> ModifyPasswordAsync([FromBody]string newPassword)
         {
-            var currentUser = await _userManager.GetUser(CurrentUserId);
+            var currentUser = await _userManager.GetClient(CurrentUserId);
             (bool isSuccessfully, string msg) = await currentUser.ModifyPasswordAsync(newPassword);
             if (isSuccessfully)
                 return Ok();
@@ -52,7 +52,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
         [HttpPatch("name")]
         public async Task<IActionResult> ModifyNameAsync([FromBody]string name)
         {
-            var currentUser = await _userManager.GetUser(CurrentUserId);
+            var currentUser = await _userManager.GetClient(CurrentUserId);
             (bool isSuccessfully, string msg) = await currentUser.ModifyNameAsync(name);
             if (isSuccessfully)
                 return Ok();
@@ -71,7 +71,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
         [HttpPatch("email")]
         public async Task<IActionResult> ModifyEmailAsync([FromBody]string email)
         {
-            var currentUser = await _userManager.GetUser(CurrentUserId);
+            var currentUser = await _userManager.GetClient(CurrentUserId);
             (bool isSuccessfully, string msg) = await currentUser.ModifyEmailAsync(email);
             if (isSuccessfully)
                 return Ok();
@@ -90,7 +90,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
         [HttpPatch("email")]
         public async Task<IActionResult> ModifyAvatarAsync([FromBody]int avatarId)
         {
-            var currentUser = await _userManager.GetUser(CurrentUserId);
+            var currentUser = await _userManager.GetClient(CurrentUserId);
             (bool isSuccessfully, string msg) = await currentUser.ModifyAvatarAsync(avatarId);
             if (isSuccessfully)
                 return Ok();

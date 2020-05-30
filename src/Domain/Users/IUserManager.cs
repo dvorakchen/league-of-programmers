@@ -9,10 +9,17 @@ namespace Domain.Users
     public interface IUserManager
     {
         /// <summary>
-        /// get user by user id
+        /// get client by user id
         /// </summary>
         /// <param name="id">user id</param>
         /// <returns>user or null if not exist</returns>
-        Task<User> GetUser(int id);
+        Task<Client> GetClient(int id);
+
+        /// <summary>
+        /// get Administrator by user id
+        /// </summary>
+        /// <param name="id">user id</param>
+        /// <returns>user or null if not exist</returns>
+        Task<Administrator> GetAdministrator(int id);
     }
 }

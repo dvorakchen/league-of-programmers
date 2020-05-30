@@ -12,11 +12,52 @@ namespace Domain.Users
         /// </summary>
         /// <param name="id">user id</param>
         /// <returns>user or null if not exist</returns>
-        public async Task<User> GetUser(int id)
+        internal async Task<User> GetUser(int id)
         {
             var userModel = await UserCache.GetUserModelAsync(id);
             return userModel == null ? null : User.Parse(userModel);
         }
+
+        /// <summary>
+        /// get client by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Client> GetClient(int id)
+        {
+            var user = await GetUser(id);
+            if ((user.Role & User.RoleCategories.Client) != 0)
+                return user as Client;
+            throw new Exception($"{user} 不是客户");
+        }
+
+        /// <summary>
+        /// get client by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Administrator> GetAdministrator(int id)
+        {
+            var user = await GetUser(id);
+            if ((user.Role & User.RoleCategories.Administrator) != 0)
+                return user as Administrator;
+            throw new Exception($"{user} 不是管理员");
+        }
+
+        /// <summary>
+        /// 是否有这个用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>(是否有这个用户，用户名)</returns>
+        public async Task<(bool, string)> HasUser(int id)
+        {
+            var user = await GetUser(id);
+            if (user is null)
+                return (false, "");
+            return (true, user.Name);
+        }
+
+        
 
         /// <summary>
         /// user login
