@@ -41,38 +41,19 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
         }
 
         /* 
-         * 当前用户修改名字
+         * 当前用户修改
          *  
-         *  /api/clients/users/name
+         *  /api/clients/users
          *
          *  return: 
          *      200:    successfully
          *      400:    defeated
          */
-        [HttpPatch("name")]
-        public async Task<IActionResult> ModifyNameAsync([FromBody]string name)
+        [HttpPatch]
+        public async Task<IActionResult> ModifyNameAsync([FromBody] Models.ModifyUser model)
         {
             var currentUser = await _userManager.GetClient(CurrentUserId);
-            (bool isSuccessfully, string msg) = await currentUser.ModifyNameAsync(name);
-            if (isSuccessfully)
-                return Ok();
-            return BadRequest(msg);
-        }
-
-        /* 
-         * 当前用户修改邮箱
-         *  
-         *  /api/clients/users/email
-         *
-         *  return: 
-         *      200:    successfully
-         *      400:    defeated
-         */
-        [HttpPatch("email")]
-        public async Task<IActionResult> ModifyEmailAsync([FromBody]string email)
-        {
-            var currentUser = await _userManager.GetClient(CurrentUserId);
-            (bool isSuccessfully, string msg) = await currentUser.ModifyEmailAsync(email);
+            (bool isSuccessfully, string msg) = await currentUser.ModifyUser(model);
             if (isSuccessfully)
                 return Ok();
             return BadRequest(msg);

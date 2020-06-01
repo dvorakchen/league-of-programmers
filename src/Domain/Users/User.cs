@@ -95,65 +95,32 @@ namespace Domain.Users
             };
         }
 
-        /// <summary>
-        /// modify the user nama
-        /// </summary>
-        /// <returns></returns>
-        public virtual async Task<(bool, string)> ModifyNameAsync(string name)
+        public virtual async Task<(bool, string)> ModifyUser(Models.ModifyUser model)
         {
-            name = name.Trim();
-
-            DB.Tables.User user = await UserCache.GetUserModelAsync(Id);
-            if (user is null)
-                return (false, "该用户不存在");
-
-            if (!new Validation().ValidateUserName(name))
+            Validation validation = new Validation();
+            if (!validation.ValidateUserName(model.Name))
                 return (false, $"用户名必须大于{NAME_MIN_LENGTH}位小于{NAME_MAX_LENGTH}位，却不能带有 {NAME_NOT_ALLOW_CHAR}");
-
-            if (user.Name == name)
-                return (true, "");
-            await using var db = new LOPDbContext();
-            user.Name = name;
-            db.Users.Update(user);
-            int changeCount = await db.SaveChangesAsync();
-            if (changeCount == 1)
-            {
-                UserCache.SetUserModel(user);
-                Name = name;
-                return (true, "");
-            }
-            throw new Exception("修改邮箱失败");
-        }
-
-        /// <summary>
-        /// modify the user email
-        /// </summary>
-        /// <returns></returns>
-        public virtual async Task<(bool, string)> ModifyEmailAsync(string email)
-        {
-            email = email.Trim();
-            DB.Tables.User user = await UserCache.GetUserModelAsync(Id);
-            if (user is null)
-                return (false, "该用户不存在");
-
-            if (!new Validation().ValidateEmail(email))
+            if (!validation.ValidateEmail(model.Email))
                 return (false, "邮箱格式不正确");
 
-            if (user.Email == email)
-                return (true, "");
-            await using var db = new LOPDbContext();
-            if (await db.Users.AnyAsync(user => user.Id != Id && user.Email.Equals(email, StringComparison.OrdinalIgnoreCase)))
-                return (false, "已经被使用的邮箱");
+            DB.Tables.User user = await UserCache.GetUserModelAsync(Id);
+            if (user is null)
+                return (false, "该用户不存在");
 
-            user.Email = email;
+            if (user.Name == model.Name && user.Email == model.Email)
+                return (true, "");
+            user.Name = model.Name;
+            user.Email = model.Email;
+            await using var db = new LOPDbContext();
             db.Users.Update(user);
             int changeCount = await db.SaveChangesAsync();
             if (changeCount == 1)
             {
                 UserCache.SetUserModel(user);
+                Name = model.Name;
                 return (true, "");
             }
-            throw new Exception("修改邮箱失败");
+            throw new Exception("修改失败");
         }
 
         /// <summary>

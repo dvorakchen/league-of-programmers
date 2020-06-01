@@ -21,5 +21,11 @@ namespace Domain.Users
             public string Password { get; set; } = "";
             public string ConfirmPassword { get; set; } = "";
         }
+
+        public class ModifyUser
+        {
+            public string Email { get; set; } = "";
+            public string Name { get; set; } = "";
+        }
     }
 }
