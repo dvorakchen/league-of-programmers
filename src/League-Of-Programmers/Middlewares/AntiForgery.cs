@@ -27,15 +27,17 @@ namespace League_Of_Programmers.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (!context.Request.Headers.TryGetValue("X-XSRF-TOKEN", out Microsoft.Extensions.Primitives.StringValues token))
-                token = "";
-
             //  如果请求的是页面或图片，就提供防伪字段
-            if (context.Request.Headers.TryGetValue("Accept", out acceptValue) && string.IsNullOrWhiteSpace(token))
+            if (context.Request.Headers.TryGetValue("Accept", out acceptValue))
             {
-                var value = acceptValue.ToString().Split(new char[2] { ';', ',' });
+                //var value = acceptValue.ToString().Split(new char[2] { ';', ',' });
 
-                if (value.Contains("text/html") || value.Contains("application/xhtml+xml") || value.Contains("application/xml") )
+                //if (value.Contains("text/html") || value.Contains("application/xhtml+xml") || value.Contains("application/xml") )
+                string path = context.Request.Path.Value;
+
+                if (
+                    string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(path, "/index.html", StringComparison.OrdinalIgnoreCase))
                 {
                     // The request token can be sent as a JavaScript-readable cookie, 
                     // and Angular uses it by default.
@@ -43,8 +45,7 @@ namespace League_Of_Programmers.Middlewares
                     //  服务器接受到请求时会进行防伪检查，在 LOPController 的特性 [AutoValidateAntiforgeryToken] 中指定
                     //  若不需要进行防伪检查，可在不需要检查的控制器上添加特性 [IgnoreAntiforgeryToken]
                     var tokens = _antiforgery.GetAndStoreTokens(context);
-                    context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
-                        new CookieOptions() { HttpOnly = false });
+                    context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken);
                 }
             }
 
