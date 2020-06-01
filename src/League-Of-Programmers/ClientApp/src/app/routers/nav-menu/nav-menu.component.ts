@@ -45,16 +45,18 @@ export class NavMenuComponent implements OnInit {
     if (!Global.loginInfo) {
       this.router.navigate(['/login', { redirect: location.pathname + location.search }]);
     } else {
-      this.common.snackOpen('有登录');
+      this.router.navigate(['/write']);
     }
   }
 
   search(value: string) {
+    if (!value.trim()) {
+      return;
+    }
     this.common.snackOpen(value, 1000);
   }
 
   logout() {
-    this.common.snackOpen('logout');
     Global.loginInfo = null;
      location.href = '/';
   }

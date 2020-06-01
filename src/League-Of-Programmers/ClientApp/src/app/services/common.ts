@@ -44,8 +44,8 @@ export class ServicesBase {
     switch (error.status) {
       case 400: {
         if (error.error.traceId) {
-          const T = error.error.traceId as string;
-          if (T.endsWith('-477f38d7339b7a39.')) {
+          const T = error.error.type as string;
+          if (T === 'https://tools.ietf.org/html/rfc7231#section-6.5.1') {
             R.data = '防伪过期，请刷新页面';
           } else {
             R.data = error.error;
