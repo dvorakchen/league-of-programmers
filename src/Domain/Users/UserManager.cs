@@ -57,10 +57,9 @@ namespace Domain.Users
             return (true, user.Name);
         }
 
-        
-
         /// <summary>
-        /// user login
+        /// user login，
+        /// 客户或管理员都可以登录
         /// </summary>
         /// <param name="model"></param>
         /// <returns>(登录后的用户，登录失败的原因)</returns>

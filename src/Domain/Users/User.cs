@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Users
 {
-    public abstract class User : EntityBase
+    public abstract class User : EntityBase, IEquatable<User>
     {
         public const int ACCOUNT_MIN_LENGTH = 4;
         public const int ACCOUNT_MAX_LENGTH = 20;
@@ -64,6 +64,16 @@ namespace Domain.Users
         /// user's hash code is Id
         /// </summary>
         public override int GetHashCode() => Id;
+        public override bool Equals(object obj)
+        {
+            if (obj is User u)
+                return Equals(u);
+            return false;
+        }
+        public bool Equals(User other)
+        {
+            return other.Id == Id;
+        }
 
         /// <summary>
         /// 用户对象只能通过这个方法获取

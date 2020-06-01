@@ -6,10 +6,10 @@ namespace League_Of_Programmers.Controllers
     /// 控制器的基类
     /// </summary>
     [ApiController]
-    [AutoValidateAntiforgeryToken]
+    //[AutoValidateAntiforgeryToken]
     [Route("api/[controller]")]
     public abstract class LOPController : ControllerBase 
     {
-        public const string JWT_KEY = "__JWT__";
+        public const string JWT_KEY = "_j_w_t_";
     }
 }

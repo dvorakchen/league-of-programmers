@@ -42,14 +42,15 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.identity.login(this.account.value.trim(), this.password.value.trim()).subscribe(data => {
       if (data.status === 200) {
-        Global.userName = data.data;
+        Global.loginInfo = data.data;
         let red = this.route.snapshot.paramMap.get(REDIRECT);
         if (!red) {
           red = '/';
         }
-        this.router.navigateByUrl(red);
+        //  this.router.navigateByUrl(red);
+        location.href = red;
       } else {
-        Global.userName = null;
+        Global.loginInfo = null;
         this.common.snackOpen(data.data, 10000);
       }
       this.loading = false;

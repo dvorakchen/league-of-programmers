@@ -3,6 +3,7 @@ import { ServicesBase, CommonService, Result } from './common';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, debounceTime, retry } from 'rxjs/operators';
+import { UserInfo } from '../global';
 
 import sha256 from 'crypto-js/sha256';
 

@@ -20,7 +20,7 @@ export class LoginGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    if (!Global.userName) {
+    if (!Global.loginInfo) {
         this.router.navigate(['/login']);
         return false;
     }
@@ -32,10 +32,10 @@ export class LoginGuard implements CanActivate {
     return new Observable<boolean>((ob) => {
       this.identity.checkIsLoggedIn().subscribe(r => {
         if (r.status === 200) {
-            Global.userName = r.data;
+            Global.loginInfo = r.data;
             ob.next(true);
         } else {
-          Global.userName = null;
+          Global.loginInfo = null;
         }
         ob.complete();
       });

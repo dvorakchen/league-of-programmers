@@ -69,9 +69,14 @@ namespace League_Of_Programmers.Controllers.Clients.Identity
                     credentials
             );
             var token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
-            Response.Cookies.Append(JWT_KEY, token, new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = true });
-
-            return Ok(user.Name);
+            Response.Cookies.Append(JWT_KEY, token);
+            //  返回登录用户名，角色
+            Domain.Users.Results.LoginResult result = new Domain.Users.Results.LoginResult
+            { 
+                UserName = user.Name,
+                Role = (int)user.Role
+            };
+            return Ok(result);
         }
 
     }

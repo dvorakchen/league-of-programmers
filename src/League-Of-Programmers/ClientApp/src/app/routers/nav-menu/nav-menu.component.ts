@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { REDIRECT, CommonService } from '../../services/common';
+import { CommonService } from '../../services/common';
+import { Global } from '../../global';
 
 @Component({
   selector: 'app-nav-menu',
@@ -10,10 +12,13 @@ import { REDIRECT, CommonService } from '../../services/common';
 export class NavMenuComponent implements OnInit {
 
   showActions = true;
+  isLoggedIn = false;
+  userName = '';
 
   constructor(
     private router: Router,
     private common: CommonService,
+    private loc: Location,
     private route: ActivatedRoute
   ) { }
 
@@ -24,6 +29,12 @@ export class NavMenuComponent implements OnInit {
         this.showActions = ROUTER !== '/login';
       }
     });
+    if (Global.loginInfo) {
+      this.isLoggedIn = true;
+      this.userName = Global.loginInfo.userName;
+    } else {
+      this.isLoggedIn = false;
+    }
   }
 
   writeBlog() {
@@ -31,6 +42,20 @@ export class NavMenuComponent implements OnInit {
      * 没有登陆就跳到登录页再去写博文
      */
 
-    this.router.navigate(['/login', { redirect: location.pathname + location.search }]);
+    if (!Global.loginInfo) {
+      this.router.navigate(['/login', { redirect: location.pathname + location.search }]);
+    } else {
+      this.common.snackOpen('有登录');
+    }
+  }
+
+  search(value: string) {
+    this.common.snackOpen(value, 1000);
+  }
+
+  logout() {
+    this.common.snackOpen('logout');
+    Global.loginInfo = null;
+     location.href = '/';
   }
 }
