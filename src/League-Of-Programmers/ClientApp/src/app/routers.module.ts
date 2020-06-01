@@ -7,6 +7,10 @@ import { HomeComponent } from './routers/home/home.component';
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   {
+    path: 'users',
+    loadChildren: () => import('./routers/users/users.module').then(mod => mod.UsersModule)
+  },
+  {
     path: 'login',
     loadChildren: () => import('./routers/login/login.module').then(mod => mod.LoginModule),
     data: { preload: true }
