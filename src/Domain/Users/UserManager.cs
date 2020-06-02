@@ -45,14 +45,17 @@ namespace Domain.Users
             throw new Exception($"{user} 不是管理员");
         }
 
-        public Task<Client> GetClientAsync(string account)
+        public async Task<Client> GetClientAsync(string account)
         {
-            throw new NotImplementedException();
+            var clientModel = await UserCache.GetUserModelAsync(account);
+            if (clientModel is null)
+                return null;
+            return User.Parse(clientModel) as Client;
         }
 
-        public Task<Administrator> GetAdministratorAsync(string account)
+        public async Task<Administrator> GetAdministratorAsync(string account)
         {
-            throw new NotImplementedException();
+            return User.Parse(await UserCache.GetUserModelAsync(account)) as Administrator;
         }
 
         /// <summary>

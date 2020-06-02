@@ -72,16 +72,16 @@ namespace Domain.Users
             if (userModel is null)
                 throw new ArgumentNullException("cache user model should not null");
 
-            Cache.Set(USER_CACHE_KEY + userModel.Id, userModel, cacheTime);
+            Cache.Set(USER_CACHE_KEY + userModel.Account, userModel, cacheTime);
         }
 
         /// <summary>
         /// remove the user model by id
         /// </summary>
         /// <param name="id"></param>
-        internal static void Remove(int id)
+        internal static void Remove(string account)
         {
-            Cache.Remove(USER_CACHE_KEY + id);
+            Cache.Remove(USER_CACHE_KEY + account);
         }
     }
 }
