@@ -105,7 +105,7 @@ namespace Domain.Users
                 return (false, "邮箱格式不正确");
 
             await using var db = new LOPDbContext();
-            DB.Tables.User user = await db.Users.FirstOrDefaultAsync(user => user.Id == Id);
+            DB.Tables.User user = await db.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == Id);
             if (user is null)
                 return (false, "该用户不存在");
 
@@ -113,7 +113,7 @@ namespace Domain.Users
                 return (true, "");
             user.Name = model.Name;
             user.Email = model.Email;
-            
+            db.Update(user);
             int changeCount = await db.SaveChangesAsync();
             if (changeCount == 1)
             {
@@ -131,7 +131,7 @@ namespace Domain.Users
         public virtual async Task<(bool, string)> ModifyPasswordAsync(string password)
         {
             await using var db = new LOPDbContext();
-            DB.Tables.User user = await db.Users.FirstOrDefaultAsync(user => user.Id == Id);
+            DB.Tables.User user = await db.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == Id);
             if (user is null)
                 return (false, "该用户不存在");
 
@@ -141,7 +141,7 @@ namespace Domain.Users
             if (user.Password == password)
                 return (true, "");
             user.Password = password;
-            
+            db.Update(user);
             int changeCount = await db.SaveChangesAsync();
             if (changeCount == 1)
             {
@@ -158,7 +158,7 @@ namespace Domain.Users
         public virtual async Task<(bool, string)> ModifyAvatarAsync(int avatarId)
         {
             await using var db = new LOPDbContext();
-            DB.Tables.User user = await db.Users.Include(user => user.Avatar).FirstOrDefaultAsync(user => user.Id == Id);
+            DB.Tables.User user = await db.Users.AsNoTracking().Include(user => user.Avatar).FirstOrDefaultAsync(user => user.Id == Id);
             if (user is null)
                 return (false, "该用户不存在");
             if (user.AvatarId == avatarId)
@@ -173,7 +173,7 @@ namespace Domain.Users
                 db.Files.Remove(user.Avatar);
                 shouldChangeCount++;
             }
-
+            db.Update(user);
             int changeCount = await db.SaveChangesAsync();
             if (changeCount == shouldChangeCount)
             {

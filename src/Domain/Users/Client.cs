@@ -32,7 +32,7 @@ namespace Domain.Users
             { 
                 Account = user.Account,
                 Email = user.Email,
-                Avatar = Path.Combine(Config.GetValue(""), user.Avatar.SaveName)
+                Avatar = Path.Combine(Config.GetValue("File:SaveWebPath"), user.Avatar.SaveName)
             };
             return result;
         }
