@@ -21,5 +21,11 @@ namespace Domain.Users
         /// <param name="id">user id</param>
         /// <returns>user or null if not exist</returns>
         Task<Administrator> GetAdministrator(int id);
+        /// <summary>
+        /// 是否有这个用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>(是否有这个用户，用户名)</returns>
+        Task<(bool, string)> HasUser(int id);
     }
 }

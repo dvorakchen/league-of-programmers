@@ -7,10 +7,6 @@ import { HomeComponent } from './routers/home/home.component';
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   {
-    path: 'users',
-    loadChildren: () => import('./routers/users/users.module').then(mod => mod.UsersModule)
-  },
-  {
     path: 'login',
     loadChildren: () => import('./routers/login/login.module').then(mod => mod.LoginModule),
     data: { preload: true }
@@ -23,7 +19,12 @@ const routes: Routes = [
     path: 'pages',
     loadChildren: () => import('./routers/pages/pages.module').then(mod => mod.PagesModule)
   },
-  { path: '**', redirectTo: 'pages/404' }
+  {
+    path: ':name',
+    loadChildren: () => import('./routers/users/users.module').then(mod => mod.UsersModule),
+    data: { preload: true }
+  }
+  //  { path: '**', redirectTo: 'pages/404' }
 ];
 
 @NgModule({

@@ -5,10 +5,11 @@
 html {
   font-size: 14px;
 }
-
-html, body {
+/* 
+html,
+body {
   height: 100%;
-}
+} */
 
 body {
   margin: 0;
@@ -21,4 +22,10 @@ body {
 
 .w100 {
   width: 100%;
+}
+
+.slogan {
+  font-size: 1.1rem;
+  margin-top: 1.1rem;
+  color: #3f51b5;
 }

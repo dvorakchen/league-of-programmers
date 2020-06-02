@@ -1,3 +1,29 @@
-<div class="contianer">
-
+<div class="container">
+  <div class="left-user">
+    <div class="avatar-box">
+      <img src="" alt="头像">
+    </div>
+    <div class="user-info">
+      <mat-form-field [appearance]="editBoxAppearance">
+        <mat-label>昵称</mat-label>
+        <input matInput type="text" value="myfor" [readonly]="!editUserInfo" required>
+      </mat-form-field>
+      <mat-form-field [appearance]="editBoxAppearance">
+        <mat-label>邮箱</mat-label>
+        <input matInput type="email" value="myfor@myfor.com" [readonly]="!editUserInfo" required>
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="edit()" *ngIf="isSelf"
+        [disabled]="editButtonIsLoading">{{editButtonText}}</button>
+    </div>
+  </div>
+  <div class="list">
+    <div class="blog-list">
+      <div class="title-box">
+        <span class="title">博文</span>
+      </div>
+      <div class="blogs">
+        列表
+      </div>
+    </div>
+  </div>
 </div>

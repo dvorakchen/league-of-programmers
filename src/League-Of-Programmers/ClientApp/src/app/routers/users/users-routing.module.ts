@@ -3,8 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/', pathMatch: 'full' },
-  { path: ':id', component: UserDetailComponent }
+  { path: '', component: UserDetailComponent }
 ];
 
 @NgModule({

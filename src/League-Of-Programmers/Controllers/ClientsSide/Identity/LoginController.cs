@@ -73,6 +73,7 @@ namespace League_Of_Programmers.Controllers.Clients.Identity
             //  返回登录用户名，角色
             Domain.Users.Results.LoginResult result = new Domain.Users.Results.LoginResult
             { 
+                Account = user.Account,
                 UserName = user.Name,
                 Role = (int)user.Role
             };

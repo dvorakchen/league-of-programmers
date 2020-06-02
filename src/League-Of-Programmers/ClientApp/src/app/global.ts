@@ -1,6 +1,7 @@
 import { isDevMode } from '@angular/core';
 
 export interface UserInfo {
+  account: string;
   userName: string;
   role: RoleCategories;
 }
@@ -15,40 +16,56 @@ export enum RoleCategories {
 export class Global {
   private static USERNAME_STORE_KEY = '__username__';
   private static ROLE_STORE_KEY = '__role__';
+  private static ACCOUNT_STORE_KEY = '__account__';
 
   public static get loginInfo(): UserInfo {
     if (!this.userName || !this.role) {
       return null;
     }
 
-    const u: UserInfo = {
+    const USER_INFO: UserInfo = {
+      account: this.account,
       userName: this.userName,
       role: this.role
     };
 
     if (isDevMode()) {
-      console.log(`get login info: username: ${u.userName} - role: ${u.role}`);
+      console.log(`get login info: username: ${USER_INFO.userName} - role: ${USER_INFO.role} - account: ${USER_INFO.account}`);
     }
-    return u;
+    return USER_INFO;
   }
 
   public static set loginInfo(userInfo: UserInfo) {
     if (userInfo) {
+      this.account = userInfo.account;
       this.userName = userInfo.userName;
       this.role = userInfo.role;
     } else {
       localStorage.removeItem(this.ROLE_STORE_KEY);
       localStorage.removeItem(this.USERNAME_STORE_KEY);
+      localStorage.removeItem(this.ACCOUNT_STORE_KEY);
     }
     if (isDevMode() && userInfo) {
-      console.log(`set login info: username: ${userInfo.userName} - role: ${userInfo.role}`);
+      console.log(`set login info: username: ${userInfo.userName} - role: ${userInfo.role} - account: ${userInfo.account}`);
     }
   }
 
+  private static get account(): string {
+    const NAME = localStorage.getItem(this.ACCOUNT_STORE_KEY);
+    if (NAME) {
+      return NAME;
+    } else {
+      return null;
+    }
+  }
+  private static set account(account: string) {
+    localStorage.setItem(this.ACCOUNT_STORE_KEY, account);
+  }
+
   private static get userName(): string {
-    const name = localStorage.getItem(this.USERNAME_STORE_KEY);
-    if (name) {
-      return name;
+    const NAME = localStorage.getItem(this.USERNAME_STORE_KEY);
+    if (NAME) {
+      return NAME;
     } else {
       return null;
     }

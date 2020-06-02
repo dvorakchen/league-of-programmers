@@ -41,12 +41,13 @@ namespace Domain.Users
             if (userModel is null)
                 throw new ArgumentNullException("user model not found");
             Id = userModel.Id;
+            Account = userModel.Account;
             Name = userModel.Name;
             Role = (RoleCategories)userModel.Roles;
 
             UserCache.SetUserModel(userModel);
         }
-
+        public string Account { get; private set; }
         /// <summary>
         /// user name
         /// </summary>
