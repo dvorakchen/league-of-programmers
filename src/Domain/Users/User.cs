@@ -104,7 +104,8 @@ namespace Domain.Users
             if (!validation.ValidateEmail(model.Email))
                 return (false, "邮箱格式不正确");
 
-            DB.Tables.User user = await UserCache.GetUserModelAsync(Id);
+            await using var db = new LOPDbContext();
+            DB.Tables.User user = await db.Users.FirstOrDefaultAsync(user => user.Id == Id);
             if (user is null)
                 return (false, "该用户不存在");
 
@@ -112,8 +113,7 @@ namespace Domain.Users
                 return (true, "");
             user.Name = model.Name;
             user.Email = model.Email;
-            await using var db = new LOPDbContext();
-            db.Users.Update(user);
+            
             int changeCount = await db.SaveChangesAsync();
             if (changeCount == 1)
             {
@@ -130,7 +130,8 @@ namespace Domain.Users
         /// <returns></returns>
         public virtual async Task<(bool, string)> ModifyPasswordAsync(string password)
         {
-            DB.Tables.User user = await UserCache.GetUserModelAsync(Id);
+            await using var db = new LOPDbContext();
+            DB.Tables.User user = await db.Users.FirstOrDefaultAsync(user => user.Id == Id);
             if (user is null)
                 return (false, "该用户不存在");
 
@@ -139,9 +140,8 @@ namespace Domain.Users
 
             if (user.Password == password)
                 return (true, "");
-            await using var db = new LOPDbContext();
             user.Password = password;
-            db.Users.Update(user);
+            
             int changeCount = await db.SaveChangesAsync();
             if (changeCount == 1)
             {
@@ -157,25 +157,20 @@ namespace Domain.Users
         /// <returns></returns>
         public virtual async Task<(bool, string)> ModifyAvatarAsync(int avatarId)
         {
-            DB.Tables.User user = await UserCache.GetUserModelAsync(Id, true);
+            await using var db = new LOPDbContext();
+            DB.Tables.User user = await db.Users.Include(user => user.Avatar).FirstOrDefaultAsync(user => user.Id == Id);
             if (user is null)
                 return (false, "该用户不存在");
             if (user.AvatarId == avatarId)
                 return (true, "");
 
-            await using var db = new LOPDbContext();
-
-            var sourceAvatar = user.Avatar;
-            if (sourceAvatar is null)
-                sourceAvatar = await db.Files.AsNoTracking().FirstOrDefaultAsync(file => file.Id == user.AvatarId);
-
             user.AvatarId = avatarId;
-            db.Users.Update(user);
+            
             int shouldChangeCount = 1;
             //  删除原头像
-            if (sourceAvatar != null)
+            if (user.Avatar != null)
             {
-                db.Files.Remove(sourceAvatar);
+                db.Files.Remove(user.Avatar);
                 shouldChangeCount++;
             }
 
@@ -183,9 +178,9 @@ namespace Domain.Users
             if (changeCount == shouldChangeCount)
             {
                 //  删除原头像文件
-                Files.File.Delete(sourceAvatar.SaveName);
+                Files.File.Delete(user.Avatar.SaveName);
                 //  删除缩略图
-                Files.File.DeleteThumbnail(sourceAvatar.Thumbnail);
+                Files.File.DeleteThumbnail(user.Avatar.Thumbnail);
                 //  缓存用户更新后的数据
                 UserCache.SetUserModel(user);
                 return (true, "");

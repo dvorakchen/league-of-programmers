@@ -24,7 +24,6 @@ const routes: Routes = [
     loadChildren: () => import('./routers/users/users.module').then(mod => mod.UsersModule),
     data: { preload: true }
   }
-  //  { path: '**', redirectTo: 'pages/404' }
 ];
 
 @NgModule({

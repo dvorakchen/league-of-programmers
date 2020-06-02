@@ -23,13 +23,13 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
         /*
          *  检查当前用户
          *  
-         *  /api/clients/user/{id}/check
+         *  /api/clients/user/{account}/check
          *  
          *  return:
          *      200:    has user
          *      404:    has not client
          */
-        [HttpGet("{id}/check")]
+        [HttpGet("{account}/check")]
         public async Task<IActionResult> CheckAsync(string account)
         {
             bool has = await _userManager.HasUserAsync(account);
@@ -47,14 +47,13 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
          *      200:    successfully
          *      404:    client not exist
          */
-        [HttpGet("{id}/home")]
-        public async Task<IActionResult> GetClientInfoAsync(int id)
+        [HttpGet("{account}/home")]
+        public async Task<IActionResult> GetClientInfoAsync(string account)
         {
-            Client user = await _userManager.GetClientAsync(id);
+            Client user = await _userManager.GetClientAsync(account);
             var profile = await user.GetProfileAsync();
             if (profile is null)
                 return NotFound();
-            //  profile.IsSelf = (CurrentUserId == id && CurrentUserId != NOT_ID);
             return Ok(profile);
         }
 

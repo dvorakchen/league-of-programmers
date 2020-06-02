@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DB;
 using Common;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Users
 {
@@ -23,7 +24,8 @@ namespace Domain.Users
         /// <returns></returns>
         public async Task<Results.ClientHomePageProfile> GetProfileAsync()
         {
-            var user = await UserCache.GetUserModelAsync(Id, true);
+            await using var db = new LOPDbContext();
+            DB.Tables.User user = await db.Users.AsNoTracking().Include(user => user.Avatar).FirstOrDefaultAsync(user => user.Id == Id);
             if (user is null)
                 return null;
             Results.ClientHomePageProfile result = new Results.ClientHomePageProfile

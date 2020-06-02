@@ -14,7 +14,8 @@ namespace Domain.Users
         /// <returns>user or null if not exist</returns>
         internal async Task<User> GetUserAsync(int id)
         {
-            var userModel = await UserCache.GetUserModelAsync(id);
+            await using var db = new LOPDbContext();
+            var userModel = await db.Users.FirstOrDefaultAsync(user => user.Id == id);
             return userModel == null ? null : User.Parse(userModel);
         }
 
@@ -42,6 +43,16 @@ namespace Domain.Users
             if ((user.Role & User.RoleCategories.Administrator) != 0)
                 return user as Administrator;
             throw new Exception($"{user} 不是管理员");
+        }
+
+        public Task<Client> GetClientAsync(string account)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Administrator> GetAdministratorAsync(string account)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

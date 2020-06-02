@@ -22,6 +22,19 @@ namespace Domain.Users
         /// <returns>user or null if not exist</returns>
         Task<Administrator> GetAdministratorAsync(int id);
         /// <summary>
+        /// get client by user id
+        /// </summary>
+        /// <param name="id">user id</param>
+        /// <returns>user or null if not exist</returns>
+        Task<Client> GetClientAsync(string account);
+
+        /// <summary>
+        /// get Administrator by user id
+        /// </summary>
+        /// <param name="id">user id</param>
+        /// <returns>user or null if not exist</returns>
+        Task<Administrator> GetAdministratorAsync(string account);
+        /// <summary>
         /// 是否有这个用户
         /// </summary>
         /// <param name="id"></param>

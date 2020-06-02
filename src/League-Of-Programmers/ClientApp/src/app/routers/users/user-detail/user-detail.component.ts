@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../../services/common';
-import {} from '../../../services/identity.service';
+import { UserService, Profile } from '../../../services/user.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -10,7 +10,13 @@ import {} from '../../../services/identity.service';
 })
 export class UserDetailComponent implements OnInit {
 
-  isSelf = true;
+  isSelf = false;
+  name = '';
+  profile: Profile = {
+    avatar: '',
+    account: '',
+    email: ''
+  };
 
   editBoxAppearance = 'legacy';
   editUserInfo = false;
@@ -19,10 +25,33 @@ export class UserDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private common: CommonService
+    private router: Router,
+    private common: CommonService,
+    private user: UserService
   ) { }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(p => {
+      this.name = p.get('name');
+      if (this.name) {
+        this.getUserProfile();
+      } else {
+        this.router.navigate(['/']);
+      }
+    });
+  }
+
+  private getUserProfile() {
+    this.user.isSelf().subscribe(resp => {
+      this.isSelf = (resp.status === 200 && resp.data === true);
+    });
+    this.user.getProfile(this.name).subscribe(resp => {
+      if (resp.status === 200) {
+        this.profile = resp.data as Profile;
+      } else if (resp.status === 404) {
+        this.router.navigate(['/pages', '404']);
+      }
+    });
   }
 
   edit() {
