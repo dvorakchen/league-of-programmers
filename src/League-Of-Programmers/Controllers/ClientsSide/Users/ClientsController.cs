@@ -30,11 +30,11 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
          *      404:    has not client
          */
         [HttpGet("{id}/check")]
-        public async Task<IActionResult> CheckAsync(int id)
+        public async Task<IActionResult> CheckAsync(string account)
         {
-            (bool has, _) = await _userManager.HasUser(id);
+            bool has = await _userManager.HasUserAsync(account);
             if (has)
-                return Ok(CurrentUserId == id);
+                return Ok(account.Equals(CurrentUserAccount, StringComparison.OrdinalIgnoreCase));
             return NotFound();
         }
 
@@ -50,7 +50,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
         [HttpGet("{id}/home")]
         public async Task<IActionResult> GetClientInfoAsync(int id)
         {
-            Client user = await _userManager.GetClient(id);
+            Client user = await _userManager.GetClientAsync(id);
             var profile = await user.GetProfileAsync();
             if (profile is null)
                 return NotFound();
@@ -69,7 +69,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
          */
         public async Task<IActionResult> GetClientBlogAsync(int id)
         {
-            var client = await _userManager.GetClient(id);
+            var client = await _userManager.GetClientAsync(id);
             if (client is null)
                 return NotFound();
 #warning not implemented
@@ -89,7 +89,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
         [HttpPatch("password")]
         public async Task<IActionResult> ModifyPasswordAsync([FromBody]string newPassword)
         {
-            var currentUser = await _userManager.GetClient(CurrentUserId);
+            var currentUser = await _userManager.GetClientAsync(CurrentUserId);
             (bool isSuccessfully, string msg) = await currentUser.ModifyPasswordAsync(newPassword);
             if (isSuccessfully)
                 return Ok();
@@ -109,7 +109,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
         [HttpPatch]
         public async Task<IActionResult> ModifyAsync([FromBody] Models.ModifyUser model)
         {
-            var currentUser = await _userManager.GetClient(CurrentUserId);
+            var currentUser = await _userManager.GetClientAsync(CurrentUserId);
             (bool isSuccessfully, string msg) = await currentUser.ModifyUser(model);
             if (isSuccessfully)
                 return Ok();
@@ -129,7 +129,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
         [HttpPatch("email")]
         public async Task<IActionResult> ModifyAvatarAsync([FromBody]int avatarId)
         {
-            var currentUser = await _userManager.GetClient(CurrentUserId);
+            var currentUser = await _userManager.GetClientAsync(CurrentUserId);
             (bool isSuccessfully, string msg) = await currentUser.ModifyAvatarAsync(avatarId);
             if (isSuccessfully)
                 return Ok();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Domain.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -13,10 +14,12 @@ namespace League_Of_Programmers.Controllers.Clients.Identity
     public class LoginController : ClientsSideController
     {
         private readonly IConfiguration _configuration;
+        private readonly IUserManager userManager;
 
-        public LoginController(IConfiguration _configuration)
+        public LoginController(IConfiguration _configuration, IUserManager _userManager)
         {
             this._configuration = _configuration;
+            userManager = _userManager;
         }
 
         /*
@@ -28,10 +31,19 @@ namespace League_Of_Programmers.Controllers.Clients.Identity
         [HttpGet("check"), Authorize]
         public async Task<IActionResult> IsLoggedIn()
         {
-            Domain.Users.UserManager userManager = new Domain.Users.UserManager();
-            (bool user, string name) = await userManager.HasUser(CurrentUserId);
+            bool user = await userManager.HasUserAsync(CurrentUserAccount);
             if (user)
-                return Ok(name);
+            {
+                var client = await userManager.GetClientAsync(CurrentUserId);
+                //  返回登录账号，用户名，角色
+                Results.LoginResult result = new Results.LoginResult
+                {
+                    Account = client.Account,
+                    UserName = client.Name,
+                    Role = (int)client.Role
+                };
+                return Ok(result);
+            }
             return Unauthorized();
         }
 
@@ -44,7 +56,6 @@ namespace League_Of_Programmers.Controllers.Clients.Identity
         [HttpPatch]
         public async Task<IActionResult> IndexAsync([FromBody] Domain.Users.Models.Login model)
         {
-            Domain.Users.UserManager userManager = new Domain.Users.UserManager();
             (var user, string msg) = await userManager.LoginAsync(model);
             if (user is null)
                 return BadRequest(msg);
@@ -52,7 +63,8 @@ namespace League_Of_Programmers.Controllers.Clients.Identity
             //  build JWT
             var claims = new[]
             {
-                new Claim(ClaimTypes.PrimarySid, user.Id.ToString())
+                new Claim(ClaimTypes.PrimarySid, user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Account)
             };
 
             string secret = _configuration.GetSection("JwtSettings:Secret").Value;
@@ -70,7 +82,7 @@ namespace League_Of_Programmers.Controllers.Clients.Identity
             );
             var token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
             Response.Cookies.Append(JWT_KEY, token);
-            //  返回登录用户名，角色
+            //  返回登录账号，用户名，角色
             Domain.Users.Results.LoginResult result = new Domain.Users.Results.LoginResult
             { 
                 Account = user.Account,

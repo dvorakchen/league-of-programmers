@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../../services/common';
+import {} from '../../../services/identity.service';
 
 @Component({
   selector: 'app-user-detail',

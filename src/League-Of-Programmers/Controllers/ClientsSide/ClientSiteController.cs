@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,6 +21,19 @@ namespace League_Of_Programmers.Controllers.Clients
                 if (int.TryParse(idClaim, out int userId))
                     return userId;
                 return NOT_ID;
+            }
+        }
+
+        /// <summary>
+        /// 当前登录用户的 账号,
+        /// 如果获取不到，null
+        /// </summary>
+        protected string CurrentUserAccount
+        {
+            get
+            {
+                var account = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                return account;
             }
         }
     }

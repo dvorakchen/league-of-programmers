@@ -56,6 +56,7 @@ namespace League_Of_Programmers
                 options.AddPolicy("need-id", policy =>
                 {
                     policy.RequireClaim(ClaimTypes.PrimarySid);
+                    policy.RequireClaim(ClaimTypes.NameIdentifier);
                 });
             });
             //  ÅäÖÃ¹ıÂËÆ÷

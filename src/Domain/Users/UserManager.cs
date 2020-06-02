@@ -12,7 +12,7 @@ namespace Domain.Users
         /// </summary>
         /// <param name="id">user id</param>
         /// <returns>user or null if not exist</returns>
-        internal async Task<User> GetUser(int id)
+        internal async Task<User> GetUserAsync(int id)
         {
             var userModel = await UserCache.GetUserModelAsync(id);
             return userModel == null ? null : User.Parse(userModel);
@@ -23,22 +23,22 @@ namespace Domain.Users
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Client> GetClient(int id)
+        public async Task<Client> GetClientAsync(int id)
         {
-            var user = await GetUser(id);
+            var user = await GetUserAsync(id);
             if ((user.Role & User.RoleCategories.Client) != 0)
                 return user as Client;
             throw new Exception($"{user} 不是客户");
         }
 
         /// <summary>
-        /// get client by id
+        /// get administrator by id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Administrator> GetAdministrator(int id)
+        public async Task<Administrator> GetAdministratorAsync(int id)
         {
-            var user = await GetUser(id);
+            var user = await GetUserAsync(id);
             if ((user.Role & User.RoleCategories.Administrator) != 0)
                 return user as Administrator;
             throw new Exception($"{user} 不是管理员");
@@ -49,12 +49,10 @@ namespace Domain.Users
         /// </summary>
         /// <param name="id"></param>
         /// <returns>(是否有这个用户，用户名)</returns>
-        public async Task<(bool, string)> HasUser(int id)
+        public async Task<bool> HasUserAsync(string account)
         {
-            var user = await GetUser(id);
-            if (user is null)
-                return (false, "");
-            return (true, user.Name);
+            await using var db = new LOPDbContext();
+            return await db.Users.AnyAsync(user => user.Account.Equals(account, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>

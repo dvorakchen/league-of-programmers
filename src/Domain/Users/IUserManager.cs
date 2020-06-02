@@ -13,19 +13,26 @@ namespace Domain.Users
         /// </summary>
         /// <param name="id">user id</param>
         /// <returns>user or null if not exist</returns>
-        Task<Client> GetClient(int id);
+        Task<Client> GetClientAsync(int id);
 
         /// <summary>
         /// get Administrator by user id
         /// </summary>
         /// <param name="id">user id</param>
         /// <returns>user or null if not exist</returns>
-        Task<Administrator> GetAdministrator(int id);
+        Task<Administrator> GetAdministratorAsync(int id);
         /// <summary>
         /// 是否有这个用户
         /// </summary>
         /// <param name="id"></param>
         /// <returns>(是否有这个用户，用户名)</returns>
-        Task<(bool, string)> HasUser(int id);
+        Task<bool> HasUserAsync(string account);
+        /// <summary>
+        /// user login，
+        /// 客户或管理员都可以登录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>(登录后的用户，登录失败的原因)</returns>
+        Task<(User, string)> LoginAsync(Models.Login model);
     }
 }
