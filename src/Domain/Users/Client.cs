@@ -30,7 +30,7 @@ namespace Domain.Users
                 return null;
             Results.ClientHomePageProfile result = new Results.ClientHomePageProfile
             { 
-                Account = user.Account,
+                UserName = user.Account,
                 Email = user.Email,
                 Avatar = Path.Combine(Config.GetValue("File:SaveWebPath"), user.Avatar.SaveName)
             };

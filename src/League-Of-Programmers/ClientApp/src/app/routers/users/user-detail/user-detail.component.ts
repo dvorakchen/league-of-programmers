@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../../services/common';
-import { UserService, Profile } from '../../../services/user.service';
+import { UserService, Profile, UserInfo } from '../../../services/user.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -14,7 +14,7 @@ export class UserDetailComponent implements OnInit {
   name = '';
   profile: Profile = {
     avatar: '',
-    account: '',
+    userName: '',
     email: ''
   };
 
@@ -54,11 +54,33 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
-  edit() {
-    if (this.editUserInfo) {
-      this.common.snackOpen('编辑中', 3000);
+  edit(userName: string, email: string) {
+    userName = userName.trim();
+    email = email.trim();
+
+    if (this.profile.userName === userName && this.profile.email === email) {
+      this.finish();
+      return;
     }
 
+    this.editButtonIsLoading = true;
+
+    const model: UserInfo = {
+      name: userName,
+      email: email
+    };
+
+    this.user.modifyUserInfo(model).subscribe(resp => {
+      if (resp.status === 200) {
+        this.common.snackOpen('修改成功', 2000);
+        this.finish();
+      } else {
+        this.common.snackOpen(resp.data, 3000);
+      }
+    });
+    this.editButtonIsLoading = false;
+  }
+  private finish() {
     this.editUserInfo = !this.editUserInfo;
     this.editButtonText = this.editUserInfo ? '确认修改' : '修改';
     this.editBoxAppearance = this.editUserInfo ? 'outline' : 'legacy';

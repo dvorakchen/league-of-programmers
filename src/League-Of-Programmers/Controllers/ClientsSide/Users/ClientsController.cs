@@ -98,7 +98,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
         /* 
          * 当前用户修改
          *  
-         *  /api/clients/users
+         *  /api/clients/clients
          *
          *  return: 
          *      200:    successfully

@@ -7,7 +7,12 @@ import { Global } from '../global';
 
 export interface Profile {
   avatar: string;
-  account: string;
+  userName: string;
+  email: string;
+}
+
+export interface UserInfo {
+  name: string;
   email: string;
 }
 
@@ -58,5 +63,40 @@ export class UserService {
       .pipe(
         catchError(this.base.handleError)
       );
+  }
+
+  /**
+   * 修改用户信息，
+   * 用户名和邮箱
+   *
+   * return:
+   *      200:    successfully
+   *      400:    defeated
+   */
+  modifyUserInfo(model: UserInfo): Observable<Result> {
+    const R: Result = {
+      status: 400,
+      data: ''
+    };
+
+    if (!model.name) {
+      R.data = '昵称不能为空';
+      return of(R);
+    }
+    if (!model.email) {
+      R.data = '邮箱不能为空';
+      return of(R);
+    }
+    //  验证格式
+    const REG = new RegExp('^\\s*([A-Za-z0-9_-]+(\\.\\w+)*@(\\w+\\.)+\\w{2,9})\\s*$');
+    if (!REG.test(model.email)) {
+      R.data = '邮箱格式不正确';
+      return of(R);
+    }
+
+    return this.http.patch<Result>(`${this.routePrefix}`, model)
+    .pipe(
+      catchError(this.base.handleError)
+    );
   }
 }

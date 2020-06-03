@@ -3,9 +3,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 
-export interface Result<T = any> {
+export interface Result {
   status: number;
-  data: T;
+  data: any;
 }
 
 /**
