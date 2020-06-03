@@ -6,7 +6,7 @@
       <div class="remaining-space">
         <input class="search" type="search" #searchBox (keyup.enter)="search(searchBox.value)" placeholder="搜索">
       </div>
-      <div *ngIf="showActions">
+      <div style="margin-right: 10px;" *ngIf="showActions">
         <span class="actions-space">
           <button mat-flat-button color="primary" (click)="writeBlog()">写博文</button>
           &nbsp;&nbsp;
@@ -18,7 +18,6 @@
               <a mat-menu-item (click)="logout()">登出</a>
             </mat-menu>
           </span>
-          
         </span>
         <span class="actions-space-sub">
           <button mat-icon-button [matMenuTriggerFor]="actions">
@@ -26,11 +25,18 @@
           </button>
           <mat-menu #actions>
             <a *ngIf="!isLoggedIn" [routerLink]="['login']" mat-menu-item>登录</a>
-            <a *ngIf="isLoggedIn">
+            <a *ngIf="isLoggedIn" [routerLink]="[userName]" mat-menu-item>
               <mat-icon>face</mat-icon>
-              <span>{{userName}}</span>
+              {{userName}}
             </a>
-            <button mat-menu-item color="primary" (click)="writeBlog()">写博文</button>
+            <button mat-menu-item (click)="writeBlog()">
+              <mat-icon>wysiwyg</mat-icon>
+              写博文
+            </button>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>exit_to_app</mat-icon>
+              登出
+            </button>
           </mat-menu>
         </span>
       </div>

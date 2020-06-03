@@ -7,7 +7,7 @@ import { Observable, throwError, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { CommonService } from '../services/common';
+import { CommonService, Result } from '../services/common';
 
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
@@ -35,8 +35,13 @@ export class DefaultInterceptor implements HttpInterceptor {
         mergeMap((resp) => {
           if (resp instanceof HttpResponse) {
             if (resp.body !== null) {
-              resp.body.status = resp.status;
-              resp.body.data = resp.body;
+              const DATA = resp.clone<Result>({
+                body: {
+                  status: resp.status,
+                  data: resp.body
+                }
+              });
+              return of(DATA);
             }
           }
           return of(resp);
