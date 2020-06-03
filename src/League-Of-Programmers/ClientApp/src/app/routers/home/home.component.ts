@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { IdentityService } from '../../services/identity.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.sass']
 })
 export class HomeComponent {
 

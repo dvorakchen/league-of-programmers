@@ -24,19 +24,24 @@
             <mat-icon class="icon">subject</mat-icon>
           </button>
           <mat-menu #actions>
-            <a *ngIf="!isLoggedIn" [routerLink]="['login']" mat-menu-item>登录</a>
-            <a *ngIf="isLoggedIn" [routerLink]="[userName]" mat-menu-item>
-              <mat-icon>face</mat-icon>
-              {{userName}}
+            <a *ngIf="!isLoggedIn" [routerLink]="['login']" mat-menu-item>
+              <mat-icon>login</mat-icon>
+              登录
             </a>
-            <button mat-menu-item (click)="writeBlog()">
-              <mat-icon>wysiwyg</mat-icon>
-              写博文
-            </button>
-            <button mat-menu-item (click)="logout()">
-              <mat-icon>exit_to_app</mat-icon>
-              登出
-            </button>
+            <div *ngIf="isLoggedIn">
+              <a [routerLink]="[userName]" mat-menu-item>
+                <mat-icon>face</mat-icon>
+                {{userName}}
+              </a>
+              <button mat-menu-item (click)="writeBlog()">
+                <mat-icon>wysiwyg</mat-icon>
+                写博文
+              </button>
+              <button mat-menu-item (click)="logout()">
+                <mat-icon>exit_to_app</mat-icon>
+                登出
+              </button>
+            </div>
           </mat-menu>
         </span>
       </div>

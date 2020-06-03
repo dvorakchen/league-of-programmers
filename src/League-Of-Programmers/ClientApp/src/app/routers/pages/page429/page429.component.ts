@@ -4,13 +4,13 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-page429',
   template: `
 <div class="page-container">
-<span>League Of Programmers</span>
+<span class="circuit-breaker-title">League Of Programmers</span>
 <div class="circuit-breaker-description">
   您请求地太频繁了，请稍后再试
 </div>
 </div>
 `,
-  styleUrls: ['./page429.component.css']
+  styleUrls: ['./page429.component.sass']
 })
 export class Page429Component implements OnInit {
 
