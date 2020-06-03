@@ -35,15 +35,41 @@
   margin-left: 1rem
   display: flex
   flex-direction: column
-
-.blog-list 
-    display: flex
-    flex-direction: column
+  width: 100%
+  .blog-list 
+      display: flex
+      flex-direction: column
 
 .title-box 
     margin-bottom: 1rem
 
 .title 
-    font-size: 1.5rem
+    font-size: 2rem
     font-weight: 600
     color: $primary-color
+
+.blogs
+  margin-bottom: 1rem
+  .blog-item
+    padding-top: .5rem
+    border-bottom: 1px solid $primary-color
+    .blog-title
+      display: flex
+      flex-wrap: wrap
+      font-size: 1.3rem
+      margin-bottom: .8rem
+      a
+        flex-grow: 1
+        text-decoration: none
+      .dateTime
+        font-size: 1rem
+    .abstrcat
+      margin-bottom: 1rem
+    .views
+      display: flex
+      flex-wrap: wrap
+      align-items: flex-end
+      margin-bottom: 1rem
+      .statistics
+        flex-grow: 1
+        padding-bottom: 6px
