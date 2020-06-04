@@ -1,8 +1,12 @@
 @import ../../../../styles/color
-  
-@media (max-width: 767px)
+
+@media screen and ( max-width: 1024px )
   .container 
     width: 95% !important
+
+@media screen and (max-width: 767px)
+  .left-user, .right-user
+    display: none !important
 
 .container 
   display: flex
@@ -11,12 +15,13 @@
   margin: 64px auto
   padding-top: 2rem
 
-.left-user,.list 
+.left-user,.list, .right-user
   display: flex
   flex-direction: column
 
-.left-user 
+.left-user,.right-user
   width: 210px
+.left-user
   margin-right: .6rem
 
 .user-info 
@@ -32,7 +37,7 @@
   border-radius: 3px
 
 .list 
-  margin-left: 1rem
+  margin: 0px 1rem
   display: flex
   flex-direction: column
   width: 100%
@@ -41,7 +46,7 @@
       flex-direction: column
 
 .title-box 
-    margin-bottom: 1rem
+    margin-bottom: .5rem
 
 .title 
     font-size: 2rem
@@ -52,24 +57,30 @@
   margin-bottom: 1rem
   .blog-item
     padding-top: .5rem
+    margin-bottom: 1rem
     border-bottom: 1px solid $primary-color
     .blog-title
       display: flex
       flex-wrap: wrap
       font-size: 1.3rem
-      margin-bottom: .8rem
+      margin-bottom: .5rem
       a
         flex-grow: 1
         text-decoration: none
       .dateTime
         font-size: 1rem
     .abstrcat
+      @extend %default-text-color
       margin-bottom: 1rem
     .views
       display: flex
       flex-wrap: wrap
       align-items: flex-end
-      margin-bottom: 1rem
+      margin-bottom: .5rem
       .statistics
+        color: transparentize($text-color, .3)
         flex-grow: 1
         padding-bottom: 6px
+
+.right-user
+  margin-left: .6rem

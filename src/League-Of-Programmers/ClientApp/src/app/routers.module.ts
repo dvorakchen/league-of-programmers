@@ -7,9 +7,13 @@ import { HomeComponent } from './routers/home/home.component';
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   {
-    path: 'login',
-    loadChildren: () => import('./routers/login/login.module').then(mod => mod.LoginModule),
+    path: 'blogs',
+    loadChildren: () => import('./routers/blogs/blogs.module').then(mod => mod.BlogsModule),
     data: { preload: true }
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./routers/login/login.module').then(mod => mod.LoginModule)
   },
   {
     path: 'register',
@@ -21,8 +25,7 @@ const routes: Routes = [
   },
   {
     path: ':name',
-    loadChildren: () => import('./routers/users/users.module').then(mod => mod.UsersModule),
-    data: { preload: true }
+    loadChildren: () => import('./routers/users/users.module').then(mod => mod.UsersModule)
   }
 ];
 

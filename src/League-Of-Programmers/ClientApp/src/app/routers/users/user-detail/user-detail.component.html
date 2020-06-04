@@ -24,7 +24,7 @@
       <div class="blogs">
         <div class="blog-item">
           <div class="blog-title">
-            <a [routerLink]="['/']">title title title</a>
+            <a [routerLink]="['/blogs', '1']">title title title</a>
             <span class="dateTime">2020-06-01</span>
           </div>
           <p class="abstrcat">
@@ -36,12 +36,38 @@
               view: 1
             </div>
             <div *ngIf="isSelf">
-              <button mat-flat-button color="warn">删除</button>
-              <button mat-flat-button color="primary">编辑</button>
+              <button mat-button color="warn">删除</button>
+              <button mat-stroked-button color="primary">编辑</button>
             </div>
           </div>
         </div>
+
+        <div class="blog-item">
+          <div class="blog-title">
+            <a [routerLink]="['/blogs', '1']">title title title</a>
+            <span class="dateTime">2020-06-01</span>
+          </div>
+          <p class="abstrcat">
+            abstrcatab str catabstr catabstrcatabstr cat ab strca tabstr catab strca tabstrc atabstr cat
+            abstrcatab strcatabst rcatab strca tabstrcat
+          </p>
+          <div class="views">
+            <div class="statistics">
+              view: 1
+            </div>
+            <div *ngIf="isSelf">
+              <button mat-button color="warn">删除</button>
+              <button mat-stroked-button color="primary">编辑</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
+
+  <div class="right-user">
+    <app-notice-board></app-notice-board>
+  </div>
+
 </div>
