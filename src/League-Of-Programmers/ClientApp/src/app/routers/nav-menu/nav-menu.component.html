@@ -1,5 +1,5 @@
 <header>
-  <mat-toolbar class="toolbar">
+  <mat-toolbar class="toolbar" color="primary">
     <mat-toolbar-row>
       <a class="title" mat-button [routerLink]="['/']">League Of Programmers</a>
       <a class="title-sub" mat-flat-button color="primary" [routerLink]="['/']">LOP</a>
@@ -21,7 +21,7 @@
         </span>
         <span class="actions-space-sub">
           <button mat-icon-button [matMenuTriggerFor]="actions">
-            <mat-icon class="icon">subject</mat-icon>
+            <mat-icon>subject</mat-icon>
           </button>
           <mat-menu #actions>
             <a *ngIf="!isLoggedIn" [routerLink]="['login']" mat-menu-item>

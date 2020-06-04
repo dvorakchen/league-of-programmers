@@ -5,7 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './routers/home/home.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full' },
+  //  { path: '', component: HomeComponent, pathMatch: 'full' },
+  {
+    path: '',
+    loadChildren: () => import('./routers/home/home.module').then(mod => mod.HomeModule),
+    pathMatch: 'full',
+    data: {preload: true }
+  },
   {
     path: 'blogs',
     loadChildren: () => import('./routers/blogs/blogs.module').then(mod => mod.BlogsModule),
