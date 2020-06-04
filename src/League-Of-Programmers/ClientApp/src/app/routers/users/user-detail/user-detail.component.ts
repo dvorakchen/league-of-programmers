@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../../services/common';
 import { UserService, Profile, UserInfo } from '../../../services/user.service';
+import { BlogService, BlogItem } from '../../../services/blog.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -11,12 +12,13 @@ import { UserService, Profile, UserInfo } from '../../../services/user.service';
 export class UserDetailComponent implements OnInit {
 
   isSelf = false;
-  name = '';
+  account = '';
   profile: Profile = {
     avatar: '',
     userName: '',
     email: ''
   };
+  blogList: BlogItem[] = [];
 
   editBoxAppearance = 'legacy';
   editUserInfo = false;
@@ -27,13 +29,17 @@ export class UserDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private common: CommonService,
-    private user: UserService
+    private user: UserService,
+    private blog: BlogService
   ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(p => {
-      this.name = p.get('name');
-      if (this.name) {
+      this.account = p.get('name');
+      if (this.account) {
+        this.user.isSelf().subscribe(resp => {
+          this.isSelf = (resp.status === 200 && resp.data === true);
+        });
         this.getUserProfile();
       } else {
         this.router.navigate(['/']);
@@ -42,14 +48,20 @@ export class UserDetailComponent implements OnInit {
   }
 
   private getUserProfile() {
-    this.user.isSelf().subscribe(resp => {
-      this.isSelf = (resp.status === 200 && resp.data === true);
-    });
-    this.user.getProfile(this.name).subscribe(resp => {
+    this.user.getProfile(this.account).subscribe(resp => {
       if (resp.status === 200) {
         this.profile = resp.data as Profile;
       } else if (resp.status === 404) {
         this.router.navigate(['/pages', '404']);
+      }
+    });
+  }
+  private getBlogList() {
+    this.blog.getBlogsByUser(this.account).subscribe(resp => {
+      if (resp.status === 200) {
+        this.blogList = resp.data as BlogItem[];
+      } else {
+        this.common.snackOpen(resp.data, 3000);
       }
     });
   }
@@ -67,7 +79,7 @@ export class UserDetailComponent implements OnInit {
 
     const model: UserInfo = {
       name: userName,
-      email: email
+      email
     };
 
     this.user.modifyUserInfo(model).subscribe(resp => {

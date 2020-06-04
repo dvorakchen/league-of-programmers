@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DB.Tables
 {
@@ -28,5 +29,9 @@ namespace DB.Tables
         public File Avatar { get; set; }
         [Required, StringLength(512)]
         public string Introduction { get; set; } = "";
+        /// <summary>
+        /// 博文
+        /// </summary>
+        public List<Blog> Blogs { get; set; }
     }
 }

@@ -35,8 +35,9 @@
             <div class="statistics">
               view: 1
             </div>
-            <div>
-              <button mat-raised-button>按钮</button>
+            <div *ngIf="isSelf">
+              <button mat-flat-button color="warn">删除</button>
+              <button mat-flat-button color="primary">编辑</button>
             </div>
           </div>
         </div>
