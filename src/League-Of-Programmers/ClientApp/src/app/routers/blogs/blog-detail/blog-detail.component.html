@@ -10,9 +10,15 @@
       League Of Programmers
     </div>
     <div class="information">
-      <span>author: myfor</span>
+      <span>author: 
+        <a [routerLink]="['/myfor']">myfor</a>
+      </span>
       <span>posted: 2020-06-06</span>
       <span>views: 102</span>
+    </div>
+    <div class="targets">
+      <span>asp net</span>
+      <span>asp dot net</span>
     </div>
     <div class="content">
       <markdown [data]="content"></markdown>

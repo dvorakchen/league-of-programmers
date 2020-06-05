@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class BlogDetailComponent implements OnInit {
 
   content = `
+  league of programmers
+  # title
   ## title 2
   \`\`\`js
   publci class static Main()

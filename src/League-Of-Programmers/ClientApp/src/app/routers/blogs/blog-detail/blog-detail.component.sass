@@ -1,3 +1,5 @@
+@import ../../../../styles
+  
 @media screen and ( max-width: 1024px )
   .container 
     width: 98% !important
@@ -24,8 +26,8 @@
   margin-right: .6rem
     
 .blog-contianer
-    margin: 0px auto
     padding: 2rem 1rem
+    width: 100%
     max-width: 1024px
 
 .title
@@ -38,10 +40,21 @@
     flex-direction: row
     flex-wrap: wrap
     justify-content: center
-    font-size: .7rem
-    margin: .5rem auto
+    font-size: .8rem
+    margin: 1rem auto
     span
         margin-right: 1rem
 
+.targets
+  display: flex
+  flex-direction: row
+  margin: 1rem
+  span
+    margin-right: 0.5rem
+    border: 1px solid transparentize($primary-color, .5)
+    padding: .5rem
+    border-radius: 3px
+    background-color: transparentize($primary-color, .9)
+
 .content
-    margin: 2rem auto
+    margin: 1rem

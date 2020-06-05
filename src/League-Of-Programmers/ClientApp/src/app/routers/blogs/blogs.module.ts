@@ -5,10 +5,11 @@ import { MarkdownModule } from 'ngx-markdown';
 
 import { BlogsRoutingModule } from './blogs-routing.module';
 import { BlogDetailComponent } from './blog-detail/blog-detail.component';
+import { BlogWriteComponent } from './blog-write/blog-write.component';
 
 
 @NgModule({
-  declarations: [BlogDetailComponent],
+  declarations: [BlogDetailComponent, BlogWriteComponent],
   imports: [
     SharedModule,
     BlogsRoutingModule,
