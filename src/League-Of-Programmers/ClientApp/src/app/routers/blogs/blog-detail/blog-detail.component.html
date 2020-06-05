@@ -1,10 +1,26 @@
-<div class="blog-contianer">
+<div class="container">
 
-    <div class="title-row">
-        <div class="title">
-            League Of Programmers
-        </div>
+  <div class="left-user">
+    <app-user-info-box [account]="account"></app-user-info-box>
+  </div>
+
+  <div class="blog-contianer">
+
+    <div class="title">
+      League Of Programmers
     </div>
+    <div class="information">
+      <span>author: myfor</span>
+      <span>posted: 2020-06-06</span>
+      <span>views: 102</span>
+    </div>
+    <div class="content">
+      <markdown [data]="content"></markdown>
+    </div>
+  </div>
 
+  <div class="right-user">
+    <app-notice-board></app-notice-board>
+  </div>
 
 </div>

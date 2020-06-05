@@ -7,6 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BlogDetailComponent implements OnInit {
 
+  content = `
+  ## title 2
+  \`\`\`js
+  publci class static Main()
+  {
+    Console.WriteLine('Hello world');
+  }
+  \`\`\`
+  `;
+  account = 'myfor';
   constructor() { }
 
   ngOnInit(): void {

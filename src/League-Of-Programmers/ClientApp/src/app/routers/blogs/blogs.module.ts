@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 
+import { MarkdownModule } from 'ngx-markdown';
+
 import { BlogsRoutingModule } from './blogs-routing.module';
 import { BlogDetailComponent } from './blog-detail/blog-detail.component';
 
@@ -9,7 +11,8 @@ import { BlogDetailComponent } from './blog-detail/blog-detail.component';
   declarations: [BlogDetailComponent],
   imports: [
     SharedModule,
-    BlogsRoutingModule
+    BlogsRoutingModule,
+    MarkdownModule.forChild()
   ]
 })
 export class BlogsModule { }

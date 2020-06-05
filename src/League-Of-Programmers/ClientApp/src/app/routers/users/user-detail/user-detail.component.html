@@ -1,21 +1,9 @@
 <div class="container">
+
   <div class="left-user">
-    <div class="avatar-box">
-      <img src="" alt="头像">
-    </div>
-    <div class="user-info">
-      <mat-form-field [appearance]="editBoxAppearance">
-        <mat-label>昵称</mat-label>
-        <input matInput type="text" value="{{profile.userName}}" #userName [readonly]="!editUserInfo" required>
-      </mat-form-field>
-      <mat-form-field [appearance]="editBoxAppearance">
-        <mat-label>邮箱</mat-label>
-        <input matInput type="email" value="{{profile.email}}" #email [readonly]="!editUserInfo" required>
-      </mat-form-field>
-      <button mat-flat-button color="primary" (click)="edit(userName.value, email.value)" *ngIf="isSelf"
-        [disabled]="editButtonIsLoading">{{editButtonText}}</button>
-    </div>
+    <app-user-info-box [account]="account"></app-user-info-box>
   </div>
+
   <div class="list">
     <div class="blog-list">
       <div class="title-box">

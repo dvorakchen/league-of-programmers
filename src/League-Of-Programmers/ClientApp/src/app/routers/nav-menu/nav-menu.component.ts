@@ -58,6 +58,6 @@ export class NavMenuComponent implements OnInit {
 
   logout() {
     Global.loginInfo = null;
-     location.href = '/';
+    location.href = '/';
   }
 }

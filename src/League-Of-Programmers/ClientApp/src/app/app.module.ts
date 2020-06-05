@@ -8,6 +8,7 @@ import { RoutesModule } from './routers.module';
 import { HTTP_INTERCEPTOR_PROVIDERS } from './interceptors/barrel';
 
 import { MaterialModule } from './shared/material.module';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './routers/nav-menu/nav-menu.component';
@@ -23,7 +24,8 @@ import { NavMenuComponent } from './routers/nav-menu/nav-menu.component';
     HttpClientModule,
     FormsModule,
     RoutesModule,
-    MaterialModule
+    MaterialModule,
+    MarkdownModule.forRoot()
   ],
   providers: [HTTP_INTERCEPTOR_PROVIDERS],
   bootstrap: [AppComponent]
