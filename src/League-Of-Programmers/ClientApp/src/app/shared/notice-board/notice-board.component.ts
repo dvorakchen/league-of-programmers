@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { NoticeContentComponent } from './notice-content.component';
 
 @Component({
   selector: 'app-notice-board',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NoticeBoardComponent implements OnInit {
 
-    constructor() {}
+    constructor(private dialog: MatDialog) {}
 
     ngOnInit() {
+    }
 
+    openNotice(id: number) {
+      this.dialog.open(NoticeContentComponent, {
+        minWidth: '50%',
+        minHeight: '70%',
+        data: id
+      });
     }
 }
