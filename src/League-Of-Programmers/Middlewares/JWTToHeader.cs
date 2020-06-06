@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿/*
+ * 已废弃 ！！！！！
+ */
+
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace League_Of_Programmers.Middlewares
@@ -17,10 +21,10 @@ namespace League_Of_Programmers.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (context.Request.Cookies.TryGetValue(Controllers.LOPController.JWT_KEY, out string jwt))
-            {
-                context.Request.Headers.Add("Authorization", $"Bearer {jwt}");
-            }
+            //if (context.Request.Cookies.TryGetValue(Controllers.LOPController.JWT_KEY, out string jwt))
+            //{
+            //    context.Request.Headers.Add("Authorization", $"Bearer {jwt}");
+            //}
 
             await _next(context);
 

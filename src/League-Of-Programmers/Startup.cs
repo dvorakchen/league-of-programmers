@@ -107,7 +107,6 @@ namespace League_Of_Programmers
             }
 
             app.UseMiddleware<Middlewares.Antiforgery>();
-            app.UseMiddleware<Middlewares.JWTToHeader>();
 
             app.UseRouting();
 

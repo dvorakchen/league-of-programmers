@@ -1,5 +1,5 @@
-import { Injectable, isDevMode } from '@angular/core';
-import { Location } from '@angular/common';
+import { Injectable, isDevMode, Optional, Inject } from '@angular/core';
+import { Location, DOCUMENT, ɵparseCookieValue as parseCookieValue } from '@angular/common';
 import {
   HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse, HttpResponse
 } from '@angular/common/http';
@@ -15,10 +15,14 @@ export class DefaultInterceptor implements HttpInterceptor {
   constructor(
     private router: Router,
     private loc: Location,
-    private common: CommonService
+    private common: CommonService,
+    @Inject(DOCUMENT) private doc: any
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const cookieString = this.doc.cookie || '';
+    const jwt = parseCookieValue(cookieString, '_j_w_t_');
+
     let newUrl = environment.SERVER_HOST;
     if (!req.url.startsWith('/')) {
       newUrl += '/';
@@ -28,7 +32,12 @@ export class DefaultInterceptor implements HttpInterceptor {
       console.warn(`request: ${newUrl}`);
     }
 
-    const SERVER_REQ = req.clone({url: newUrl});
+    const SERVER_REQ = req.clone({
+      url: newUrl,
+      setHeaders: {
+        Authorization: `Bearer ${jwt}`
+      }
+    });
 
     return next.handle(SERVER_REQ)
       .pipe(

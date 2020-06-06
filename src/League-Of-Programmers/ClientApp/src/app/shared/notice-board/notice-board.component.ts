@@ -16,7 +16,7 @@ export class NoticeBoardComponent implements OnInit {
 
     openNotice(id: number) {
       this.dialog.open(NoticeContentComponent, {
-        minWidth: '50%',
+        minWidth: '40%',
         minHeight: '70%',
         data: id
       });
