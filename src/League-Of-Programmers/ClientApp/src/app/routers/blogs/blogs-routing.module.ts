@@ -4,9 +4,9 @@ import { BlogDetailComponent } from './blog-detail/blog-detail.component';
 import { BlogWriteComponent } from './blog-write/blog-write.component';
 
 const routes: Routes = [
+  { path: 'write', component: BlogWriteComponent },
   { path: ':id', component: BlogDetailComponent },
-  { path: ':id/:title', component: BlogDetailComponent },
-  { path: 'write', component: BlogWriteComponent }
+  { path: ':id/:title', component: BlogDetailComponent }
 ];
 
 @NgModule({

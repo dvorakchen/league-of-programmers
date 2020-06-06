@@ -1,3 +1,29 @@
-<div class="">
-
+<div class="container">
+  <div class="left"></div>
+  <div class="write-box">
+    <div class="title-row">
+      <span class="title">写博文</span>
+    </div>
+    <form class="write-form">
+      <mat-form-field appearance="outline">
+        <mat-label>标题</mat-label>
+        <input matInput required>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>相关标签，多个标签用逗号分开</mat-label>
+        <input matInput required>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>博文内容，支持 markdown</mat-label>
+        <textarea matInput cdkAutosizeMinRows="10" cdkTextareaAutosize required></textarea>
+      </mat-form-field>
+      <div class="actions">
+        <button mat-raised-button color="primary">发布</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button mat-stroked-button color="primary">存草稿</button>
+      </div>
+    </form>
+  </div>
+  <div class="right"></div>
 </div>
+<app-slogan></app-slogan>

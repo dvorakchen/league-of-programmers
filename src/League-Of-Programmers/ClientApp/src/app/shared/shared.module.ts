@@ -7,6 +7,7 @@ import { MaterialModule } from './material.module';
 
 import { NoticeBoardComponent } from './notice-board/notice-board.component';
 import { UserInfoBoxComponent } from './user-info-box/user-info-box.component';
+import { SloganComponent } from './slogan/slogan.component';
 
 const EXPORTS_MODULE = [
   CommonModule,
@@ -18,7 +19,8 @@ const EXPORTS_MODULE = [
 
 const EXPORTS_COMPONENT = [
   NoticeBoardComponent,
-  UserInfoBoxComponent
+  UserInfoBoxComponent,
+  SloganComponent
 ];
 
 @NgModule({
