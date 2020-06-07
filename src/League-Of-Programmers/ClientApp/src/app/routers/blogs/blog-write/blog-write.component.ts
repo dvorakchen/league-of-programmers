@@ -12,4 +12,7 @@ export class BlogWriteComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  postBlog() {
+
+  }
 }
