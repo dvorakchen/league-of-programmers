@@ -5,7 +5,6 @@
         <span class="title">编辑</span>
       </div>
   
-  
       <form class="write-form" [formGroup]="blog">
         <mat-form-field appearance="outline">
           <mat-label>标题</mat-label>
@@ -28,8 +27,6 @@
         </mat-tab-group>
         <div class="actions">
           <button mat-raised-button color="primary" (click)="editBlog()" [disabled]="isEditing">发布</button>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <!-- <button mat-stroked-button color="primary">存草稿</button> -->
         </div>
       </form>
   

@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NewBlog, BlogService } from '../../../services/blog.service';
 import { CommonService } from '../../../services/common';
 import { Router } from '@angular/router';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-blog-write',
   templateUrl: './blog-write.component.html',
   styleUrls: ['./blog-write.component.sass']
 })
-export class BlogWriteComponent implements OnInit {
+export class BlogWriteComponent implements OnInit, AfterViewInit {
 
   preview = ``;
 
@@ -29,6 +30,17 @@ export class BlogWriteComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    const CONTENT_DOM = document.getElementById('txt_content') as any;
+    fromEvent(CONTENT_DOM, 'keydown').subscribe(k => {
+      const KEY_BOARD = k as any;
+      if (KEY_BOARD.key === 'Tab') {
+        const INDEX = CONTENT_DOM.selectionStart;
+        CONTENT_DOM.value = CONTENT_DOM.value.substring(0, INDEX) + '\t' + CONTENT_DOM.value.substring(INDEX);
+      }
+    });
   }
 
   postBlog() {

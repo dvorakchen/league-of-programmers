@@ -48,6 +48,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\AdministratorsSide\" />
+    <Folder Include="Controllers\AdministratorsSide\" />
     <Folder Include="files\" />
     <Folder Include="files\" />
   </ItemGroup>
