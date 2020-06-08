@@ -4,11 +4,14 @@ using System.Text;
 
 namespace Domain.Blogs
 {
-    public class Blog
+    public class Blog : EntityBase
     {
-        internal Blog()
+        internal Blog(DB.Tables.Blog model)
         {
-
+            if (model is null)
+                throw new NullReferenceException();
+            Id = model.Id;
         }
+
     }
 }

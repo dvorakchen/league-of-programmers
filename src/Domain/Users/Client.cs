@@ -63,7 +63,7 @@ namespace Domain.Users
         public async Task<(int, string)> WriteBlogAsync(Blogs.Models.NewPost model)
         {
             Blogs.BlogsManager blogsManager = new Blogs.BlogsManager();
-            int id = await blogsManager.WriteBlogAsync(model);
+            int id = await blogsManager.CreateBlogAsync(model);
 
             if (id == Blogs.BlogsManager.POST_DEFEATED)
                 return (Blogs.BlogsManager.POST_DEFEATED, "");
