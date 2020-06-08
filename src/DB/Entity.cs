@@ -10,6 +10,6 @@ namespace DB
         [Required]
         public int State { get; set; } = 1;
         [Required]
-        public DateTimeOffset CreateDate { get; set; } = DateTimeOffset.Now;
+        public DateTime CreateDate { get; set; } = DateTime.Now;
     }
 }

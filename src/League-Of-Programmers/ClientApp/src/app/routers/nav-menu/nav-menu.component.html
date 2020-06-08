@@ -8,7 +8,9 @@
       </div>
       <div style="margin-right: 10px;" *ngIf="showActions">
         <span class="actions-space">
-          <button mat-flat-button color="primary" (click)="writeBlog()">写博文</button>
+          <a mat-flat-button color="primary" [routerLink]="['/blogs', 'write']">
+            写博文
+          </a>
           &nbsp;&nbsp;
           <a *ngIf="!isLoggedIn" [routerLink]="['login']" mat-flat-button>登录</a>
           <span *ngIf="isLoggedIn">
@@ -39,10 +41,10 @@
                 <mat-icon>face</mat-icon>
                 {{userName}}
               </a>
-              <button mat-menu-item (click)="writeBlog()">
+              <a mat-menu-item [routerLink]="['/blogs', 'write']">
                 <mat-icon>wysiwyg</mat-icon>
                 写博文
-              </button>
+              </a>
               <button mat-menu-item (click)="logout()">
                 <mat-icon>exit_to_app</mat-icon>
                 登出

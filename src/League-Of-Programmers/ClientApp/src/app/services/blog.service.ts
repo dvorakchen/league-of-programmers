@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ServicesBase, CommonService, Result } from './common';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, debounceTime, retry } from 'rxjs/operators';
 import { KeyValue } from '@angular/common';
@@ -12,6 +12,12 @@ export interface BlogItem {
   dateTime: string;
   views: number;
   state: KeyValue<number, string>;
+}
+
+export interface NewBlog {
+  title: string;
+  targets: string[];
+  content: string;
 }
 
 @Injectable({
@@ -41,6 +47,16 @@ export class BlogService {
     return this.http.get<Result>(`/api/clients/blogs/${account}`)
     .pipe(
       retry(1),
+      catchError(this.base.handleError)
+    );
+  }
+
+  /**
+   * 写博文
+   */
+  writeBlog(newPost: NewBlog): Observable<Result> {
+    return this.http.post<Result>(`/api/clients/blogs`, newPost)
+    .pipe(
       catchError(this.base.handleError)
     );
   }

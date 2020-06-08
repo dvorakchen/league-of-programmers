@@ -37,18 +37,6 @@ export class NavMenuComponent implements OnInit {
     }
   }
 
-  writeBlog() {
-    /*
-     * 没有登陆就跳到登录页再去写博文
-     */
-
-    if (!Global.loginInfo) {
-      this.router.navigate(['/login', { redirect: location.pathname + location.search }]);
-    } else {
-      this.router.navigate(['/write']);
-    }
-  }
-
   search(value: string) {
     if (!value.trim()) {
       return;
