@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="left"></div>
+    <div class="write-box">
+      <div class="title-row">
+        <span class="title">编辑</span>
+      </div>
+  
+  
+      <form class="write-form" [formGroup]="blog">
+        <mat-form-field appearance="outline">
+          <mat-label>标题</mat-label>
+          <input matInput formControlName="title" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>相关标签，多个标签用英文逗号分开</mat-label>
+          <input matInput formControlName="targets" required>
+        </mat-form-field>
+        <mat-tab-group mat-align-tabs="end" dynamicHeight (selectedIndexChange)="changeTab($event)">
+          <mat-tab label="编辑">
+            <mat-form-field appearance="outline" class="tab-box">
+              <mat-label>博文内容，支持 markdown</mat-label>
+              <textarea matInput cdkAutosizeMinRows="10" cdkTextareaAutosize formControlName="content" required></textarea>
+            </mat-form-field>
+          </mat-tab>
+          <mat-tab label="预览">
+            <markdown [data]="preview"></markdown>
+          </mat-tab>
+        </mat-tab-group>
+        <div class="actions">
+          <button mat-raised-button color="primary" (click)="editBlog()" [disabled]="isEditing">发布</button>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <!-- <button mat-stroked-button color="primary">存草稿</button> -->
+        </div>
+      </form>
+  
+    </div>
+    <div class="right"></div>
+  </div>
+  <app-slogan></app-slogan>
+  

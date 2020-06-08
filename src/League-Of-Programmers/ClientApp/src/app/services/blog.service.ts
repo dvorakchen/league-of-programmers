@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ServicesBase, CommonService, Result } from './common';
+import { ServicesBase, Result } from './common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, debounceTime, retry } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { KeyValue } from '@angular/common';
 
 export interface BlogItem {
@@ -14,7 +14,23 @@ export interface BlogItem {
   state: KeyValue<number, string>;
 }
 
+export interface BlogDetail {
+  title: string;
+  targets: string[];
+  content: string;
+  views: number;
+  createDate: string;
+  author: string;
+  authorAccount: string;
+}
+
 export interface NewBlog {
+  title: string;
+  targets: string[];
+  content: string;
+}
+
+export interface ModifyBlog {
   title: string;
   targets: string[];
   content: string;
@@ -27,7 +43,6 @@ export class BlogService {
 
   constructor(
     private base: ServicesBase,
-    private common: CommonService,
     private http: HttpClient
   ) { }
 
@@ -52,10 +67,42 @@ export class BlogService {
   }
 
   /**
+   * 获取博文详情
+   */
+  getBlogDetail(id: number): Observable<Result> {
+    return this.http.get<Result>(`/api/clients/blogs/${id}`)
+    .pipe(
+      retry(1),
+      catchError(this.base.handleError)
+    );
+  }
+
+  /**
    * 写博文
    */
   writeBlog(newPost: NewBlog): Observable<Result> {
     return this.http.post<Result>(`/api/clients/blogs`, newPost)
+    .pipe(
+      catchError(this.base.handleError)
+    );
+  }
+
+  /**
+   * 修改博文
+   */
+  modifyBlog(id: number, model: ModifyBlog): Observable<Result> {
+    return this.http.put<Result>(`/api/clients/blogs/${id}`, model)
+    .pipe(
+      catchError(this.base.handleError)
+    );
+  }
+
+  /**
+   * 删除一个博文
+   * @param id blog id
+   */
+  deleteBlog(id: number): Observable<Result> {
+    return this.http.delete<Result>(`/api/clients/blogs/${id}`)
     .pipe(
       catchError(this.base.handleError)
     );
