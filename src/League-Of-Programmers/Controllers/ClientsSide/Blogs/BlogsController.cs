@@ -114,7 +114,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
             if (blog is null)
                 return NotFound();
             await blog.ModifyAsync(model);
-            return Ok();
+            return NoContent();
         }
 
         /*
