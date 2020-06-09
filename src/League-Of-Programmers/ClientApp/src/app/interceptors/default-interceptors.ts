@@ -44,10 +44,19 @@ export class DefaultInterceptor implements HttpInterceptor {
         mergeMap((resp) => {
           if (resp instanceof HttpResponse) {
             if (resp.body !== null) {
+              let data = resp.body;
+              switch (resp.status) {
+                case 201:
+                  data = resp.headers.get('Location');
+                  break;
+                default:
+                  break;
+              }
+
               const DATA = resp.clone<Result>({
                 body: {
                   status: resp.status,
-                  data: resp.body
+                  data
                 }
               });
               return of(DATA);
@@ -66,11 +75,11 @@ export class DefaultInterceptor implements HttpInterceptor {
           case 401: {
             this.common.snackOpen('请先登录', 3000);
             this.router.navigate(['/login', { redirect: this.loc.path(true) }]);
-          } break;
+          }         break;
           case 429: {
             //  熔断页面
             this.router.navigate(['/pages', '429']);
-          } break;
+          }         break;
           default: break;
         }
         return throwError(err);

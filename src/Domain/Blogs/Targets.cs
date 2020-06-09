@@ -18,7 +18,7 @@ namespace Domain.Blogs
         /// </summary>
         /// <param name="newTargets"></param>
         /// <returns></returns>
-        public static async Task<int[]> AppendTargets(string[] newTargets)
+        public static async Task<int[]> AppendTargetsAsync(string[] newTargets)
         {
             await using var db = new LOPDbContext();
 
@@ -39,6 +39,16 @@ namespace Domain.Blogs
                 ids.Add(model.Id);
             }
             return ids.ToArray();
+        }
+
+        public async Task<string[]> GetTargetsNameAsync(int[] targetIds)
+        {
+            await using var db = new LOPDbContext();
+
+            List<DB.Tables.Target> list = await db.Targets.AsNoTracking()
+                                                          .Where(t => targetIds.Contains(t.Id))
+                                                          .ToListAsync();
+            return list.Select(t => t.Name).ToArray();
         }
     }
 }

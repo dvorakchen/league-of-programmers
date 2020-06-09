@@ -19,7 +19,7 @@ export interface BlogDetail {
   targets: string[];
   content: string;
   views: number;
-  createDate: string;
+  dateTime: string;
   author: string;
   authorAccount: string;
 }

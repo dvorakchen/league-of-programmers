@@ -17,7 +17,9 @@ namespace Domain.Blogs
         public async Task<Blog> GetBlogAsync(int id)
         {
             await using var db = new LOPDbContext();
-            var blogModel = await db.Blogs.AsNoTracking().FirstOrDefaultAsync(blog => blog.Id == id);
+            var blogModel = await db.Blogs.AsNoTracking()
+                                          .Include(b => b.Author)
+                                          .FirstOrDefaultAsync(blog => blog.Id == id);
             if (blogModel is null)
                 return null;
             return new Blog(blogModel);
@@ -25,7 +27,7 @@ namespace Domain.Blogs
 
         public async Task<int> CreateBlogAsync(Models.NewPost model)
         {
-            var targetIds = await Targets.AppendTargets(model.Targets);
+            var targetIds = await Targets.AppendTargetsAsync(model.Targets);
 
             await using var db = new LOPDbContext();
 

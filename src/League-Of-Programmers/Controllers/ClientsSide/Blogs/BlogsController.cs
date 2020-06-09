@@ -34,6 +34,26 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
         }
 
         /*
+         *  get blog detail
+         *  
+         *  /api/clients/blogs/{id}
+         *  
+         *  return:
+         *      200:    successfully
+         *      404:    not exist this blog
+         */
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetBlogDetailAsync(int id)
+        {
+            BlogsManager blogsManager = new BlogsManager();
+            var blog = await blogsManager.GetBlogAsync(id);
+            if (blog is null)
+                return NotFound();
+            Domain.Blogs.Results.BlogDetail detail = await blog.GetDetailAsync();
+            return Ok(detail);
+        }
+
+        /*
          *  post new blog
          * 
          *  /api/clients/blogs
@@ -63,7 +83,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
                 return Accepted();
 
             string url = $"/blogs/{id}/{title}";
-            return Created(url, url);
+            return Created(Uri.EscapeUriString(url), null);
         }
 
         /*

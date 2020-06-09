@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
-import { of, Observable } from 'rxjs';
+import { of, Observable, fromEvent, Subscription } from 'rxjs';
 
 export interface Result {
   status: number;
@@ -53,8 +53,7 @@ export class ServicesBase {
         } else {
           R.data = error.error;
         }
-      }
-      break;
+      }         break;
       case 401: {
         R.data = '请先登录';
         break;
@@ -82,6 +81,21 @@ export class CommonService {
 
     this.snack.open(message, '关闭', {
       duration,
+    });
+  }
+
+  /**
+   * 设置 Tab 键为插入 \t
+   */
+  setTabEvent(ele: any): Subscription {
+    return fromEvent(ele, 'keydown').subscribe(k => {
+      const KEY_BOARD = k as any;
+      if (KEY_BOARD.key === 'Tab') {
+        KEY_BOARD.returnValue = false;
+        const INDEX = ele.selectionStart;
+        ele.value = ele.value.substring(0, INDEX) + '\t' + ele.value.substring(INDEX);
+        ele.setSelectionRange(INDEX + 1, INDEX + 1);
+      }
     });
   }
 }

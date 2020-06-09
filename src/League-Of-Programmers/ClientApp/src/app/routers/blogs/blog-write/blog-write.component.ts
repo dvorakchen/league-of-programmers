@@ -33,14 +33,8 @@ export class BlogWriteComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const CONTENT_DOM = document.getElementById('txt_content') as any;
-    fromEvent(CONTENT_DOM, 'keydown').subscribe(k => {
-      const KEY_BOARD = k as any;
-      if (KEY_BOARD.key === 'Tab') {
-        const INDEX = CONTENT_DOM.selectionStart;
-        CONTENT_DOM.value = CONTENT_DOM.value.substring(0, INDEX) + '\t' + CONTENT_DOM.value.substring(INDEX);
-      }
-    });
+    const CONTENT_DOM = document.getElementById('txt_content');
+    this.common.setTabEvent(CONTENT_DOM);
   }
 
   postBlog() {
@@ -66,7 +60,7 @@ export class BlogWriteComponent implements OnInit, AfterViewInit {
       switch (resp.status) {
         case 201:
           {
-            this.common.snackOpen('发布成功');
+            this.common.snackOpen('发布成功', 3000);
             if (resp.data) {
               this.router.navigateByUrl(resp.data);
             }
