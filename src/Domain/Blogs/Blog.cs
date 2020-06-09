@@ -3,11 +3,22 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using System.ComponentModel;
 
 namespace Domain.Blogs
 {
     public class Blog : EntityBase
     {
+        public enum BlogState
+        {
+            [Description("启用")]
+            Enabled,
+            [Description("禁用")]
+            Disabled,
+            [Description("草稿")]
+            Draft
+        }
+
         private readonly DB.Tables.Blog _blog;
         internal Blog(DB.Tables.Blog model)
         {

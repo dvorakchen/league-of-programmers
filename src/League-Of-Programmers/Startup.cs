@@ -64,7 +64,7 @@ namespace League_Of_Programmers
             {
                 options.Filters.Add(typeof(Filters.ExceptionHandleAttribute));
                 //  如果返回的结果是空值，null，就填充进一个空对象
-                options.Filters.Add(typeof(Filters.FillDefaultResultInResponseIfNullAttribute));
+                //  options.Filters.Add(typeof(Filters.FillDefaultResultInResponseIfNullAttribute));
             });
             //  配置 DI
             services.AddScoped<IUserManager, UserManager>();

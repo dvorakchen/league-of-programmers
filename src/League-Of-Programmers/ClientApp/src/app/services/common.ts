@@ -15,7 +15,7 @@ export interface Paginator<T = any> {
   index: number;
   size: number;
   totalPages: number;
-  totalRows: number;
+  totalSize: number;
   list: T[];
 }
 

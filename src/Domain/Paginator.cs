@@ -44,15 +44,15 @@ namespace Domain
         {
             get
             {
-                if (TotalRows % Size == 0)
-                    return TotalRows / Size;
-                return TotalRows / Size + 1;
+                if (TotalSize % Size == 0)
+                    return TotalSize / Size;
+                return TotalSize / Size + 1;
             }
         }
         /// <summary>
         /// 总数据数
         /// </summary>
-        public int TotalRows { get; set; }
+        public int TotalSize { get; set; }
         /// <summary>
         /// 参数
         /// </summary>

@@ -12,7 +12,20 @@ export class UserInfoBoxComponent implements OnInit {
 
   isSelf = false;
 
-  @Input() account = '';
+  private acc: string;
+
+  @Input() set account(acc: string) {
+    this.acc = acc;
+    if (this.acc) {
+      this.user.isSelf().subscribe(resp => {
+        this.isSelf = (resp.status === 200 && resp.data === true);
+      });
+      this.getUserProfile();
+    }
+  }
+  get account(): string {
+    return this.acc;
+  }
 
   profile: Profile = {
     avatar: '',
@@ -31,12 +44,6 @@ export class UserInfoBoxComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-      if (this.account) {
-        this.user.isSelf().subscribe(resp => {
-          this.isSelf = (resp.status === 200 && resp.data === true);
-        });
-        this.getUserProfile();
-      }
   }
 
   private getUserProfile() {

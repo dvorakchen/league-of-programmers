@@ -17,8 +17,6 @@ namespace DB.Tables
         public string Content { get; set; } = "";
         [Required]
         public int Views { get; set; } = 0;
-        [Required]
-        public bool IsDraft { get; set; } = false;
         public string TargetIds { get; set; } = "";
     }
 }

@@ -28,9 +28,13 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
          *      
          */
         [HttpGet]
-        public async Task<IActionResult> GetBlogsAsync()
+        public async Task<IActionResult> GetBlogsAsync(int index, int size, int? state, string s)
         {
-            throw new NotImplementedException();
+            var pager = Domain.Paginator.New(index, size);
+
+            BlogsManager blogsManager = new BlogsManager();
+            pager = await blogsManager.GetBlogListAsync(pager, state, s);
+            return Ok(pager);
         }
 
         /*
