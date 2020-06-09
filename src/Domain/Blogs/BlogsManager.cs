@@ -14,6 +14,11 @@ namespace Domain.Blogs
     /// </summary>
     public class BlogsManager
     {
+        public enum ListType
+        {
+            ClientDetailPage
+        }
+
         public const int POST_DEFEATED = -1;
 
         public async Task<Blog> GetBlogAsync(int id)
@@ -27,32 +32,15 @@ namespace Domain.Blogs
             return new Blog(blogModel);
         }
 
-        public async Task<Paginator> GetBlogListAsync(Paginator pager, int? state, string s)
+        public async Task<Paginator> GetBlogListAsync(ListType type, Paginator pager)
         {
-            Expression<Func<DB.Tables.Blog, bool>> whereStatement = b => true;
-            if (state.HasValue)
-                whereStatement = whereStatement.And(b => b.State == state);
-            if (!string.IsNullOrWhiteSpace(s))
-                whereStatement = whereStatement.And(b => b.Title.Contains(s));
-
-            await using var db = new LOPDbContext();
-            pager.TotalSize = await db.Blogs.CountAsync(whereStatement);
-            var list = await db.Blogs.AsNoTracking()
-                                     .Skip(pager.Skip)
-                                     .Take(pager.Size)
-                                     .Where(whereStatement)
-                                     .Include(blog => blog.Author)
-                                     .Select(blog => new Results.BlogItem
-                                     { 
-                                         Id = blog.Id,
-                                         Title = blog.Title,
-                                         DateTime = blog.CreateDate.ToString("yyyy/MM/dd HH:mm"),
-                                         Views = blog.Views,
-                                         State = KeyValuePair.Create(blog.State, blog.State.GetDescription<Blog.BlogState>())
-                                     })
-                                     .ToListAsync();
-            pager.List = list;
-            return pager;
+            List.IBlogList blogList = type switch
+            {
+                ListType.ClientDetailPage => new List.ClientBlogs(),
+                _ => throw new ArgumentException("未知的列表参数")
+            };
+            var list = await blogList.GetListAsync(pager);
+            return list;
         }
 
         public async Task<int> CreateBlogAsync(Models.NewPost model)

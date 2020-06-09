@@ -66,13 +66,14 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
          *      200:    successfully
          *      404:    client not exist
          */
-        public async Task<IActionResult> GetClientBlogAsync(int id)
+        [HttpGet("{account}/blogs")]
+        public async Task<IActionResult> GetClientBlogAsync(int index, int size, int? state, string account, string s)
         {
-            var client = await _userManager.GetClientAsync(id);
+            var client = await _userManager.GetClientAsync(account);
             if (client is null)
                 return NotFound();
-#warning not implemented
-            throw new NotImplementedException();
+            var list = await client.GetBlogsAsync(index, size, state, s);
+            return Ok(list);
         }
 
         /*

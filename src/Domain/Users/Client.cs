@@ -41,9 +41,16 @@ namespace Domain.Users
         /// 获取客户的博文
         /// </summary>
         /// <returns></returns>
-        public async Task<Results.Blogs> GetBlogsAsync()
+        public async Task<Paginator> GetBlogsAsync(int index, int size, int? state, string s)
         {
-            throw new NotImplementedException();
+            var pager = Paginator.New(index, size, 3);
+            pager["account"] = Account;
+            pager["s"] = s ?? "";
+            pager["state"] = state?.ToString() ?? "";
+
+            Blogs.BlogsManager blogsManager = new Blogs.BlogsManager();
+            pager = await blogsManager.GetBlogListAsync(Blogs.BlogsManager.ListType.ClientDetailPage, pager);
+            return pager;
         }
 
         /// <summary>

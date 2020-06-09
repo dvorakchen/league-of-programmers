@@ -47,6 +47,9 @@ namespace Domain.Users
 
             UserCache.SetUserModel(userModel);
         }
+        /// <summary>
+        /// use account
+        /// </summary>
         public string Account { get; private set; }
         /// <summary>
         /// user name

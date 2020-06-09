@@ -8,7 +8,7 @@ namespace DB
         [Required, Key]
         public int Id { get; set; }
         [Required]
-        public int State { get; set; } = 1;
+        public int State { get; set; } = 0;
         [Required]
         public DateTime CreateDate { get; set; } = DateTime.Now;
     }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ServicesBase, Result } from './common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { KeyValue } from '@angular/common';
@@ -35,6 +35,12 @@ export interface ModifyBlog {
   content: string;
 }
 
+export const enum BlogState {
+  Enabled,
+  Disabled,
+  Draft
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -49,7 +55,7 @@ export class BlogService {
    * 获取一个用户的博文
    * @param account 要获取博文的用户的账号
    */
-  getBlogsByUser(account: string): Observable<Result> {
+  getBlogsByUser(index: number, size: number, state: number, account: string, s: string): Observable<Result> {
     account = account.trim();
     if (!account) {
       const R: Result = {
@@ -58,7 +64,17 @@ export class BlogService {
       };
       return of(R);
     }
-    return this.http.get<Result>(`/api/clients/blogs/${account}`)
+    let p = new HttpParams()
+      .append('index', index.toString())
+      .append('size', size.toString());
+    if (state !== null && state !== undefined) {
+      p = p.append('state', state.toString());
+    }
+    if (s) {
+      p = p.append('s', s);
+    }
+
+    return this.http.get<Result>(`/api/clients/clients/${account}/blogs?${p.toString()}`)
     .pipe(
       retry(1),
       catchError(this.base.handleError)

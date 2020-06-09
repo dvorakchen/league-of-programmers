@@ -10,42 +10,18 @@
         <span class="title">博文</span>
       </div>
       <div class="blogs">
-        <div class="blog-item">
+        <div class="blog-item" *ngFor="let blog of blogList">
           <div class="blog-title">
-            <a [routerLink]="['/blogs', '1', 'league-of-programmers']">title title title</a>
-            <span class="dateTime">2020-06-01</span>
+            <a [routerLink]="['/blogs', blog.id, blog.title]">{{blog.title}}</a>
+            <span class="dateTime">{{blog.dateTime}}</span>
           </div>
-          <p class="abstrcat">
-            abstrcatab str catabstr catabstrcatabstr cat ab strca tabstr catab strca tabstrc atabstr cat
-            abstrcatab strcatabst rcatab strca tabstrcat
-          </p>
           <div class="views">
             <div class="statistics">
-              view: 1
+              view: {{blog.views}}
             </div>
             <div *ngIf="isSelf">
-              <button mat-button color="warn">删除</button>
-              <button mat-stroked-button color="primary">编辑</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="blog-item">
-          <div class="blog-title">
-            <a [routerLink]="['/blogs', '1', 'league-of-programmers']">title title title</a>
-            <span class="dateTime">2020-06-01</span>
-          </div>
-          <p class="abstrcat">
-            abstrcatab str catabstr catabstrcatabstr cat ab strca tabstr catab strca tabstrc atabstr cat
-            abstrcatab strcatabst rcatab strca tabstrcat
-          </p>
-          <div class="views">
-            <div class="statistics">
-              view: 1
-            </div>
-            <div *ngIf="isSelf">
-              <button mat-button color="warn">删除</button>
-              <button mat-stroked-button color="primary">编辑</button>
+              <button mat-button color="warn" (click)="deleteBlog(blog.id)">删除</button>
+              <a [routerLink]="['/blogs', blog.id, 'edit']" mat-stroked-button color="primary">编辑</a>
             </div>
           </div>
         </div>
