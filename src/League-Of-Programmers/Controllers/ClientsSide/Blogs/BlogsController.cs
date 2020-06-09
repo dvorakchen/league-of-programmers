@@ -102,11 +102,19 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
         [HttpPut("{id}"), Authorize]
         public async Task<IActionResult> ModifyBlogAsync(int id, [FromBody]Domain.Blogs.Models.ModifyPost model)
         {
-            model.Id = id;
-            model.AuthorId = CurrentUserId;
+            if (string.IsNullOrWhiteSpace(model.Title))
+                return BadRequest("标题不能为空");
+            if (model.Targets.Length == 0)
+                return BadRequest("标签不能为空");
+            if (string.IsNullOrWhiteSpace(model.Content))
+                return BadRequest("内容不能为空");
 
-
-            throw new NotImplementedException();
+            BlogsManager manager = new BlogsManager();
+            var blog = await manager.GetBlogAsync(id);
+            if (blog is null)
+                return NotFound();
+            await blog.ModifyAsync(model);
+            return Ok();
         }
 
         /*

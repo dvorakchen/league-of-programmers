@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using System.ComponentModel;
+using DB;
 
 namespace Domain.Blogs
 {
@@ -16,7 +17,9 @@ namespace Domain.Blogs
             [Description("禁用")]
             Disabled,
             [Description("草稿")]
-            Draft
+            Draft,
+            [Description("待审核")]
+            Audit
         }
 
         private readonly DB.Tables.Blog _blog;
@@ -47,6 +50,28 @@ namespace Domain.Blogs
                 DateTime = _blog.CreateDate.ToString("yyyy/MM/dd HH:mm")
             };
             return result;
+        }
+
+        /// <summary>
+        /// 修改博文
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task ModifyAsync(Models.ModifyPost model)
+        {
+            var targetIds = await Targets.AppendTargetsAsync(model.Targets);
+
+            _blog.Title = model.Title;
+            _blog.TargetIds = string.Join(',', targetIds);
+            _blog.Content = model.Content;
+            if (_blog.State == (int)BlogState.Disabled)
+                _blog.State = (int)BlogState.Audit;
+
+            await using var db = new LOPDbContext();
+            db.Blogs.Update(_blog);
+            int changeConut = await db.SaveChangesAsync();
+            if (changeConut != 1)
+                throw new Exception("修改博文出现错误");
         }
     }
 }

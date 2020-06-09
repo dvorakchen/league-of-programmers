@@ -17,8 +17,6 @@ namespace Domain.Blogs
 
         public class ModifyPost
         {
-            public int Id { get; set; } = 0;
-            public int AuthorId { get; set; } = 0;
             public string Title { get; set; } = "";
             public string[] Targets { get; set; }
             public string Content { get; set; } = "";

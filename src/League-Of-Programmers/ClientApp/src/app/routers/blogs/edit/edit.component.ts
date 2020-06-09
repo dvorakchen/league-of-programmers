@@ -82,19 +82,12 @@ export class EditComponent implements OnInit {
       MODIFY_BLOG.targets.push(...v.split('，'));
     });
 
-    this.blogService.writeBlog(MODIFY_BLOG).subscribe(resp => {
+    this.blogService.modifyBlog(this.id, MODIFY_BLOG).subscribe(resp => {
       switch (resp.status) {
-        case 201:
+        case 204:
           {
-            this.common.snackOpen('发布成功');
-            if (resp.data) {
-              this.router.navigateByUrl(resp.data);
-            }
-          }
-          break;
-        case 400:
-          {
-            this.common.snackOpen(resp.data);
+            this.common.snackOpen('修改成功');
+            this.router.navigate(['/blogs', this.id, this.blog.get('title').value]);
           }
           break;
         default:
