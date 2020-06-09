@@ -28,7 +28,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
          *      
          */
         [HttpGet]
-        public async Task<IActionResult> GetBlogsAsync(int index, int size, int? state, string s)
+        public Task<IActionResult> GetBlogsAsync(int index, int size, int? state, string s)
         {
             //var pager = Domain.Paginator.New(index, size);
 
@@ -68,8 +68,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
          *      400:    parameters fault
          *      202:    fault
          */
-        [HttpPost]
-        [Authorize]
+        [HttpPost, Authorize]
         public async Task<IActionResult> PostNewBlogAsync([FromBody]Domain.Blogs.Models.NewPost model)
         {
             if (string.IsNullOrWhiteSpace(model.Title))
@@ -100,8 +99,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
          *      200:    successfully
          *      400:    parameter fault
          */
-        [HttpPut("{id}")]
-        [Authorize]
+        [HttpPut("{id}"), Authorize]
         public async Task<IActionResult> ModifyBlogAsync(int id, [FromBody]Domain.Blogs.Models.ModifyPost model)
         {
             model.Id = id;
@@ -109,6 +107,25 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
 
 
             throw new NotImplementedException();
+        }
+
+        /*
+         *  delete blog
+         *  
+         *  /api/clients/blogs/{id}
+         *  
+         *  return:
+         *      200:    successfully
+         *      400:    fault
+         */
+        [HttpDelete("{id}"), Authorize]
+        public async Task<IActionResult> DeleteBlogAsync(int id)
+        {
+            BlogsManager blogsManager = new BlogsManager();
+            (bool isSuccess, string msg) = await blogsManager.DeleteBlogAsync(id, CurrentUserId);
+            if (isSuccess)
+                return Ok();
+            return BadRequest(msg);
         }
     }
 }

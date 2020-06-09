@@ -20,7 +20,7 @@
               view: {{blog.views}}
             </div>
             <div *ngIf="isSelf">
-              <button mat-button color="warn" (click)="deleteBlog(blog.id)">删除</button>
+              <button mat-button color="warn" (click)="deleteBlog(blog.id, blog.title)">删除</button>
               <a [routerLink]="['/blogs', blog.id, 'edit']" mat-stroked-button color="primary">编辑</a>
             </div>
           </div>

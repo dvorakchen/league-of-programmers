@@ -64,5 +64,25 @@ namespace Domain.Blogs
                 return newBlog.Id;
             return POST_DEFEATED;
         }
+
+        /// <summary>
+        /// 删除一个博文，只能删除自己的博文
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<(bool, string)> DeleteBlogAsync(int id, int clientId)
+        {
+            await using var db = new LOPDbContext();
+            var blog = await db.Blogs.AsNoTracking().FirstOrDefaultAsync(blog => blog.Id == id);
+            if (blog is null)
+                return (true, "");
+            if (blog.AuthorId != clientId)
+                return (false, "你没有权限删除这篇博文");
+            db.Blogs.Remove(blog);
+            int changeCount = await db.SaveChangesAsync();
+            if (changeCount == 1)
+                return (true, "");
+            throw new Exception("删除博文失败");
+        }
     }
 }

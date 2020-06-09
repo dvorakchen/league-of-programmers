@@ -9,6 +9,7 @@ import { NoticeBoardComponent } from './notice-board/notice-board.component';
 import { UserInfoBoxComponent } from './user-info-box/user-info-box.component';
 import { SloganComponent } from './slogan/slogan.component';
 import { NoticeContentComponent } from './notice-board/notice-content.component';
+import { DeleteConfirmDialogComponent } from './delete-confirm-dialog/delete-confirm-dialog.component';
 
 const EXPORTS_MODULE = [
   CommonModule,
@@ -22,7 +23,8 @@ const EXPORTS_COMPONENT = [
   NoticeBoardComponent,
   UserInfoBoxComponent,
   SloganComponent,
-  NoticeContentComponent
+  NoticeContentComponent,
+  DeleteConfirmDialogComponent
 ];
 
 @NgModule({

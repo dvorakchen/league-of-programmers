@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CommonService, Paginator } from '../../../services/common';
 import { UserService } from '../../../services/user.service';
 import { BlogService, BlogItem, BlogState } from '../../../services/blog.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmDialogComponent } from '../../../shared/delete-confirm-dialog/delete-confirm-dialog.component';
 
 @Component({
   selector: 'app-user-detail',
@@ -23,7 +25,8 @@ export class UserDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private common: CommonService,
     private user: UserService,
-    private blog: BlogService
+    private blog: BlogService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -51,7 +54,21 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
-  deleteBlog(id: number) {
-    this.common.snackOpen(id.toString());
+  deleteBlog(id: number, title: string) {
+    const DIA = this.dialog.open(DeleteConfirmDialogComponent, {
+      data: title
+    });
+    DIA.afterClosed().subscribe(isconfirmDelete => {
+      if (isconfirmDelete) {
+        this.blog.deleteBlog(id).subscribe(resp => {
+          if (resp.status === 200) {
+            this.common.snackOpen('删除成功', 2000);
+            this.blogList = this.blogList.filter(blog => blog.id !== id );
+          } else {
+            this.common.snackOpen(resp.data, 2000);
+          }
+        });
+      }
+    });
   }
 }
