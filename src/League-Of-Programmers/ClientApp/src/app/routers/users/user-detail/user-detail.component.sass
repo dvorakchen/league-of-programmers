@@ -36,9 +36,8 @@
           text-decoration: underline
       .dateTime
         font-size: 1rem
-    .abstrcat
-      @extend %default-text-color
-      margin-bottom: 1rem
+        &:hover
+          text-decoration: none
     .views
       display: flex
       flex-wrap: wrap
@@ -48,4 +47,5 @@
         color: transparentize($text-color, .3)
         flex-grow: 1
         padding-bottom: 6px
-
+        & span
+          margin-right: .5rem

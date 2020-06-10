@@ -28,14 +28,14 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
          *      
          */
         [HttpGet]
-        public Task<IActionResult> GetBlogsAsync(int index, int size, int? state, string s)
+        public async Task<IActionResult> GetBlogsAsync(int index, int size, string s)
         {
-            //var pager = Domain.Paginator.New(index, size);
-
-            //BlogsManager blogsManager = new BlogsManager();
-            //pager = await blogsManager.GetBlogListAsync(pager, state, s);
-            //return Ok(pager);
-            throw new NotImplementedException();
+            var pager = Domain.Paginator.New(index, size);
+            if (!string.IsNullOrWhiteSpace(s))
+                pager["s"] = s;
+            BlogsManager blogsManager = new BlogsManager();
+            pager = await blogsManager.GetBlogListAsync(BlogsManager.ListType.Search, pager);
+            return Ok(pager);
         }
 
         /*

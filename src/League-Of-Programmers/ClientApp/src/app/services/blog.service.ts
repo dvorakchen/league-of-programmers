@@ -8,8 +8,11 @@ import { KeyValue } from '@angular/common';
 export interface BlogItem {
   id: number;
   title: string;
+  author: string;
+  authorAccount: string;
   dateTime: string;
   views: number;
+  likes: number;
   state: KeyValue<number, string>;
 }
 

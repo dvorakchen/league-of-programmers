@@ -1,3 +1,30 @@
-<div class="h100">
-  <h1>首页</h1>
+<div class="container">
+  <div class="blog-list">
+    <div class="blog">
+      <div class="blog-title">
+        <a [routerLink]="['/blogs']">title</a>
+        <span class="dateTime">2020/01/01</span>
+      </div>
+      <div class="views">
+        <div class="statistics">
+          view: 100
+        </div>
+      </div>
+    </div>
+    <div class="blog">
+      <div class="blog-title">
+        <a [routerLink]="['/blogs']">title</a>
+        <span class="dateTime">2020/01/01</span>
+      </div>
+      <div class="views">
+        <div class="statistics">
+          <span>views: 100</span>
+          <span>likes: 100</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="notification">
+    <app-notice-board></app-notice-board>
+  </div>
 </div>

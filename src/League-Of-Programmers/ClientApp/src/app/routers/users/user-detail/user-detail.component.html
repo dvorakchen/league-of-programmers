@@ -23,7 +23,8 @@
           </div>
           <div class="views">
             <div class="statistics">
-              view: {{blog.views}}
+              <span>views: {{blog.views}}</span>
+              <span>likes: {{blog.likes}}</span>
             </div>
             <div *ngIf="isSelf">
               <button mat-button color="warn" (click)="deleteBlog(blog.id, blog.title)">删除</button>

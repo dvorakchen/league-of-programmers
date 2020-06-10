@@ -1,0 +1,48 @@
+@import ../../../styles/color
+
+.container
+    display: flex
+    flex-direction: row
+    max-width: 1300px
+    margin: auto
+    margin-top: 7rem
+    padding: 1rem
+    .blog-list
+        display: flex
+        flex-direction: column
+        flex-grow: 1
+        margin-right: 2rem
+        padding-right: 2rem
+        .blog
+            padding: .5rem 0
+    .notification
+        max-width: 300px
+
+.blog-title
+    display: flex
+    flex-wrap: wrap
+    font-size: 1.3rem
+    margin-bottom: .5rem
+    a
+        flex-grow: 1
+        text-decoration: none
+        text-overflow: ellipsis
+        overflow: hidden
+        padding-right: 1rem
+    &:hover
+        text-decoration: underline
+    .dateTime
+        font-size: 1rem
+        &:hover
+            text-decoration: none
+.views
+    display: flex
+    flex-wrap: wrap
+    align-items: flex-end
+    margin-bottom: .5rem
+    .statistics
+        color: transparentize($text-color, .3)
+        flex-grow: 1
+        padding-bottom: 6px
+        & span
+          margin-right: .5rem

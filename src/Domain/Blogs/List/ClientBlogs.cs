@@ -40,6 +40,7 @@ namespace Domain.Blogs.List
                                          AuthorAccount = blog.Author.Account,
                                          DateTime = blog.CreateDate.ToString("yyyy/MM/dd HH:mm"),
                                          Views = blog.Views,
+                                         Likes = blog.Likes,
                                          State = KeyValuePair.Create(blog.State, blog.State.GetDescription<Blog.BlogState>())
                                      })
                                      .ToListAsync();

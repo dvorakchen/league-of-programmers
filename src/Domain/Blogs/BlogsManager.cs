@@ -16,6 +16,7 @@ namespace Domain.Blogs
     {
         public enum ListType
         {
+            Search,
             ClientDetailPage
         }
 
@@ -36,6 +37,7 @@ namespace Domain.Blogs
         {
             List.IBlogList blogList = type switch
             {
+                ListType.Search => new List.BlogList(),
                 ListType.ClientDetailPage => new List.ClientBlogs(),
                 _ => throw new ArgumentException("未知的列表参数")
             };
