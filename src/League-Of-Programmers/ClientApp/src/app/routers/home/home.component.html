@@ -1,28 +1,19 @@
 <div class="container">
   <div class="blog-list">
-    <div class="blog">
+    
+    <div class="blog" *ngFor="let blog of blogList">
       <div class="blog-title">
-        <a [routerLink]="['/blogs']">title</a>
-        <span class="dateTime">2020/01/01</span>
+        <a [routerLink]="['/blogs', blog.id, blog.title]">{{blog.title}}</a>
+        <span class="dateTime">{{blog.dateTime}}</span>
       </div>
       <div class="views">
         <div class="statistics">
-          view: 100
+          <span>views: {{blog.views}}</span>
+          <span>likes: {{blog.likes}}</span>
         </div>
       </div>
     </div>
-    <div class="blog">
-      <div class="blog-title">
-        <a [routerLink]="['/blogs']">title</a>
-        <span class="dateTime">2020/01/01</span>
-      </div>
-      <div class="views">
-        <div class="statistics">
-          <span>views: 100</span>
-          <span>likes: 100</span>
-        </div>
-      </div>
-    </div>
+
   </div>
   <div class="notification">
     <app-notice-board></app-notice-board>

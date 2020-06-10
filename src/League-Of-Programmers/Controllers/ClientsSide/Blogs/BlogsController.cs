@@ -31,8 +31,8 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
         public async Task<IActionResult> GetBlogsAsync(int index, int size, string s)
         {
             var pager = Domain.Paginator.New(index, size);
-            if (!string.IsNullOrWhiteSpace(s))
-                pager["s"] = s;
+            pager["s"] = s ?? "";
+
             BlogsManager blogsManager = new BlogsManager();
             pager = await blogsManager.GetBlogListAsync(BlogsManager.ListType.Search, pager);
             return Ok(pager);

@@ -26,7 +26,11 @@ namespace Domain.Blogs.List
             await using var db = new LOPDbContext();
             pager.TotalSize = await db.Blogs.CountAsync(whereStatement);
             pager.List = await db.Blogs.AsNoTracking()
+                                       .OrderByDescending(blog => blog.Likes)
+                                       .ThenByDescending(blog => blog.CreateDate)
                                        .Where(whereStatement)
+                                       .Skip(pager.Skip)
+                                       .Take(pager.Size)
                                        .Include(blog => blog.Author)
                                        .Select(blog => new Results.BlogItem 
                                        {

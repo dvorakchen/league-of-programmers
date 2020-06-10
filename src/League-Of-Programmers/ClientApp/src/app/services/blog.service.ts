@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ServicesBase, Result } from './common';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, pipe } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { KeyValue } from '@angular/common';
 
@@ -55,6 +55,26 @@ export class BlogService {
   ) { }
 
   /**
+   * 获取搜索的博文列表
+   * @param s 搜索参数
+   */
+  getBlogList(index: number, size: number, s: string): Observable<Result> {
+    let p = new HttpParams()
+      .append('index', index.toString())
+      .append('size', size.toString());
+    if (s) {
+      s = s.trim();
+      p = p.append('s', s);
+    }
+
+    return this.http.get<Result>(`/api/clients/blogs?${p.toString()}`)
+    .pipe(
+      retry(1),
+      catchError(this.base.handleError)
+    );
+  }
+
+  /**
    * 获取一个用户的博文
    * @param account 要获取博文的用户的账号
    */
@@ -73,6 +93,7 @@ export class BlogService {
     if (state !== null && state !== undefined) {
       p = p.append('state', state.toString());
     }
+    s = s.trim();
     if (s) {
       p = p.append('s', s);
     }
