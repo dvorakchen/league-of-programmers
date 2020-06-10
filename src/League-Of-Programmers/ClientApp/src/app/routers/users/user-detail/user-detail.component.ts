@@ -20,6 +20,7 @@ export class UserDetailComponent implements OnInit {
 
   isSelf = false;
   account = '';
+  search = '';
 
   blogList: BlogItem[] = [];
 
@@ -51,10 +52,10 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
-  private getBlogList() {
+  getBlogList() {
     const blogState = this.isSelf ? null : BlogState.Enabled;
 
-    this.blog.getBlogsByUser(this.index + 1, this.size, blogState, this.account, '').subscribe(resp => {
+    this.blog.getBlogsByUser(this.index + 1, this.size, blogState, this.account, this.search).subscribe(resp => {
       if (resp.status === 200) {
         const PAGER = resp.data as Paginator<BlogItem>;
         this.totalSize = PAGER.totalSize;

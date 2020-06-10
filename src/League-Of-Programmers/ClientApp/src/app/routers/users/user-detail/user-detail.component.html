@@ -9,6 +9,11 @@
       <div class="title-box">
         <span class="title">博文</span>
       </div>
+      <mat-form-field appearance="outline">
+        <mat-label>搜索的 @{{account}} 博文</mat-label>
+        <input matInput type="search" (input)="search=$event.target.value" (keyup.enter)="getBlogList()">
+        <mat-icon matSuffix (click)="getBlogList()" style="cursor: pointer;">search</mat-icon>
+      </mat-form-field>
       <mat-paginator [length]="totalSize" [pageIndex]="index" [pageSize]="size" (page)="changeBlogsPage($event)"></mat-paginator>
       <div class="blogs">
         <div class="blog-item" *ngFor="let blog of blogList">
