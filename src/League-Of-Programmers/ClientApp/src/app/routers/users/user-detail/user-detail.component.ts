@@ -4,6 +4,7 @@ import { CommonService, Paginator } from '../../../services/common';
 import { UserService } from '../../../services/user.service';
 import { BlogService, BlogItem, BlogState } from '../../../services/blog.service';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import { DeleteConfirmDialogComponent } from '../../../shared/delete-confirm-dialog/delete-confirm-dialog.component';
 
 @Component({
@@ -15,6 +16,7 @@ export class UserDetailComponent implements OnInit {
 
   index = 0;
   size = 10;
+  totalSize = 0;
 
   isSelf = false;
   account = '';
@@ -26,10 +28,18 @@ export class UserDetailComponent implements OnInit {
     private common: CommonService,
     private user: UserService,
     private blog: BlogService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private pagerInit: MatPaginatorIntl
   ) { }
 
   ngOnInit(): void {
+    this.pagerInit.nextPageLabel = '下一页';
+    this.pagerInit.previousPageLabel = '上一页';
+    this.pagerInit.itemsPerPageLabel = '当前条数';
+    this.pagerInit.getRangeLabel = (index: number, size: number, totalSize: number) => {
+      return `${index} - ${size} 共 ${totalSize}`;
+    };
+
     this.route.paramMap.subscribe(p => {
       this.account = p.get('name');
       if (this.account) {
@@ -47,6 +57,7 @@ export class UserDetailComponent implements OnInit {
     this.blog.getBlogsByUser(this.index + 1, this.size, blogState, this.account, '').subscribe(resp => {
       if (resp.status === 200) {
         const PAGER = resp.data as Paginator<BlogItem>;
+        this.totalSize = PAGER.totalSize;
         this.blogList = PAGER.list;
       } else {
         this.common.snackOpen(resp.data, 3000);
@@ -70,5 +81,10 @@ export class UserDetailComponent implements OnInit {
         });
       }
     });
+  }
+
+  changeBlogsPage(pager: PageEvent) {
+    this.index = pager.pageIndex;
+    this.getBlogList();
   }
 }

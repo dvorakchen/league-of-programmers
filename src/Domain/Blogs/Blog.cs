@@ -67,11 +67,15 @@ namespace Domain.Blogs
             if (_blog.State == (int)BlogState.Disabled)
                 _blog.State = (int)BlogState.Audit;
 
+            var author = _blog.Author;
+            _blog.Author = null;
+
             await using var db = new LOPDbContext();
             db.Blogs.Update(_blog);
             int changeConut = await db.SaveChangesAsync();
             if (changeConut != 1)
                 throw new Exception("修改博文出现错误");
+            _blog.Author = author;
         }
     }
 }

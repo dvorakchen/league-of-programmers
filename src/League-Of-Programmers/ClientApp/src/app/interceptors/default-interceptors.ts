@@ -44,15 +44,14 @@ export class DefaultInterceptor implements HttpInterceptor {
         mergeMap((resp) => {
           if (resp instanceof HttpResponse) {
             let data = resp.body;
-            if (data !== null) {
-              switch (resp.status) {
-                case 201:
-                  data = resp.headers.get('Location');
-                  break;
-                default:
-                  break;
-              }
-            } else {
+            switch (resp.status) {
+              case 201:
+                data = resp.headers.get('Location');
+                break;
+              default:
+                break;
+            }
+            if (data === null || data === undefined) {
               data = {};
             }
             const DATA = resp.clone<Result>({

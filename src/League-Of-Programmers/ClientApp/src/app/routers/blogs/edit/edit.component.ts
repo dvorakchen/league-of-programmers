@@ -91,7 +91,7 @@ export class EditComponent implements OnInit {
           }
           break;
         default:
-          this.common.snackOpen('发布失败');
+          this.common.snackOpen('修改失败');
           break;
       }
       this.isEditing = false;

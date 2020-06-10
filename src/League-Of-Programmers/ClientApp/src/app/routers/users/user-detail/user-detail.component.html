@@ -9,6 +9,7 @@
       <div class="title-box">
         <span class="title">博文</span>
       </div>
+      <mat-paginator [length]="totalSize" [pageIndex]="index" [pageSize]="size" (page)="changeBlogsPage($event)"></mat-paginator>
       <div class="blogs">
         <div class="blog-item" *ngFor="let blog of blogList">
           <div class="blog-title">
@@ -25,8 +26,8 @@
             </div>
           </div>
         </div>
-
       </div>
+      <mat-paginator [length]="totalSize" [pageIndex]="index" [pageSize]="size" (page)="changeBlogsPage($event)"></mat-paginator>
     </div>
   </div>
 
