@@ -15,10 +15,12 @@ export class BlogDetailComponent implements OnInit {
     targets: [],
     content: '',
     views: 0,
+    likes: 0,
     dateTime: '',
     author: '',
     authorAccount: ''
   };
+  liked = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +38,15 @@ export class BlogDetailComponent implements OnInit {
     this.blogService.getBlogDetail(this.id).subscribe(resp => {
       if (resp.status === 200) {
         this.detail = resp.data;
+      }
+    });
+  }
+
+  like() {
+    this.blogService.like(this.id).subscribe(resp => {
+      if (resp.status === 204) {
+        this.detail.likes++;
+        this.liked = true;
       }
     });
   }

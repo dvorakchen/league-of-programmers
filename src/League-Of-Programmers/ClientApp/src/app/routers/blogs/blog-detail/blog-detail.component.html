@@ -10,7 +10,7 @@
       {{detail.title}}
     </div>
     <div class="information">
-      <span>author: 
+      <span>author:
         <a [routerLink]="['/', detail.authorAccount]">{{detail.author}}</a>
       </span>
       <span>posted: {{detail.dateTime}}</span>
@@ -21,6 +21,14 @@
     </div>
     <div class="content">
       <markdown [data]="detail.content"></markdown>
+    </div>
+    <div class="actions">
+      <span>
+        <button mat-icon-button color="primary" (click)="like()" [disabled]="liked">
+          <mat-icon>thumb_up</mat-icon>
+        </button>
+        {{detail.likes}}
+      </span>
     </div>
   </div>
 

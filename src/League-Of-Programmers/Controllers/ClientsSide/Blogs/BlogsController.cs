@@ -118,6 +118,26 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
         }
 
         /*
+         *  点赞
+         *  
+         *  /api/clients/blogs/{id}/like
+         *  
+         *  return:
+         *      204:    successfully
+         *      404:    not exist
+         */
+        [HttpPatch("{id}/like")]
+        public async Task<IActionResult> LikeAsync(int id)
+        {
+            BlogsManager manager = new BlogsManager();
+            var blog = await manager.GetBlogAsync(id);
+            if (blog is null)
+                return NotFound();
+            await blog.LikeAsync();
+            return NoContent();
+        }
+
+        /*
          *  delete blog
          *  
          *  /api/clients/blogs/{id}

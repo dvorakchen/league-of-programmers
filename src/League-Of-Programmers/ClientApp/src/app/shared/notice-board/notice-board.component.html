@@ -3,16 +3,10 @@
     布告栏
   </div>
   <div class="list">
-    <div class="item">
-        <a class="title" target="_blank" matTooltip="league of programmers" [matTooltipPosition]="'above'"
-        (click)="openNotice(1)">
-            league of programmers
-        </a>
-    </div>
-    <div class="item">
-        <a class="title" target="_blank" matTooltip="league of programmers" [matTooltipPosition]="'above'"
-        (click)="openNotice(2)">
-            league of programmers league of programmers
+    <div class="item" *ngFor="let notification of notificationList">
+        <a class="title" matTooltip="{{notification.title}}" [matTooltipPosition]="'above'"
+        (click)="openNotice(notification.id)">
+            {{notification.title}}
         </a>
     </div>
   </div>

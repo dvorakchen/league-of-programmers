@@ -21,6 +21,7 @@ export interface BlogDetail {
   targets: string[];
   content: string;
   views: number;
+  likes: number;
   dateTime: string;
   author: string;
   authorAccount: string;
@@ -132,6 +133,17 @@ export class BlogService {
   modifyBlog(id: number, model: ModifyBlog): Observable<Result> {
     return this.http.put<Result>(`/api/clients/blogs/${id}`, model)
     .pipe(
+      catchError(this.base.handleError)
+    );
+  }
+
+  /**
+   * 点赞
+   */
+  like(id: number): Observable<Result> {
+    return this.http.patch<Result>(`/api/clients/blogs/${id}/like`, '')
+    .pipe(
+      retry(1),
       catchError(this.base.handleError)
     );
   }
