@@ -7,10 +7,14 @@
       </a>
     </div>
     <div class="notification">
-        <span>2020/01/01</span>
-        <a class="title" (click)="openNotice(1)">
-          league of programmers
-        </a>
-      </div>
+      <span>2020/01/01</span>
+      <a class="title" (click)="openNotice(1)">
+        league of programmers
+      </a>
+    </div>
+
+    <mat-paginator [length]="totalSize" [pageIndex]="index" [pageSize]="size" (page)="pageChange($event)"
+        style="display: flex;">
+    </mat-paginator>
   </div>
 </div>

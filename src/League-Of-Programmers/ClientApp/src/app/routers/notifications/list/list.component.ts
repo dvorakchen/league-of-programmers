@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NoticeContentComponent } from '../../../shared/notice-board/notice-content.component';
+import { Paginator, CommonService } from '../../../services/common';
+import { NotificationsService, NotificationItem } from '../../../services/notifications.service';
+import { PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list',
@@ -9,9 +12,38 @@ import { NoticeContentComponent } from '../../../shared/notice-board/notice-cont
 })
 export class ListComponent implements OnInit {
 
-  constructor(private dialog: MatDialog) { }
+  index = 0;
+  size = 20;
+  totalSize = 0;
+  search = '';
+
+  notificationList: NotificationItem[] = [];
+
+  constructor(
+    private pagerInit: MatPaginatorIntl,
+    private dialog: MatDialog,
+    private notification: NotificationsService
+  ) { }
 
   ngOnInit(): void {
+    this.getNotificationList();
+
+    this.pagerInit.nextPageLabel = '下一页';
+    this.pagerInit.previousPageLabel = '上一页';
+    this.pagerInit.itemsPerPageLabel = '当前条数';
+    this.pagerInit.getRangeLabel = (index: number, size: number, totalSize: number) => {
+      return `${index} - ${size} 共 ${totalSize}`;
+    };
+  }
+
+  private getNotificationList() {
+    this.notification.getNotificationList(this.index + 1, this.size, this.search).subscribe(resp => {
+      if (resp.status === 200) {
+        const R = resp.data as Paginator;
+        this.totalSize = R.totalSize;
+        this.notificationList = R.list;
+      }
+    });
   }
 
   openNotice(id: number) {
@@ -20,5 +52,10 @@ export class ListComponent implements OnInit {
       minHeight: '70%',
       data: id
     });
+  }
+
+  pageChange(pager: PageEvent) {
+    this.index = pager.pageIndex;
+    this.getNotificationList();
   }
 }

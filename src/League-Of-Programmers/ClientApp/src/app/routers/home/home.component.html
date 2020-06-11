@@ -14,6 +14,8 @@
       </div>
     </div>
 
+    <mat-paginator [length]="totalSize" [pageIndex]="index" [pageSize]="size" (page)="pageChange($event)"></mat-paginator>
+
   </div>
   <div class="notification">
     <app-notice-board></app-notice-board>

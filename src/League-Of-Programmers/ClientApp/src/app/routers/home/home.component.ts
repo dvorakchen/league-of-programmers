@@ -53,5 +53,6 @@ export class HomeComponent implements OnInit {
 
   pageChange(pager: PageEvent) {
     this.index = pager.pageIndex;
+    this.getBlogList();
   }
 }
