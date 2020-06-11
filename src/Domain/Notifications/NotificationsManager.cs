@@ -26,8 +26,8 @@ namespace Domain.Notifications
                 whereStatement = whereStatement.And(n => n.Title.Contains(s));
 
             await using var db = new LOPDbContext();
-            pager.TotalSize = await db.Notificatios.CountAsync(whereStatement);
-            pager.List = await db.Notificatios.AsNoTracking()
+            pager.TotalSize = await db.Notifications.CountAsync(whereStatement);
+            pager.List = await db.Notifications.AsNoTracking()
                                               .OrderByDescending(n => n.IsTop)
                                               .ThenByDescending(n => n.CreateDate)
                                               .Where(whereStatement)
@@ -52,7 +52,7 @@ namespace Domain.Notifications
         public async Task<Results.NotificationDetail> GetNotificitionDetailAsync(int id)
         {
             await using var db = new LOPDbContext();
-            var notification = await db.Notificatios.AsNoTracking().FirstOrDefaultAsync(n => n.Id == id);
+            var notification = await db.Notifications.AsNoTracking().FirstOrDefaultAsync(n => n.Id == id);
             if (notification is null)
                 return null;
             return new Results.NotificationDetail

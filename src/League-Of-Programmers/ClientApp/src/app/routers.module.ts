@@ -31,6 +31,10 @@ const routes: Routes = [
     loadChildren: () => import('./routers/pages/pages.module').then(mod => mod.PagesModule)
   },
   {
+    path: 'admin-board',
+    loadChildren: () => import('./routers/admin-board/admin-board.module').then(mod => mod.AdminBoardModule)
+  },
+  {
     path: ':name',
     loadChildren: () => import('./routers/users/users.module').then(mod => mod.UsersModule)
   }

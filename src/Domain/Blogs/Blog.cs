@@ -35,16 +35,19 @@ namespace Domain.Blogs
         {
             DiagnosisNull(_blog);
 
-            _blog.Views++;
-            var author = _blog.Author;
-            _blog.Author = null;
+            if (readed)
+            {
+                _blog.Views++;
+                var author = _blog.Author;
+                _blog.Author = null;
 
-            await using var db = new LOPDbContext();
-            db.Blogs.Update(_blog);
-            int changeConut = await db.SaveChangesAsync();
-            if (changeConut != 1)
-                throw new Exception("增加已读人数出现错误");
-            _blog.Author = author;
+                await using var db = new LOPDbContext();
+                db.Blogs.Update(_blog);
+                int changeConut = await db.SaveChangesAsync();
+                if (changeConut != 1)
+                    throw new Exception("增加已读人数出现错误");
+                _blog.Author = author;
+            }
 
             int[] targetIds = _blog.TargetIds.SplitToInt(',').ToArray();
             Targets targets = new Targets();

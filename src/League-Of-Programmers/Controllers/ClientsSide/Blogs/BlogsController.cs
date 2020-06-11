@@ -54,7 +54,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
             var blog = await blogsManager.GetBlogAsync(id);
             if (blog is null)
                 return NotFound();
-            Domain.Blogs.Results.BlogDetail detail = await blog.GetDetailAsync();
+            Domain.Blogs.Results.BlogDetail detail = await blog.GetDetailAsync(readed);
             return Ok(detail);
         }
 

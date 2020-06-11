@@ -51,6 +51,8 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
         public async Task<IActionResult> GetClientInfoAsync(string account)
         {
             Client user = await _userManager.GetClientAsync(account);
+            if (user is null)
+                return NotFound();
             var profile = await user.GetProfileAsync();
             if (profile is null)
                 return NotFound();

@@ -1,0 +1,4 @@
+insert into files
+(state, createdate, name, extension, savename, size, thumbnail)
+values
+(1, '2020/01/01', 'default.png', '.png', 'default.png', 4000, 'default-min.png');

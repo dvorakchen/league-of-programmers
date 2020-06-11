@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NoticeContentComponent } from '../../../shared/notice-board/notice-content.component';
-import { Paginator, CommonService } from '../../../services/common';
+import { Paginator } from '../../../services/common';
 import { NotificationsService, NotificationItem } from '../../../services/notifications.service';
 import { PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 
@@ -30,7 +30,7 @@ export class ListComponent implements OnInit {
 
     this.pagerInit.nextPageLabel = '下一页';
     this.pagerInit.previousPageLabel = '上一页';
-    this.pagerInit.itemsPerPageLabel = '当前条数';
+    this.pagerInit.itemsPerPageLabel = '';
     this.pagerInit.getRangeLabel = (index: number, size: number, totalSize: number) => {
       return `${index} - ${size} 共 ${totalSize}`;
     };

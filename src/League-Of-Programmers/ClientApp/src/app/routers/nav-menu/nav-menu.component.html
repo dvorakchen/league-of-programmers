@@ -20,6 +20,10 @@
                 <mat-icon>face</mat-icon>
                 个人信息
               </a>
+              <a [routerLink]="['/admin-board']" mat-menu-item>
+                <mat-icon>dashboard</mat-icon>
+                管理员面板
+              </a>
               <a mat-menu-item (click)="logout()">
                 <mat-icon>exit_to_app</mat-icon>
                 登出
