@@ -91,6 +91,7 @@ namespace League_Of_Programmers
             }
 
             app.UseMiddleware<Middlewares.CircuitBreaker>();
+            app.UseMiddleware<Middlewares.Antiforgery>();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
