@@ -43,5 +43,23 @@ namespace Domain.Notifications
                                               .ToListAsync();
             return pager;
         }
+
+        /// <summary>
+        /// 获取通知详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Results.NotificationDetail> GetNotificitionDetailAsync(int id)
+        {
+            await using var db = new LOPDbContext();
+            var notification = await db.Notificatios.AsNoTracking().FirstOrDefaultAsync(n => n.Id == id);
+            if (notification is null)
+                return null;
+            return new Results.NotificationDetail
+            { 
+                Title = notification.Title,
+                Content = notification.Content
+            };
+        }
     }
 }

@@ -13,5 +13,11 @@ namespace Domain.Notifications
             public string DateTime { get; set; }
             public bool IsTop { get; set; }
         }
+
+        public class NotificationDetail
+        {
+            public string Title { get; set; } = "";
+            public string Content { get; set; } = "";
+        }
     }
 }

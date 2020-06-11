@@ -12,6 +12,11 @@ export interface NotificationItem {
   isTop: boolean;
 }
 
+export interface NotificationDetail {
+  title: string;
+  content: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,6 +36,18 @@ export class NotificationsService {
       p = p.append('s', s.trim());
     }
     return this.http.get<Result>(`/api/clients/notifications?${p.toString()}`)
+    .pipe(
+      retry(1),
+      debounceTime(500),
+      catchError(this.base.handleError)
+    );
+  }
+
+  /**
+   * 获取通知详情
+   */
+  getNotificationDetail(id: number): Observable<Result> {
+    return this.http.get<Result>(`/api/clients/notifications/${id}`)
     .pipe(
       retry(1),
       debounceTime(500),

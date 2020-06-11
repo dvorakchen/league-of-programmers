@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Domain.Blogs.List
@@ -28,10 +27,11 @@ namespace Domain.Blogs.List
             await using var db = new LOPDbContext();
             pager.TotalSize = await db.Blogs.CountAsync(whereStatement);
             var list = await db.Blogs.AsNoTracking()
-                                     .Skip(pager.Skip)
-                                     .Take(pager.Size)
+                                     .OrderByDescending(blog => blog.CreateDate)
                                      .Where(whereStatement)
                                      .Include(blog => blog.Author)
+                                     .Skip(pager.Skip)
+                                     .Take(pager.Size)
                                      .Select(blog => new Results.BlogItem
                                      {
                                          Id = blog.Id,

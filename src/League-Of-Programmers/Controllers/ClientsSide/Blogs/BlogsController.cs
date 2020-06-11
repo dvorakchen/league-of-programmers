@@ -48,7 +48,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
          *      404:    not exist this blog
          */
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBlogDetailAsync(int id)
+        public async Task<IActionResult> GetBlogDetailAsync(int id, bool readed)
         {
             BlogsManager blogsManager = new BlogsManager();
             var blog = await blogsManager.GetBlogAsync(id);

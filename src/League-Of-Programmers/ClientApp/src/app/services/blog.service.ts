@@ -110,7 +110,7 @@ export class BlogService {
    * 获取博文详情
    */
   getBlogDetail(id: number): Observable<Result> {
-    return this.http.get<Result>(`/api/clients/blogs/${id}`)
+    return this.http.get<Result>(`/api/clients/blogs/${id}?readed=true`)
     .pipe(
       retry(1),
       catchError(this.base.handleError)
