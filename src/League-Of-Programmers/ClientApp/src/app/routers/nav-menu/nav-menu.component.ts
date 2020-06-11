@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../services/common';
-import { Global } from '../../global';
+import { Global, RoleCategories } from '../../global';
 
 @Component({
   selector: 'app-nav-menu',
@@ -13,6 +13,7 @@ export class NavMenuComponent implements OnInit {
 
   showActions = true;
   isLoggedIn = false;
+  isAdministrator = false;
   userName = '';
 
   constructor(
@@ -32,6 +33,8 @@ export class NavMenuComponent implements OnInit {
     if (Global.loginInfo) {
       this.isLoggedIn = true;
       this.userName = Global.loginInfo.userName;
+      // tslint:disable-next-line: no-bitwise
+      this.isAdministrator = (Global.loginInfo.role & RoleCategories.Administrator) !== 0;
     } else {
       this.isLoggedIn = false;
     }

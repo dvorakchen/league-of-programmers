@@ -33,7 +33,7 @@ namespace Domain.Users
         public enum RoleCategories
         {
             Client = 1 << 0,
-            Administrator = 2 << 1,
+            Administrator = 1 << 1,
         }
 
         protected User(DB.Tables.User userModel)

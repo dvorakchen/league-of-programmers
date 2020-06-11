@@ -28,7 +28,7 @@ export class IdentityService {
   }
 
   checkIsAdministratorLoggedIn(): Observable<Result> {
-    return this.http.get<Result>(`${ADMINISTRATOR_SIDO}login/check`);
+    return this.http.get<Result>(`${ADMINISTRATOR_SIDO}identity/check`);
   }
 
   login(account: string, password: string): Observable<Result> {

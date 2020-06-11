@@ -1,0 +1,13 @@
+[
+    {
+        "dirTitle": "博文管理",
+        "icon": "article",
+        "child": [
+            {
+                "title": "博文列表",
+                "route": "/blogs",
+                "icon": "list"
+            }
+        ]
+    }
+]

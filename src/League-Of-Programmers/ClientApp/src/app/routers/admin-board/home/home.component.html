@@ -1,7 +1,16 @@
 <mat-drawer-container class="home-container" hasBackdrop="false">
   <mat-drawer #drawer opened="true" mode="side" class="side">
     <div class="side-content">
-
+      <div class="profile">
+        <div class="avatar-placeholder">
+          无头像
+        </div>
+      </div>
+      <div class="menu">
+        <div *ngFor="let dir of menu">
+            {{dir.dirTitle}}
+        </div>
+      </div>
     </div>
   </mat-drawer>
   <mat-drawer-content>

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from './shared/shared.module';
 import { Routes, RouterModule } from '@angular/router';
+import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -32,7 +33,8 @@ const routes: Routes = [
   },
   {
     path: 'admin-board',
-    loadChildren: () => import('./routers/admin-board/admin-board.module').then(mod => mod.AdminBoardModule)
+    loadChildren: () => import('./routers/admin-board/admin-board.module').then(mod => mod.AdminBoardModule),
+    canActivate: [AdminGuard]
   },
   {
     path: ':name',

@@ -10,7 +10,7 @@ export enum RoleCategories {
   // tslint:disable-next-line: no-bitwise
   Client = 1 << 0,
   // tslint:disable-next-line: no-bitwise
-  Administrator = 2 << 1,
+  Administrator = 1 << 1,
 }
 
 export class Global {

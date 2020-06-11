@@ -20,7 +20,7 @@
                 <mat-icon>face</mat-icon>
                 个人信息
               </a>
-              <a [routerLink]="['/admin-board']" mat-menu-item>
+              <a [routerLink]="['/admin-board']" mat-menu-item *ngIf="isAdministrator">
                 <mat-icon>dashboard</mat-icon>
                 管理员面板
               </a>
@@ -49,7 +49,7 @@
                 <mat-icon>wysiwyg</mat-icon>
                 写博文
               </a>
-              <a [routerLink]="['/admin-board']" mat-menu-item>
+              <a [routerLink]="['/admin-board']" mat-menu-item *ngIf="isAdministrator">
                 <mat-icon>dashboard</mat-icon>
                 管理员面板
               </a>
