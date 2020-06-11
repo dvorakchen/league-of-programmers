@@ -3,6 +3,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, Observable, fromEvent, Subscription } from 'rxjs';
 
+export const CLIENT_SIDE = '/api/clients/';
+export const ADMINISTRATOR_SIDO = '/api/administrators/';
+
 export interface Result {
   status: number;
   data: any;

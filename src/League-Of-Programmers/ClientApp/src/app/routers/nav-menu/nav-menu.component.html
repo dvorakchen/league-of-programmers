@@ -49,6 +49,10 @@
                 <mat-icon>wysiwyg</mat-icon>
                 写博文
               </a>
+              <a [routerLink]="['/admin-board']" mat-menu-item>
+                <mat-icon>dashboard</mat-icon>
+                管理员面板
+              </a>
               <button mat-menu-item (click)="logout()">
                 <mat-icon>exit_to_app</mat-icon>
                 登出

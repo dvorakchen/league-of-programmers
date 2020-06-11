@@ -1,0 +1,16 @@
+<mat-drawer-container class="home-container" hasBackdrop="false">
+  <mat-drawer #drawer opened="true" mode="side" class="side">
+    <div class="side-content">
+
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="title-row">
+      <button mat-icon-button (click)="drawer.toggle()" matTooltip="侧边栏">
+        <mat-icon>vertical_split</mat-icon>
+      </button>
+      <span class="title">管理员后台</span>
+    </div>
+
+  </mat-drawer-content>
+</mat-drawer-container>

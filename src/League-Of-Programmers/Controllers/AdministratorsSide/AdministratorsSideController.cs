@@ -5,8 +5,8 @@ using System.Security.Claims;
 
 namespace League_Of_Programmers.Controllers.Clients
 {
-    [Route("api/clients/[controller]")]
-    public class ClientsSideController : LOPController
+    [Route("api/administrators/[controller]")]
+    public class AdministratorsSideController : LOPController
     {
         
     }

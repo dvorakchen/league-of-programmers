@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ServicesBase, CommonService, Result } from './common';
+import { ServicesBase, CommonService, Result, CLIENT_SIDE } from './common';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, pipe } from 'rxjs';
-import { catchError, debounceTime, retry } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Global } from '../global';
 
 export interface Profile {
@@ -21,7 +21,7 @@ export interface UserInfo {
 })
 export class UserService {
 
-  readonly routePrefix = '/api/clients/clients/';
+  readonly routePrefix = `${CLIENT_SIDE}clients/`;
 
   constructor(
     private http: HttpClient,

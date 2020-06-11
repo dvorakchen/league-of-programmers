@@ -32,6 +32,8 @@ export class Global {
     if (isDevMode()) {
       console.log(`get login info: username: ${USER_INFO.userName} - role: ${USER_INFO.role} - account: ${USER_INFO.account}`);
     }
+    // console.log(` -- ${(this.role & RoleCategories.Client) === 0}`);
+    // console.log(` -- ${(this.role & RoleCategories.Administrator) === 0}`);
     return USER_INFO;
   }
 

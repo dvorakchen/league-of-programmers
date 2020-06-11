@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ServicesBase, Result } from './common';
+import { ServicesBase, Result, CLIENT_SIDE } from './common';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, of, pipe } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { KeyValue } from '@angular/common';
 
@@ -68,7 +68,7 @@ export class BlogService {
       p = p.append('s', s);
     }
 
-    return this.http.get<Result>(`/api/clients/blogs?${p.toString()}`)
+    return this.http.get<Result>(`${CLIENT_SIDE}blogs?${p.toString()}`)
     .pipe(
       retry(1),
       catchError(this.base.handleError)
@@ -99,7 +99,7 @@ export class BlogService {
       p = p.append('s', s);
     }
 
-    return this.http.get<Result>(`/api/clients/clients/${account}/blogs?${p.toString()}`)
+    return this.http.get<Result>(`${CLIENT_SIDE}clients/${account}/blogs?${p.toString()}`)
     .pipe(
       retry(1),
       catchError(this.base.handleError)
@@ -110,7 +110,7 @@ export class BlogService {
    * 获取博文详情
    */
   getBlogDetail(id: number): Observable<Result> {
-    return this.http.get<Result>(`/api/clients/blogs/${id}?readed=true`)
+    return this.http.get<Result>(`${CLIENT_SIDE}blogs/${id}?readed=true`)
     .pipe(
       retry(1),
       catchError(this.base.handleError)
@@ -121,7 +121,7 @@ export class BlogService {
    * 写博文
    */
   writeBlog(newPost: NewBlog): Observable<Result> {
-    return this.http.post<Result>(`/api/clients/blogs`, newPost)
+    return this.http.post<Result>(`${CLIENT_SIDE}blogs`, newPost)
     .pipe(
       catchError(this.base.handleError)
     );
@@ -131,7 +131,7 @@ export class BlogService {
    * 修改博文
    */
   modifyBlog(id: number, model: ModifyBlog): Observable<Result> {
-    return this.http.put<Result>(`/api/clients/blogs/${id}`, model)
+    return this.http.put<Result>(`${CLIENT_SIDE}blogs/${id}`, model)
     .pipe(
       catchError(this.base.handleError)
     );
@@ -141,7 +141,7 @@ export class BlogService {
    * 点赞
    */
   like(id: number): Observable<Result> {
-    return this.http.patch<Result>(`/api/clients/blogs/${id}/like`, '')
+    return this.http.patch<Result>(`${CLIENT_SIDE}blogs/${id}/like`, '')
     .pipe(
       retry(1),
       catchError(this.base.handleError)
@@ -153,7 +153,7 @@ export class BlogService {
    * @param id blog id
    */
   deleteBlog(id: number): Observable<Result> {
-    return this.http.delete<Result>(`/api/clients/blogs/${id}`)
+    return this.http.delete<Result>(`${CLIENT_SIDE}blogs/${id}`)
     .pipe(
       catchError(this.base.handleError)
     );

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ServicesBase, CommonService, Result } from './common';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { ServicesBase, CommonService, Result, CLIENT_SIDE, ADMINISTRATOR_SIDO } from './common';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, debounceTime } from 'rxjs/operators';
 
@@ -24,13 +24,17 @@ export class IdentityService {
   ) { }
 
   checkIsLoggedIn(): Observable<Result> {
-    return this.http.get<Result>('/api/clients/login/check');
+    return this.http.get<Result>(`${CLIENT_SIDE}login/check`);
+  }
+
+  checkIsAdministratorLoggedIn(): Observable<Result> {
+    return this.http.get<Result>(`${ADMINISTRATOR_SIDO}login/check`);
   }
 
   login(account: string, password: string): Observable<Result> {
     password = sha256(password).toString();
 
-    const URL = '/api/clients/login';
+    const URL = `${CLIENT_SIDE}login`;
     return this.http.patch<Result>(URL, {
       account,
       password
@@ -75,7 +79,7 @@ export class IdentityService {
     model.password = sha256(model.password).toString();
     model.confirmPassword = sha256(model.confirmPassword).toString();
 
-    return this.http.post<Result>('/api/clients/register', model)
+    return this.http.post<Result>(`${CLIENT_SIDE}register`, model)
       .pipe(
         debounceTime(1000),
         catchError(this.base.handleError)

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ServicesBase, Result } from './common';
+import { ServicesBase, Result, CLIENT_SIDE } from './common';
 import { HttpParams } from '@angular/common/http';
 import { catchError, retry, debounceTime } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -35,7 +35,7 @@ export class NotificationsService {
     if (s) {
       p = p.append('s', s.trim());
     }
-    return this.http.get<Result>(`/api/clients/notifications?${p.toString()}`)
+    return this.http.get<Result>(`${CLIENT_SIDE}notifications?${p.toString()}`)
     .pipe(
       retry(1),
       debounceTime(500),
@@ -47,7 +47,7 @@ export class NotificationsService {
    * 获取通知详情
    */
   getNotificationDetail(id: number): Observable<Result> {
-    return this.http.get<Result>(`/api/clients/notifications/${id}`)
+    return this.http.get<Result>(`${CLIENT_SIDE}notifications/${id}`)
     .pipe(
       retry(1),
       debounceTime(500),
