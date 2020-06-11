@@ -2,10 +2,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from './shared/shared.module';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent } from './routers/home/home.component';
-
 const routes: Routes = [
-  //  { path: '', component: HomeComponent, pathMatch: 'full' },
   {
     path: '',
     loadChildren: () => import('./routers/home/home.module').then(mod => mod.HomeModule),
@@ -20,6 +17,10 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./routers/login/login.module').then(mod => mod.LoginModule)
+  },
+  {
+    path: 'notifications',
+    loadChildren: () => import('./routers/notifications/notifications.module').then(mod => mod.NotificationsModule)
   },
   {
     path: 'register',
