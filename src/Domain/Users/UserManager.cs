@@ -7,17 +7,17 @@ namespace Domain.Users
 {
     public class UserManager : IUserManager
     {
-        /// <summary>
-        /// get user by user id
-        /// </summary>
-        /// <param name="id">user id</param>
-        /// <returns>user or null if not exist</returns>
-        internal async Task<User> GetUserAsync(int id)
-        {
-            await using var db = new LOPDbContext();
-            var userModel = await db.Users.FirstOrDefaultAsync(user => user.Id == id);
-            return userModel == null ? null : User.Parse(userModel);
-        }
+        ///// <summary>
+        ///// get user by user id
+        ///// </summary>
+        ///// <param name="id">user id</param>
+        ///// <returns>user or null if not exist</returns>
+        //internal async Task<User> GetUserAsync(int id)
+        //{
+        //    await using var db = new LOPDbContext();
+        //    var userModel = await db.Users.FirstOrDefaultAsync(user => user.Id == id);
+        //    return userModel == null ? null : User.Parse(userModel);
+        //}
 
         /// <summary>
         /// get client by id
@@ -26,7 +26,8 @@ namespace Domain.Users
         /// <returns></returns>
         public async Task<Client> GetClientAsync(int id)
         {
-            var user = await GetUserAsync(id);
+            await using var db = new LOPDbContext();
+            var user = await db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
             if (user is null)
                 throw new Exception($"{user} 不是客户");
             //  管理员也是客户
@@ -40,10 +41,9 @@ namespace Domain.Users
         /// <returns></returns>
         public async Task<Administrator> GetAdministratorAsync(int id)
         {
-            var user = await GetUserAsync(id);
-            if ((user.Role & User.RoleCategories.Administrator) != 0)
-                return user as Administrator;
-            throw new Exception($"{user} 不是管理员");
+            await using var db = new LOPDbContext();
+            var user = await db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+            return ParseAdministrator(user);
         }
 
         public async Task<Client> GetClientAsync(string account)
@@ -51,26 +51,60 @@ namespace Domain.Users
             var clientModel = await UserCache.GetUserModelAsync(account);
             if (clientModel is null)
                 return null;
-            User user = User.Parse(clientModel);
-            //  管理员也是客户
-            return ParseClient(user);
+            return ParseClient(clientModel);
         }
 
-        private Client ParseClient(User user)
+        /// <summary>
+        /// 转换成客户对象，
+        /// 管理员同样可以转换成可以对象
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
+        private Client ParseClient(DB.Tables.User userModel)
         {
-            return user.Role switch
+            return (User.RoleCategories)userModel.Roles switch
             {
                 //  如果是管理员
-                var r when (r & User.RoleCategories.Administrator) != 0 => (Client)(user as Administrator),
                 //  如果是客户
-                var r when (r & User.RoleCategories.Client) != 0 => user as Client,
-                _ => throw new Exception($"{user} 不是客户")
+                var r when (r & User.RoleCategories.Client) != 0 || (r & User.RoleCategories.Administrator) != 0 => new Client(userModel),
+                _ => throw new Exception($"不是客户")
+            };
+        }
+
+        /// <summary>
+        /// 转换成管理员对象，
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
+        private Administrator ParseAdministrator(DB.Tables.User userModel)
+        {
+            return (User.RoleCategories)userModel.Roles switch
+            {
+                //  如果是管理员
+                var r when (r & User.RoleCategories.Administrator) != 0 => new Administrator(userModel),
+                _ => throw new Exception($"不是客户")
+            };
+        }
+        /// <summary>
+        /// 转换成适合的用户类型
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
+        private User ParseUser(DB.Tables.User userModel)
+        {
+            return (User.RoleCategories)userModel.Roles switch
+            {
+                //  如果是管理员
+                var r when (r & User.RoleCategories.Administrator) != 0 => new Administrator(userModel),
+                //  如果是客户
+                var r when (r & User.RoleCategories.Client) != 0 => new Client(userModel),
+                _ => throw new Exception($"不是客户")
             };
         }
 
         public async Task<Administrator> GetAdministratorAsync(string account)
         {
-            return User.Parse(await UserCache.GetUserModelAsync(account)) as Administrator;
+            return ParseAdministrator(await UserCache.GetUserModelAsync(account));
         }
 
         /// <summary>
@@ -103,7 +137,7 @@ namespace Domain.Users
             if (userModel is null)
                 return (null, "账号不存在或密码不正确");
             else
-                return (User.Parse(userModel), "");
+                return (ParseUser(userModel), "");
         }
 
         /// <summary>

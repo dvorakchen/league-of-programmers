@@ -79,25 +79,25 @@ namespace Domain.Users
             return other.Id == Id;
         }
 
-        /// <summary>
-        /// 用户对象只能通过这个方法获取
-        /// </summary>
-        /// <param name="userModel"></param>
-        /// <returns></returns>
-        internal static User Parse(DB.Tables.User userModel)
-        {
-            if (userModel is null)
-                throw new NullReferenceException();
+        ///// <summary>
+        ///// 用户对象只能通过这个方法获取
+        ///// </summary>
+        ///// <param name="userModel"></param>
+        ///// <returns></returns>
+        //internal static User Parse(DB.Tables.User userModel)
+        //{
+        //    if (userModel is null)
+        //        throw new NullReferenceException();
 
-            return userModel.Roles switch
-            {
-                //  如果是管理员
-                var r when (r & (int)RoleCategories.Administrator) != 0 => new Administrator(userModel),
-                //  如果是客户
-                var r when (r & (int)RoleCategories.Client) != 0 => new Client(userModel),
-                _ => throw new Exception("未知的角色")
-            };
-        }
+        //    return userModel.Roles switch
+        //    {
+        //        //  如果是管理员
+        //        var r when (r & (int)RoleCategories.Administrator) != 0 => new Administrator(userModel),
+        //        //  如果是客户
+        //        var r when (r & (int)RoleCategories.Client) != 0 => new Client(userModel),
+        //        _ => throw new Exception("未知的角色")
+        //    };
+        //}
 
         public virtual async Task<(bool, string)> ModifyUser(Models.ModifyUser model)
         {
