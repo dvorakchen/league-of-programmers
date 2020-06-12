@@ -14,8 +14,16 @@ namespace Domain.Users
     /// </summary>
     public class Client : User
     {
-        internal Client(DB.Tables.User userModel) : base(userModel)
+        internal Client(DB.Tables.User userModel) : base(userModel) { }
+
+        private Client() { }
+
+        private Client(int id, string account, string name, RoleCategories role): this()
         {
+            Id = id;
+            Account = account;
+            Name = name;
+            Role = role;
         }
 
         /// <summary>
@@ -75,6 +83,11 @@ namespace Domain.Users
             if (id == Blogs.BlogsManager.POST_DEFEATED)
                 return (Blogs.BlogsManager.POST_DEFEATED, "");
             return (id, model.Title.Replace(' ', '-'));
+        }
+
+        public static explicit operator Client(Administrator administrator)
+        {
+            return new Client(administrator.Id, administrator.Account, administrator.Name, administrator.Role);
         }
     }
 }

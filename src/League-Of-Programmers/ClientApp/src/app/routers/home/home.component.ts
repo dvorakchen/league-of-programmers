@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
   private getBlogList() {
     this.blog.getBlogList(this.index, this.size, this.search).subscribe(resp => {
       if (resp.status === 200) {
-        const RESP = resp.data as Paginator;
+        const RESP = resp.data as Paginator<BlogItem>;
         this.totalSize = RESP.totalSize;
         this.blogList = RESP.list;
       } else {

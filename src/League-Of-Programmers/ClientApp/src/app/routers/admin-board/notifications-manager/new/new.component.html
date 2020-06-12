@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>发布新通知</h1>
+<div mat-dialog-content>
+  <form #notifiForm="ngForm" class="form-container">
+    <mat-form-field>
+      <input matInput [(ngModel)]="newNotification.title" name="title" placeholder="标题" required>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput [(ngModel)]="newNotification.content" cdkAutosizeMinRows="10" cdkTextareaAutosize
+        name="content" placeholder="内容" required></textarea>
+    </mat-form-field>
+    <span>
+      <mat-slide-toggle [(ngModel)]="newNotification.isTop" name="isTop" required>置顶</mat-slide-toggle>
+    </span>
+  </form>
+</div>
+<div mat-dialog-actions class="actions">
+  <button mat-raised-button color="primary" [disabled]="isLoading || notifiForm.invalid" (click)="post()">发布</button>
+  <button mat-stroked-button color="primary" [disabled]="isLoading" (click)="close()">关闭</button>
+</div>

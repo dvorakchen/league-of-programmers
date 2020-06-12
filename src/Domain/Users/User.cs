@@ -35,7 +35,7 @@ namespace Domain.Users
             Client = 1 << 0,
             Administrator = 1 << 1,
         }
-
+        protected User() { }
         protected User(DB.Tables.User userModel)
         {
             if (userModel is null)
@@ -50,15 +50,15 @@ namespace Domain.Users
         /// <summary>
         /// use account
         /// </summary>
-        public string Account { get; private set; }
+        public string Account { get; protected set; }
         /// <summary>
         /// user name
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; protected set; }
         /// <summary>
         /// 角色
         /// </summary>
-        public readonly RoleCategories Role;
+        public RoleCategories Role { get; protected set; }
         /// <summary>
         /// return user name
         /// </summary>

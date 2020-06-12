@@ -3,8 +3,13 @@
     
     <div class="blog" *ngFor="let blog of blogList">
       <div class="blog-title">
-        <a [routerLink]="['/blogs', blog.id, blog.title]">{{blog.title}}</a>
+        <a [routerLink]="['/blogs', blog.id, blog.title.replace(' ', '-')]">{{blog.title}}</a>
         <span class="dateTime">{{blog.dateTime}}</span>
+      </div>
+      <div class="author-row">
+        <span>author: 
+          <a [routerLink]="[blog.authorAccount]">{{blog.author}}</a>
+        </span>
       </div>
       <div class="views">
         <div class="statistics">

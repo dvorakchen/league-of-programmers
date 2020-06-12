@@ -27,9 +27,10 @@ namespace Domain.Users
         public async Task<Client> GetClientAsync(int id)
         {
             var user = await GetUserAsync(id);
-            if ((user.Role & User.RoleCategories.Client) != 0)
-                return user as Client;
-            throw new Exception($"{user} 不是客户");
+            if (user is null)
+                throw new Exception($"{user} 不是客户");
+            //  管理员也是客户
+            return ParseClient(user);
         }
 
         /// <summary>
@@ -50,7 +51,21 @@ namespace Domain.Users
             var clientModel = await UserCache.GetUserModelAsync(account);
             if (clientModel is null)
                 return null;
-            return User.Parse(clientModel) as Client;
+            User user = User.Parse(clientModel);
+            //  管理员也是客户
+            return ParseClient(user);
+        }
+
+        private Client ParseClient(User user)
+        {
+            return user.Role switch
+            {
+                //  如果是管理员
+                var r when (r & User.RoleCategories.Administrator) != 0 => (Client)(user as Administrator),
+                //  如果是客户
+                var r when (r & User.RoleCategories.Client) != 0 => user as Client,
+                _ => throw new Exception($"{user} 不是客户")
+            };
         }
 
         public async Task<Administrator> GetAdministratorAsync(string account)
@@ -99,8 +114,8 @@ namespace Domain.Users
         public async Task<(bool, string)> RegisterClientAsync(Models.Register model)
         {
             var validation = new Validation();
-            if (!validation.ValidateAccount(model.Account))
-                return (false, $"注册账号长度不能大于{User.ACCOUNT_MAX_LENGTH}位小于{User.ACCOUNT_MIN_LENGTH}位");
+            if (!validation.ValidateAccount(model.Account) || model.Account.Contains(' '))
+                return (false, $"注册账号长度不能大于{User.ACCOUNT_MAX_LENGTH}位小于{User.ACCOUNT_MIN_LENGTH}位且不能有空格");
             if (string.IsNullOrWhiteSpace(model.Password))
                 return (false, $"密码不能为空");
             if (model.Password != model.ConfirmPassword)

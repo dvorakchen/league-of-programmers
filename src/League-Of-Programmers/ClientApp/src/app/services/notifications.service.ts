@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ServicesBase, Result, CLIENT_SIDE } from './common';
+import { ServicesBase, Result, CLIENT_SIDE, ADMINISTRATOR_SIDE } from './common';
 import { HttpParams } from '@angular/common/http';
 import { catchError, retry, debounceTime } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -15,6 +15,12 @@ export interface NotificationItem {
 export interface NotificationDetail {
   title: string;
   content: string;
+}
+
+export interface NewNotification {
+  title: string;
+  content: string;
+  isTop: boolean;
 }
 
 @Injectable({
@@ -51,6 +57,27 @@ export class NotificationsService {
     .pipe(
       retry(1),
       debounceTime(500),
+      catchError(this.base.handleError)
+    );
+  }
+
+  /**
+   * 删除一个通知
+   */
+  deleteNotification(id: number): Observable<Result> {
+    return this.http.delete<Result>(`${ADMINISTRATOR_SIDE}notifications/${id}`)
+    .pipe(
+      catchError(this.base.handleError)
+    );
+  }
+
+  /**
+   * 发布新通知
+   */
+  postNotification(model: NewNotification) {
+    return this.http.post<Result>(`${ADMINISTRATOR_SIDE}notifications`, model)
+    .pipe(
+      debounceTime(1000),
       catchError(this.base.handleError)
     );
   }

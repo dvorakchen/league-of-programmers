@@ -61,5 +61,47 @@ namespace Domain.Notifications
                 Content = notification.Content
             };
         }
+
+        /// <summary>
+        /// 删除一个通知
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task DeleteNotificationAsync(int id)
+        {
+            await using var db = new LOPDbContext();
+            var notification = await db.Notifications.AsNoTracking().FirstOrDefaultAsync(n => n.Id == id);
+            if (notification is null)
+                return;
+            db.Notifications.Remove(notification);
+            int changeCount = await db.SaveChangesAsync();
+            if (changeCount != 1)
+                throw new Exception("删除一个通知失败");
+        }
+
+        /// <summary>
+        /// 发布新通知
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<(bool, string)> PostNowNotificationAsync(Models.NewNotification model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Title))
+                return (false, "标题不能位空");
+            if (string.IsNullOrWhiteSpace(model.Content))
+                return (false, "内容不能位空");
+            DB.Tables.Notification notification = new DB.Tables.Notification
+            { 
+                Title = model.Title,
+                Content = model.Content,
+                IsTop = model.IsTop
+            };
+            await using var db = new LOPDbContext();
+            db.Notifications.Add(notification);
+            int changeCount = await db.SaveChangesAsync();
+            if (changeCount == 1)
+                return (true, "");
+            throw new Exception("发布通知失败");
+        }
     }
 }

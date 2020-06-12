@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ServicesBase, CommonService, Result, CLIENT_SIDE, ADMINISTRATOR_SIDO } from './common';
+import { ServicesBase, CommonService, Result, CLIENT_SIDE, ADMINISTRATOR_SIDE } from './common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, debounceTime } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export class IdentityService {
   }
 
   checkIsAdministratorLoggedIn(): Observable<Result> {
-    return this.http.get<Result>(`${ADMINISTRATOR_SIDO}identity/check`);
+    return this.http.get<Result>(`${ADMINISTRATOR_SIDE}identity/check`);
   }
 
   login(account: string, password: string): Observable<Result> {
@@ -55,9 +55,9 @@ export class IdentityService {
       RESULT.data = '账号不能为空';
       return of(RESULT);
     }
-    if (model.account.length < 2) {
-      this.common.snackOpen(`账号长度不能小于2位`);
-      RESULT.data = '账号长度不能小于2位';
+    if (model.account.length < 2 || model.account.indexOf(' ') !== -1) {
+      this.common.snackOpen(`账号长度不能小于2位且不能有空格`);
+      RESULT.data = '账号长度不能小于2位且不能有空格';
       return of(RESULT);
     }
     if (!model.password) {

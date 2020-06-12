@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { NotificationsService, NotificationItem } from '../../../../services/notifications.service';
 import { Paginator } from '../../../../services/common';
+import { MatDialog } from '@angular/material/dialog';
+import { DetailComponent } from '../detail/detail.component';
+import { NewComponent } from '../new/new.component';
 
 @Component({
   selector: 'app-list',
@@ -18,7 +21,8 @@ export class ListComponent implements OnInit {
   displayedColumns: string[] = ['title', 'dateTime', 'isTop', 'actions'];
 
   constructor(
-    private notification: NotificationsService
+    private notification: NotificationsService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -40,8 +44,29 @@ export class ListComponent implements OnInit {
     this.getNotificationsList();
   }
 
+  postNewNotification() {
+    const dia = this.dialog.open(NewComponent, {
+      minWidth: '600px'
+    });
+    dia.afterClosed().subscribe(result => {
+
+    });
+  }
+
   pageChange(pager: PageEvent) {
     this.index = pager.pageIndex;
     this.getNotificationsList();
+  }
+
+  viewNotification(id: number) {
+    const dia = this.dialog.open(DetailComponent, {
+      data: id
+    });
+    dia.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataSource = this.dataSource.filter(e => e.id !== id);
+      }
+    });
+
   }
 }
