@@ -27,7 +27,7 @@ namespace League_Of_Programmers.Middlewares
         {
             string path = context.Request.Path.Value;
 
-            if (string.Equals(path, "/login", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(path, "/admin-board", StringComparison.OrdinalIgnoreCase))
             {
                 // The request token can be sent as a JavaScript-readable cookie, 
                 // and Angular uses it by default.

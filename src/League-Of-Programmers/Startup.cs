@@ -32,7 +32,7 @@ namespace League_Of_Programmers
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+            //  services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
             services.AddDbContext<DB.LOPDbContext>();
             //  JWT 验证规则
@@ -91,7 +91,7 @@ namespace League_Of_Programmers
             }
 
             app.UseMiddleware<Middlewares.CircuitBreaker>();
-            app.UseMiddleware<Middlewares.Antiforgery>();
+            //  app.UseMiddleware<Middlewares.Antiforgery>();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

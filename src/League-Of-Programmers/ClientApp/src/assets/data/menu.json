@@ -1,15 +1,21 @@
 {
-    "menu": [
-        {
-            "dirTitle": "博文管理",
-            "icon": "article",
-            "child": [
-                {
-                    "title": "博文列表",
-                    "route": "/blogs",
-                    "icon": "list"
-                }
-            ]
-        }
-    ]
+  "menu": [{
+      "dirTitle": "博文管理",
+      "icon": "article",
+      "child": [{
+        "title": "博文列表",
+        "route": "blogs",
+        "icon": "list"
+      }]
+    },
+    {
+      "dirTitle": "公告管理",
+      "icon": "announcement",
+      "child": [{
+        "title": "公告列表",
+        "route": "notifications",
+        "icon": "list"
+      }]
+    }
+  ]
 }

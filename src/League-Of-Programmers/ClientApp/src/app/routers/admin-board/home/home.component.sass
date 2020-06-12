@@ -27,10 +27,26 @@
             font-size: 2rem
             color: white
 
+.accordion-menu
+    background-color: transparentize($primary-color,.9)
+
 .menu
     display: flex
     flex-direction: column
+    width: 100%
 
+.router
+    display: flex
+    justify-content: center
+    align-items: center
+    text-decoration: none
+    width: 100%
+    color: $primary-color
+    padding: 10px 0
+.router-active
+    color: $back-color
+    background-color: $primary-color
+    padding: 10px 12px
 
 .title-row
     display: flex
@@ -39,3 +55,9 @@
     .title
         font-size: 2rem
         margin-left: 1rem
+    .crumbs
+        display: flex
+        align-items: flex-end
+        margin-left: 1rem
+        padding-bottom: 5px
+        color: $primary-color

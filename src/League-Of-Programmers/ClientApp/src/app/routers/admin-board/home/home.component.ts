@@ -8,7 +8,9 @@ import { AdminMenuService } from '../../../services/admin-menu.service';
 })
 export class HomeComponent implements OnInit {
 
-  menu = [];
+  crumbs = '';
+  menuList = [];
+
 
   constructor(
     private adminService: AdminMenuService
@@ -16,8 +18,11 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.adminService.getMenus().subscribe(r => {
-      //  this.menu = r as any[];
+      this.menuList = (r as any).data.menu;
     });
   }
 
+  setCrubms(crumbs: string) {
+    this.crumbs = crumbs;
+  }
 }

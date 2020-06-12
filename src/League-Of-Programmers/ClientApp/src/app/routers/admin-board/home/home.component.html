@@ -7,9 +7,24 @@
         </div>
       </div>
       <div class="menu">
-        <div *ngFor="let dir of menu">
-            {{dir.dirTitle}}
-        </div>
+
+        <mat-accordion class="accordion-menu">
+          <mat-expansion-panel *ngFor="let menu of menuList">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>{{menu.icon}}</mat-icon>
+                {{menu.dirTitle}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <a class="router" [routerLink]="['/admin-board', route.route]"
+            (click)="setCrubms(menu.dirTitle + ' > ' + route.title)" routerLinkActive="router-active" *ngFor="let route of menu.child">
+              <mat-icon>{{route.icon}}</mat-icon>
+              {{route.title}}
+            </a>
+          </mat-expansion-panel>
+        </mat-accordion>
+
       </div>
     </div>
   </mat-drawer>
@@ -19,7 +34,10 @@
         <mat-icon>vertical_split</mat-icon>
       </button>
       <span class="title">管理员后台</span>
+      <span class="crumbs">{{crumbs}}</span>
     </div>
+
+    <router-outlet></router-outlet>
 
   </mat-drawer-content>
 </mat-drawer-container>

@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace League_Of_Programmers.Controllers.Clients
 {
-    [Authorize]
+    [Authorize/*, ValidateAntiForgeryToken*/]
     [Route("/api/administrators/[controller]")]
     public class AdministratorsSideController : LOPController
     {
