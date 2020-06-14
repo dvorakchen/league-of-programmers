@@ -1,5 +1,5 @@
 export const environment = {
-  SERVER_HOST: 'http://localhost:51325',
+  SERVER_HOST: 'http://leagueofprogrammers.org',
   production: true,
   useHash: true,
   hmr: false,
