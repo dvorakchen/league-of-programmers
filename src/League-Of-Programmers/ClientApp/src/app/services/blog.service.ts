@@ -107,6 +107,28 @@ export class BlogService {
   }
 
   /**
+   * 获取管理员端的博文列表
+   */
+  getBlogsListByAdministartor(index: number, size: number, state: string, s: string): Observable<Result> {
+    let p = new HttpParams()
+      .append('index', index.toString())
+      .append('size', size.toString());
+    if (state) {
+      p = p.append('state', state.trim());
+    }
+    s = s.trim();
+    if (s) {
+      p = p.append('s', s);
+    }
+
+    return this.http.get<Result>(`${CLIENT_SIDE}blogs?${p.toString()}`)
+    .pipe(
+      retry(1),
+      catchError(this.base.handleError)
+    );
+  }
+
+  /**
    * 获取博文详情
    */
   getBlogDetail(id: number): Observable<Result> {

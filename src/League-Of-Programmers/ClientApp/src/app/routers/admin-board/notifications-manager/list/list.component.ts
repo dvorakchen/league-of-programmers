@@ -67,6 +67,5 @@ export class ListComponent implements OnInit {
         this.dataSource = this.dataSource.filter(e => e.id !== id);
       }
     });
-
   }
 }

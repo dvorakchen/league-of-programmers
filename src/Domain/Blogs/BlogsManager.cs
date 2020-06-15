@@ -17,7 +17,8 @@ namespace Domain.Blogs
         public enum ListType
         {
             Search,
-            ClientDetailPage
+            ClientDetailPage,
+            AdministartorSide
         }
 
         public const int POST_DEFEATED = -1;
@@ -39,6 +40,7 @@ namespace Domain.Blogs
             {
                 ListType.Search => new List.BlogList(),
                 ListType.ClientDetailPage => new List.ClientBlogs(),
+                ListType.AdministartorSide => new List.AdministartorSide(),
                 _ => throw new ArgumentException("未知的列表参数")
             };
             var list = await blogList.GetListAsync(pager);

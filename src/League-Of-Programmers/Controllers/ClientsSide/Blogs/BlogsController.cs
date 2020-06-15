@@ -30,7 +30,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
         [HttpGet]
         public async Task<IActionResult> GetBlogsAsync(int index, int size, string s)
         {
-            var pager = Domain.Paginator.New(index, size);
+            var pager = Domain.Paginator.New(index, size, 1);
             pager["s"] = s ?? "";
 
             BlogsManager blogsManager = new BlogsManager();
