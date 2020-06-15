@@ -44,7 +44,7 @@ export class UserDetailComponent implements OnInit {
     this.route.paramMap.subscribe(p => {
       this.account = p.get('name');
       if (this.account) {
-        this.user.isSelf().subscribe(resp => {
+        this.user.isSelf(this.account).subscribe(resp => {
           this.isSelf = (resp.status === 200 && resp.data === true);
           this.getBlogList();
         });

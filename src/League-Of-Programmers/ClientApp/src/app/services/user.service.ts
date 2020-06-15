@@ -36,7 +36,7 @@ export class UserService {
    *          body: bool // is self
    *      404:    has not client
    */
-  isSelf(): Observable<Result> {
+  isSelf(account: string = ''): Observable<Result> {
     const RESULT: Result = {
       status: 404,
       data: ''
@@ -44,7 +44,10 @@ export class UserService {
     if (!Global.loginInfo || !Global.loginInfo.account) {
       return of(RESULT);
     }
-    return this.http.get<Result>(`${this.routePrefix}${Global.loginInfo.account}/check`)
+    if (account.trim() === '') {
+      account = Global.loginInfo.account;
+    }
+    return this.http.get<Result>(`${this.routePrefix}${account}/check`)
       .pipe(
         catchError(this.base.handleError)
       );

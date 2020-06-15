@@ -17,7 +17,7 @@ export class UserInfoBoxComponent implements OnInit {
   @Input() set account(acc: string) {
     this.acc = acc;
     if (this.acc) {
-      this.user.isSelf().subscribe(resp => {
+      this.user.isSelf(this.acc).subscribe(resp => {
         this.isSelf = (resp.status === 200 && resp.data === true);
       });
       this.getUserProfile();
