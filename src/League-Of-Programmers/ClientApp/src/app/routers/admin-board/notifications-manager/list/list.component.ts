@@ -60,7 +60,8 @@ export class ListComponent implements OnInit {
 
   viewNotification(id: number) {
     const dia = this.dialog.open(DetailComponent, {
-      data: id
+      data: id,
+      minWidth: '600px'
     });
     dia.afterClosed().subscribe(result => {
       if (result) {

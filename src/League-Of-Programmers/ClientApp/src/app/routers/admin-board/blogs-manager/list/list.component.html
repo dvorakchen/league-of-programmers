@@ -19,6 +19,11 @@
           <td mat-cell *matCellDef="let element"> {{element.title}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="authorAccount">
+          <th mat-header-cell *matHeaderCellDef> 作者 </th>
+          <td mat-cell *matCellDef="let element"> {{element.authorAccount}} </td>
+        </ng-container>
+
         <!-- dateTime Column -->
         <ng-container matColumnDef="dateTime">
             <th mat-header-cell *matHeaderCellDef> 发布时间 </th>
