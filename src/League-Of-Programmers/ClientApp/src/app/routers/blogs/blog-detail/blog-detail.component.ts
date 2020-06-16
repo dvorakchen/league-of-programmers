@@ -18,7 +18,8 @@ export class BlogDetailComponent implements OnInit {
     likes: 0,
     dateTime: '',
     author: '',
-    authorAccount: ''
+    authorAccount: '',
+    state: { key: -1, value: '' }
   };
   liked = false;
 

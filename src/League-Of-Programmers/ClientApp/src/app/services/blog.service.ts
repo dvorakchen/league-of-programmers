@@ -25,6 +25,7 @@ export interface BlogDetail {
   dateTime: string;
   author: string;
   authorAccount: string;
+  state: KeyValue<number, string>;
 }
 
 export interface NewBlog {

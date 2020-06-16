@@ -30,5 +30,18 @@ namespace League_Of_Programmers.Controllers.AdministratorsSide.Blogs
             pager = await blogsManager.GetBlogListAsync(BlogsManager.ListType.AdministartorSide, pager);
             return Ok(pager);
         }
+
+        /*
+         *  get blog detail in administrator side
+         */
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetBlogDetailAsync(int id)
+        {
+            var blog = await new BlogsManager().GetBlogAsync(id);
+            if (blog == null)
+                return NotFound();
+            var detail = await blog.GetDetailAsync();
+            return Ok(detail);
+        }
     }
 }
