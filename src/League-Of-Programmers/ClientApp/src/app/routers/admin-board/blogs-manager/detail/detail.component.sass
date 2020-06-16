@@ -1,0 +1,39 @@
+@import ../../../../../styles/color
+    
+.blog-container
+    display: flex
+    flex-direction: row
+    height: 100%
+    padding: 1rem
+    margin: 1rem 0
+    .detail
+        flex-grow: 1
+        min-width: 70%
+        height: 100%
+    .actions
+        min-width: 30%
+
+.title
+    font-size: 2rem
+    font-weight: 600
+    text-align: center
+
+.informations
+    margin-top: 1rem
+    text-align: center
+    span
+        margin-left: 1rem
+
+.targets
+  display: flex
+  flex-direction: row
+  margin: 1rem
+  span
+    margin-right: 0.5rem
+    border: 1px solid transparentize($primary-color, .5)
+    padding: .5rem
+    border-radius: 3px
+    background-color: transparentize($primary-color, .9)
+
+.content
+    padding: 1rem

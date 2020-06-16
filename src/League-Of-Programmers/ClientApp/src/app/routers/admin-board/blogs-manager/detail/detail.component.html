@@ -1,1 +1,22 @@
-<p>detail works!</p>
+<div class="blog-container">
+  <div class="detail">
+    <div class="title">
+      {{detail.title}}
+    </div>
+    <div class="informations">
+      <span>author: @{{detail.authorAccount}}</span>
+      <span>views: {{detail.views}}</span>
+      <span>likes: {{detail.likes}}</span>
+      <span>create date: {{detail.dateTime}}</span>
+    </div>
+    <div class="targets">
+      <span *ngFor="let target of detail.targets">{{target}}</span>
+    </div>
+    <div class="content">
+        <markdown [data]="detail.content"></markdown>
+    </div>
+  </div>
+  <div class="actions">
+    <button mat-raised-button>按钮</button>
+  </div>
+</div>
