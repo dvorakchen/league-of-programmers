@@ -1,7 +1,11 @@
 <h1 mat-dialog-title>{{detail.title}}</h1>
 <div mat-dialog-content>
-    {{detail.content}}
+  <mat-form-field class="w100">
+    <textarea matInput required cdkTextareaAutosize readonly>
+        {{detail.content}}
+    </textarea>
+  </mat-form-field>
 </div>
 <div mat-dialog-actions class="actions">
-    <button mat-flat-button color="primary" (click)="close()">关闭</button>
+  <button mat-flat-button color="primary" (click)="close()">关闭</button>
 </div>

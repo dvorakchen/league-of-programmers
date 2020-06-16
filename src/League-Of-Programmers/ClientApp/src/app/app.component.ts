@@ -6,4 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
+  year = new Date().getFullYear();
 }
