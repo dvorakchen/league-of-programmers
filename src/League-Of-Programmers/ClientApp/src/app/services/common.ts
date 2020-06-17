@@ -11,7 +11,7 @@ export interface Result {
   data: any;
 }
 
-export interface CreatedResult {
+export class CreatedResult implements Result {
   status: number;
   data: any;
   location: string;
