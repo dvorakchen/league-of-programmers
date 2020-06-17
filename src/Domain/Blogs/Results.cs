@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Blogs
 {
@@ -16,6 +15,7 @@ namespace Domain.Blogs
             public string Author { get; set; } = "";
             public string AuthorAccount { get; set; } = "";
             public string DateTime { get; set; } = "";
+            public KeyValue<int, string> State { get; set; }
         }
 
         public class BlogItem
@@ -27,7 +27,7 @@ namespace Domain.Blogs
             public string DateTime { get; set; } = "";
             public int Views { get; set; } = 0;
             public int Likes { get; set; } = 0;
-            public KeyValuePair<int, string> State { get; set; }
+            public KeyValue<int, string> State { get; set; }
         }
     }
 }

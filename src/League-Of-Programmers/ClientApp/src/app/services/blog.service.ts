@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ServicesBase, Result, CLIENT_SIDE } from './common';
+import { ServicesBase, Result, CLIENT_SIDE, ADMINISTRATOR_SIDE } from './common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
@@ -43,7 +43,8 @@ export interface ModifyBlog {
 export const enum BlogState {
   Enabled,
   Disabled,
-  Draft
+  Draft,
+  Audit
 }
 
 @Injectable({
@@ -122,7 +123,7 @@ export class BlogService {
       p = p.append('s', s);
     }
 
-    return this.http.get<Result>(`${CLIENT_SIDE}blogs?${p.toString()}`)
+    return this.http.get<Result>(`${ADMINISTRATOR_SIDE}blogs?${p.toString()}`)
     .pipe(
       retry(1),
       catchError(this.base.handleError)
@@ -178,6 +179,28 @@ export class BlogService {
   deleteBlog(id: number): Observable<Result> {
     return this.http.delete<Result>(`${CLIENT_SIDE}blogs/${id}`)
     .pipe(
+      catchError(this.base.handleError)
+    );
+  }
+
+  /**
+   * 启用博文
+   */
+  enable(id: number): Observable<Result> {
+    return this.http.patch<Result>(`${ADMINISTRATOR_SIDE}blogs/${id}/enable`, '')
+    .pipe(
+      retry(1),
+      catchError(this.base.handleError)
+    );
+  }
+
+  /**
+   * 禁用博文
+   */
+  disable(id: number): Observable<Result> {
+    return this.http.patch<Result>(`${ADMINISTRATOR_SIDE}blogs/${id}/disable`, '')
+    .pipe(
+      retry(1),
       catchError(this.base.handleError)
     );
   }

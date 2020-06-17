@@ -16,7 +16,7 @@ export class ListComponent implements OnInit {
   search = '';
   state = '';
   dataSource: BlogItem[] = [];
-  displayedColumns: string[] = ['title', 'authorAccount', 'dateTime', 'actions'];
+  displayedColumns: string[] = ['title', 'authorAccount', 'state', 'dateTime', 'actions'];
   constructor(
     private blog: BlogService
   ) { }

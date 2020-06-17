@@ -17,7 +17,6 @@ namespace League_Of_Programmers.Controllers.AdministratorsSide.Blogs
          *  
          *  return: 
          *      200:    successfully
-         *      
          */
         [HttpGet]
         public async Task<IActionResult> GetBlogsAsync(int index, int size, string s, int? state)
@@ -42,6 +41,48 @@ namespace League_Of_Programmers.Controllers.AdministratorsSide.Blogs
                 return NotFound();
             var detail = await blog.GetDetailAsync();
             return Ok(detail);
+        }
+
+        /*
+         *  启用博文
+         *  
+         *  /api/administrator/blogs/{id}/enable
+         *  
+         *  return:
+         *      204:    successfully
+         *      400:    fault
+         */
+        [HttpPatch("{id}/enable")]
+        public async Task<IActionResult> EnableAsync(int id)
+        {
+            var blog = await new BlogsManager().GetBlogAsync(id);
+            if (blog == null)
+                return BadRequest("该博文已不存在");
+            (bool isSucc, string msg) = await blog.EnableAsync();
+            if (isSucc)
+                return NoContent();
+            return BadRequest(msg);
+        }
+
+        /*
+         *  禁用博文
+         *  
+         *  /api/administrator/blogs/{id}/disable
+         *  
+         *  return:
+         *      204:    successfully
+         *      400:    fault
+         */
+        [HttpPatch("{id}/disable")]
+        public async Task<IActionResult> DisableAsync(int id)
+        {
+            var blog = await new BlogsManager().GetBlogAsync(id);
+            if (blog == null)
+                return BadRequest("该博文已不存在");
+            (bool isSucc, string msg) = await blog.DisableAsync();
+            if (isSucc)
+                return NoContent();
+            return BadRequest(msg);
         }
     }
 }

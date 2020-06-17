@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BlogDetail, BlogService } from '../../../../services/blog.service';
+import { BlogDetail, BlogService, BlogState } from '../../../../services/blog.service';
 import { CommonService } from '../../../../services/common';
 
 @Component({
@@ -40,6 +40,28 @@ export class DetailComponent implements OnInit {
     this.blog.getBlogDetail(this.id).subscribe(r => {
       if (r.status === 200) {
         this.detail = r.data as BlogDetail;
+      } else {
+        this.common.snackOpen(r.data);
+      }
+    });
+  }
+
+  enable() {
+    this.blog.enable(this.id).subscribe(r => {
+      if (r.status === 204) {
+        this.detail.state.key = BlogState.Enabled;
+        this.detail.state.value = '启用';
+      } else {
+        this.common.snackOpen(r.data);
+      }
+    });
+  }
+
+  disable() {
+    this.blog.disable(this.id).subscribe(r => {
+      if (r.status === 204) {
+        this.detail.state.key = BlogState.Disabled;
+        this.detail.state.value = '禁用';
       } else {
         this.common.snackOpen(r.data);
       }

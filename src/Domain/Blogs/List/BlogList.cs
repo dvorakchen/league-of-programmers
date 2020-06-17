@@ -41,7 +41,7 @@ namespace Domain.Blogs.List
                                            DateTime = blog.CreateDate.ToString("yyyy/MM/dd HH:mm"),
                                            Views = blog.Views,
                                            Likes = blog.Likes,
-                                           State = KeyValuePair.Create(blog.State, blog.State.GetDescription<Blog.BlogState>())
+                                           State = KeyValue.Create(blog.State, blog.State.GetDescription<Blog.BlogState>())
                                        })
                                        .ToListAsync();
             return pager;

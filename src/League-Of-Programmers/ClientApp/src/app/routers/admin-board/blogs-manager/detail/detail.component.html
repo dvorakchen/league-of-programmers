@@ -13,10 +13,28 @@
       <span *ngFor="let target of detail.targets">{{target}}</span>
     </div>
     <div class="content">
-        <markdown [data]="detail.content"></markdown>
+      <markdown [data]="detail.content"></markdown>
     </div>
   </div>
-  <div class="actions">
-    <button mat-raised-button>按钮</button>
+  <div class="actions" [ngSwitch]="detail.state.key">
+    <div class="current-state">
+      当前博文状态：{{detail.state.value}}
+    </div>
+    <p>可进行操作：</p>
+    <div *ngSwitchCase="0">
+      <!--启用-->
+      <button mat-raised-button color="warn" (click)="disable()">禁用</button>
+    </div>
+    <div *ngSwitchCase="1">
+      <!--禁用-->
+      <button mat-raised-button color="primary" (click)="enable()">启用</button>
+    </div>
+    <!-- <div *ngSwitchCase="2"></div> -->
+    <div *ngSwitchCase="3">
+      <!--待审核-->
+      <button mat-raised-button color="primary" (click)="enable()">启用</button>
+      <button mat-raised-button color="warn" (click)="disable()">禁用</button>
+    </div>
+    <div *ngSwitchDefault></div>
   </div>
 </div>
