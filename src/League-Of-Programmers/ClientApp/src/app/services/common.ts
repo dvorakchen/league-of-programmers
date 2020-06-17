@@ -79,16 +79,17 @@ export class CommonService {
   }
 
   /**
-   * 设置 Tab 键为插入 \t
+   * 设置 Tab 键为插入 '    ' <四个空格>
    */
   setTabEvent(ele: any): Subscription {
     return fromEvent(ele, 'keydown').subscribe(k => {
       const KEY_BOARD = k as any;
       if (KEY_BOARD.key === 'Tab') {
+        const INSERT_CHARS = '    ';
         KEY_BOARD.returnValue = false;
         const INDEX = ele.selectionStart;
-        ele.value = ele.value.substring(0, INDEX) + '\t' + ele.value.substring(INDEX);
-        ele.setSelectionRange(INDEX + 1, INDEX + 1);
+        ele.value = ele.value.substring(0, INDEX) + INSERT_CHARS + ele.value.substring(INDEX);
+        ele.setSelectionRange(INDEX + INSERT_CHARS.length, INDEX + INSERT_CHARS.length);
       }
     });
   }
