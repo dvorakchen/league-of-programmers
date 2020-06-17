@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { CommonService } from '../../services/common';
 import { UserService, Profile, UserInfo } from '../../services/user.service';
+import { AvatarDialogComponent } from './avatar-dialog.component';
 
 @Component({
   selector: 'app-user-info-box',
@@ -41,6 +43,7 @@ export class UserInfoBoxComponent implements OnInit {
     private router: Router,
     private common: CommonService,
     private user: UserService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -87,5 +90,14 @@ export class UserInfoBoxComponent implements OnInit {
     this.editButtonText = this.editUserInfo ? '确认修改' : '修改';
     this.editBoxAppearance = this.editUserInfo ? 'outline' : 'legacy';
     this.editButtonIsLoading = false;
+  }
+
+  viewAvatar() {
+    this.dialog.open(AvatarDialogComponent, {
+      data: {
+        isSelf: this.isSelf,
+        avatarPath: this.profile.avatar
+      }
+    });
   }
 }

@@ -102,4 +102,15 @@ export class UserService {
       catchError(this.base.handleError)
     );
   }
+
+  /**
+   * 修改头像
+   * @param avatarId 新头像ID
+   */
+  modifyAvator(avatarId: number): Observable<Result> {
+    return this.http.patch<Result>(`${this.routePrefix}avatar`, avatarId)
+    .pipe(
+      catchError(this.base.handleError)
+    );
+  }
 }

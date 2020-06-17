@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace League_Of_Programmers.Controllers
 {
+    [Route("/api/[controller]")]
     public class FilesController : LOPController
     {
         private readonly ILogger logger;

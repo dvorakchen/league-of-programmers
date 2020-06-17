@@ -86,8 +86,8 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Blogs
             if (id == BlogsManager.POST_DEFEATED)
                 return Accepted();
 
-            string url = $"/blogs/{id}/{title}";
-            return Created(Uri.EscapeUriString(url), null);
+            string url = Uri.EscapeUriString($"/blogs/{id}/{title}");
+            return Created(url, null);
         }
 
         /*

@@ -124,17 +124,17 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
          *  /api/clients/users/avatar
          *
          *  return: 
-         *      200:    successfully
+         *      204:    successfully
          *      400:    defeated
          */
         [Authorize]
-        [HttpPatch("email")]
+        [HttpPatch("avatar")]
         public async Task<IActionResult> ModifyAvatarAsync([FromBody]int avatarId)
         {
             var currentUser = await _userManager.GetClientAsync(CurrentUserId);
             (bool isSuccessfully, string msg) = await currentUser.ModifyAvatarAsync(avatarId);
             if (isSuccessfully)
-                return Ok();
+                return NoContent();
             return BadRequest(msg);
         }
     }
