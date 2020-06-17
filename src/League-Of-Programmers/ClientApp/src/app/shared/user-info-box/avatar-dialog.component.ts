@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CommonService } from '../../services/common';
+import { CommonService, CreatedResult } from '../../services/common';
 import { FileService, AVATAR_MAX_SIZE } from '../../services/file.service';
 import { UserService } from '../../services/user.service';
 
@@ -73,7 +73,8 @@ export class AvatarDialogComponent implements OnInit {
         this.file.uploadAvatar(this.waitToUploadAvatar).subscribe(r => {
             if (r.status === 201) {
                 //  得到 ID
-                this.user.modifyAvator(r.data).subscribe(avatarResp => {
+                const FILE_RESULT = r as CreatedResult;
+                this.user.modifyAvator(+FILE_RESULT.data).subscribe(avatarResp => {
                     if (avatarResp.status === 204) {
                         this.common.snackOpen('修改成功', 3000);
                     } else {

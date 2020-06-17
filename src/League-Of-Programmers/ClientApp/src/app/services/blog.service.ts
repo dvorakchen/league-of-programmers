@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ServicesBase, Result, CLIENT_SIDE, ADMINISTRATOR_SIDE } from './common';
+import { ServicesBase, Result, CLIENT_SIDE, ADMINISTRATOR_SIDE, CreatedResult } from './common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
@@ -144,8 +144,8 @@ export class BlogService {
   /**
    * 写博文
    */
-  writeBlog(newPost: NewBlog): Observable<Result> {
-    return this.http.post<Result>(`${CLIENT_SIDE}blogs`, newPost)
+  writeBlog(newPost: NewBlog): Observable<Result | CreatedResult> {
+    return this.http.post<CreatedResult>(`${CLIENT_SIDE}blogs`, newPost)
     .pipe(
       catchError(this.base.handleError)
     );

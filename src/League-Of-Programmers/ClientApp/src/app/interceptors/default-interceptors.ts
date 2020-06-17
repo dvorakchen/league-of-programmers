@@ -1,4 +1,4 @@
-import { Injectable, isDevMode, Optional, Inject } from '@angular/core';
+import { Injectable, isDevMode, Inject } from '@angular/core';
 import { Location, DOCUMENT, ɵparseCookieValue as parseCookieValue } from '@angular/common';
 import {
   HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse, HttpResponse
@@ -7,7 +7,7 @@ import { Observable, throwError, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { CommonService, Result } from '../services/common';
+import { CommonService, Result, CreatedResult } from '../services/common';
 
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
@@ -45,9 +45,16 @@ export class DefaultInterceptor implements HttpInterceptor {
           if (resp instanceof HttpResponse) {
             let data = resp.body;
             switch (resp.status) {
-              case 201:
-                data = resp.headers.get('Location');
-                break;
+              case 201: {
+                //  201 是包装 CreatedResult
+                return of(resp.clone<CreatedResult>({
+                  body: {
+                    status: resp.status,
+                    data,
+                    location: resp.headers.get('Location')
+                  }
+                }));
+              }
               default:
                 break;
             }

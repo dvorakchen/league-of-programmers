@@ -1,9 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NewBlog, BlogService } from '../../../services/blog.service';
-import { CommonService } from '../../../services/common';
+import { CommonService, CreatedResult } from '../../../services/common';
 import { Router } from '@angular/router';
-import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-blog-write',
@@ -61,9 +60,8 @@ export class BlogWriteComponent implements OnInit, AfterViewInit {
         case 201:
           {
             this.common.snackOpen('发布成功', 3000);
-            if (resp.data) {
-              this.router.navigateByUrl(resp.data);
-            }
+            const R = resp as CreatedResult;
+            this.router.navigateByUrl(R.location);
           }
           break;
         case 400:

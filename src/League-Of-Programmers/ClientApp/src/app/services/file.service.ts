@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ServicesBase, CommonService, Result } from './common';
+import { ServicesBase, CommonService, Result, CreatedResult } from './common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -20,7 +20,7 @@ export class FileService {
     private http: HttpClient
   ) { }
 
-  uploadAvatar(file: any): Observable<Result> {
+  uploadAvatar(file: any): Observable<Result | CreatedResult> {
     if (file === undefined || file === null) {
       const R = {
         status: 400,
@@ -30,7 +30,7 @@ export class FileService {
     }
     const fileForm = new FormData()
     .append('file', file);
-    return this.http.post<Result>(`/api/files`, fileForm)
+    return this.http.post<Result | CreatedResult>(`/api/files`, fileForm)
     .pipe(
       catchError(this.base.handleError)
     );

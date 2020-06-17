@@ -11,6 +11,12 @@ export interface Result {
   data: any;
 }
 
+export interface CreatedResult {
+  status: number;
+  data: any;
+  location: string;
+}
+
 /**
  * 分页模型
  */
@@ -39,7 +45,7 @@ export class ServicesBase {
    * 在这个错误处理中，只负责返回一个合法的值，
    * 如果需要打印，跳转等其他操作，在拦截器中定义
    */
-  handleError(error: HttpErrorResponse): Observable<Result> {
+  handleError(error: HttpErrorResponse): Observable<Result | CreatedResult> {
     const R: Result = {
       status: error.status,
       data: ''
