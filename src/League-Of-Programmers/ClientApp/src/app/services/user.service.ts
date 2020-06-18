@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ServicesBase, CommonService, Result, CLIENT_SIDE } from './common';
-import { HttpClient } from '@angular/common/http';
+import { ServicesBase, Result, CLIENT_SIDE } from './common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Global } from '../global';
+
+import sha256 from 'crypto-js/sha256';
+import { enc } from 'crypto-js';
 
 export interface Profile {
   avatar: string;
@@ -16,6 +19,12 @@ export interface UserInfo {
   email: string;
 }
 
+export interface ChangePassword {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,8 +34,7 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private base: ServicesBase,
-    private common: CommonService
+    private base: ServicesBase
   ) { }
 
   /**
@@ -104,11 +112,32 @@ export class UserService {
   }
 
   /**
-   * 修改头像
+   * 当前登录人修改头像
    * @param avatarId 新头像ID
    */
   modifyAvator(avatarId: number): Observable<Result> {
     return this.http.patch<Result>(`${this.routePrefix}avatar`, avatarId)
+    .pipe(
+      catchError(this.base.handleError)
+    );
+  }
+
+  changePassword(changePassword: ChangePassword): Observable<Result> {
+    const post: ChangePassword = {
+      ...changePassword
+    };
+
+    post.oldPassword = sha256(post.oldPassword).toString();
+    post.newPassword = sha256(post.newPassword).toString();
+    post.confirmPassword = sha256(post.confirmPassword).toString();
+
+    const words = enc.Utf8.parse(JSON.stringify(post));
+    const base64 = enc.Base64.stringify(words);
+
+    const headers: HttpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
+
+    //  发送 base64 加密的值
+    return this.http.patch<Result>(`${this.routePrefix}password`, `\"${base64}\"`, { headers })
     .pipe(
       catchError(this.base.handleError)
     );

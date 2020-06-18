@@ -137,19 +137,19 @@ namespace Domain.Users
         /// modify the user email
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<(bool, string)> ModifyPasswordAsync(string password)
+        public virtual async Task<(bool, string)> ModifyPasswordAsync(Models.ChangePassword model)
         {
             await using var db = new LOPDbContext();
-            DB.Tables.User user = await db.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == Id);
+            DB.Tables.User user = await db.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == Id && user.Password.Equals(model.OldPassword, StringComparison.OrdinalIgnoreCase));
             if (user is null)
-                return (false, "该用户不存在");
+                return (false, "旧密码错误");
 
-            if (string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(model.NewPassword))
                 return (false, "密码不能为空");
 
-            if (user.Password == password)
+            if (user.Password == model.NewPassword)
                 return (true, "");
-            user.Password = password;
+            user.Password = model.NewPassword;
             db.Update(user);
             int changeCount = await db.SaveChangesAsync();
             if (changeCount == 1)

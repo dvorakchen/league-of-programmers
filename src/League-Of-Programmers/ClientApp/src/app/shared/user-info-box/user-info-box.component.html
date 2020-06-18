@@ -1,6 +1,6 @@
 <div class="user-box">
   <div class="avatar-box">
-    <img src="{{profile.avatar}}" alt="头像" (click)="viewAvatar()">
+    <img src="{{profile.avatar}}" alt="头像" (click)="viewAvatar()" matTooltip="点击修改头像">
   </div>
   <div class="user-info">
     <mat-form-field [appearance]="editBoxAppearance">
@@ -9,9 +9,13 @@
     </mat-form-field>
     <mat-form-field [appearance]="editBoxAppearance">
       <mat-label>邮箱</mat-label>
-      <input matInput type="email" value="{{profile.email}}" #email [readonly]="!editUserInfo" required>
+      <input matInput type="email" value="{{profile.email}}" #email [readonly]="!editUserInfo" required
+      placeholder="可用此邮箱找回密码">
     </mat-form-field>
-    <button mat-flat-button color="primary" (click)="edit(userName.value, email.value)" *ngIf="isSelf"
+    <div class="actions" *ngIf="isSelf">
+      <button mat-flat-button color="primary" (click)="edit(userName.value, email.value)"
       [disabled]="editButtonIsLoading">{{editButtonText}}</button>
+      <button mat-button color="primary" (click)="changePassword()">修改密码</button>
+    </div>
   </div>
 </div>

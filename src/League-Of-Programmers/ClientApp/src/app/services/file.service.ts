@@ -22,13 +22,19 @@ export class FileService {
   ) { }
 
   uploadAvatar(file: any): Observable<Result | CreatedResult> {
-    if (file === undefined || file === null) {
-      const R = {
-        status: 400,
-        data: '必须上传头像'
-      };
+    const R = {
+      status: 400,
+      data: ''
+    };
+    if (file === null || file === undefined) {
+      R.data = '必须上传头像';
       return of(R);
+  }
+    if (file.size > AVATAR_MAX_SIZE) {
+        R.data = `头像大小必须小于${AVATAR_MAX_SIZE}字节`;
+        return of(R);
     }
+
     const fileForm = new FormData();
     fileForm.set('file', file);
 

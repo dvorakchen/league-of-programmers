@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonService } from '../../services/common';
 import { UserService, Profile, UserInfo } from '../../services/user.service';
-import { AvatarDialogComponent } from './avatar-dialog.component';
+import { AvatarDialogComponent } from '../avatar-dialog/avatar-dialog.component';
+import { ChangePasswordComponent } from './change-password.component';
 
 @Component({
   selector: 'app-user-info-box',
@@ -103,6 +104,12 @@ export class UserInfoBoxComponent implements OnInit {
       if (newAvatarPath) {
         this.profile.avatar = newAvatarPath;
       }
+    });
+  }
+
+  changePassword() {
+    const PASSWORD_DIA = this.dialog.open(ChangePasswordComponent, {
+      minWidth: '400px'
     });
   }
 }

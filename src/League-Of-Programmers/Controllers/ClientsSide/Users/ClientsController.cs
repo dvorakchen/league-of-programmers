@@ -6,6 +6,7 @@ using League_Of_Programmers.Controllers.Clients;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Users;
+using System.Text;
 
 namespace League_Of_Programmers.Controllers.ClientsSide.Users
 {
@@ -84,17 +85,24 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
          *  /api/clients/users/password
          *
          *  return: 
-         *      200:    successfully
+         *      204:    successfully
          *      400:    defeated
          */
-        [Authorize]
+        //[Authorize]
         [HttpPatch("password")]
-        public async Task<IActionResult> ModifyPasswordAsync([FromBody]string newPassword)
+        public async Task<IActionResult> ModifyPasswordAsync([FromBody]string base64Value)
         {
+            string modelString = Encoding.UTF8.GetString(Convert.FromBase64String(base64Value));
+            
+            var model = Newtonsoft.Json.JsonConvert.DeserializeObject<Models.ChangePassword>(modelString);
+
+            if (model.NewPassword != model.ConfirmPassword)
+                return BadRequest("两次新密码不相同");
+
             var currentUser = await _userManager.GetClientAsync(CurrentUserId);
-            (bool isSuccessfully, string msg) = await currentUser.ModifyPasswordAsync(newPassword);
+            (bool isSuccessfully, string msg) = await currentUser.ModifyPasswordAsync(model);
             if (isSuccessfully)
-                return Ok();
+                return NoContent();
             return BadRequest(msg);
         }
 

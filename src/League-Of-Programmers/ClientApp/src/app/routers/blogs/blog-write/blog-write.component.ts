@@ -1,18 +1,19 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NewBlog, BlogService } from '../../../services/blog.service';
 import { CommonService, CreatedResult } from '../../../services/common';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-blog-write',
   templateUrl: './blog-write.component.html',
   styleUrls: ['./blog-write.component.sass']
 })
-export class BlogWriteComponent implements OnInit, AfterViewInit {
+export class BlogWriteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   preview = ``;
-
+  contentBox: Subscription;
   isPosting = false;
 
   blog = this.fb.group({
@@ -28,12 +29,16 @@ export class BlogWriteComponent implements OnInit, AfterViewInit {
     private router: Router
   ) { }
 
+  ngOnDestroy(): void {
+    this.contentBox.unsubscribe();
+  }
+
   ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
     const CONTENT_DOM = document.getElementById('txt_content');
-    this.common.setTabEvent(CONTENT_DOM);
+    this.contentBox = this.common.setTabEvent(CONTENT_DOM);
   }
 
   postBlog() {

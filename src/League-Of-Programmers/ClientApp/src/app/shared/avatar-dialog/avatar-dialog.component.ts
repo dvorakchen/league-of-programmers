@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CommonService, CreatedResult } from '../../services/common';
-import { FileService, AVATAR_MAX_SIZE } from '../../services/file.service';
+import { FileService } from '../../services/file.service';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -10,8 +10,8 @@ import { UserService } from '../../services/user.service';
 <div class="box">
     <img class="w100 h100" *ngIf="data.avatarPath" [src]="data.avatarPath | safeUrl" alt="头像" >
     <div class="actions">
-        <div class="self-action">
-            <button mat-stroked-button color="primary" *ngIf="data.isSelf" (click)="changeAvatar()">修改头像</button>
+        <div class="self-action" *ngIf="data.isSelf">
+            <button mat-stroked-button color="primary" (click)="changeAvatar()">修改头像</button>
             <button mat-raised-button color="primary" [disabled]="!canModify" (click)="modifiAvator()">确认修改</button>
             <input type="file" #fil_avatar hidden (change)="fileChange()">
         </div>
@@ -61,14 +61,7 @@ export class AvatarDialogComponent implements OnInit {
     }
 
     modifiAvator() {
-        if (this.waitToUploadAvatar === null || this.waitToUploadAvatar === undefined) {
-            this.common.snackOpen('必须上传头像');
-            return;
-        }
-        if (this.waitToUploadAvatar.size > AVATAR_MAX_SIZE) {
-            this.common.snackOpen(`头像大小必须小于${AVATAR_MAX_SIZE}字节`);
-            return;
-        }
+
         this.canModify = false;
         this.file.uploadAvatar(this.waitToUploadAvatar).subscribe(r => {
             if (r.status === 201) {
