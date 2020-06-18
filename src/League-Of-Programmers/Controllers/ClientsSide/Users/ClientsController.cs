@@ -88,7 +88,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
          *      204:    successfully
          *      400:    defeated
          */
-        //[Authorize]
+        [Authorize]
         [HttpPatch("password")]
         public async Task<IActionResult> ModifyPasswordAsync([FromBody]string base64Value)
         {

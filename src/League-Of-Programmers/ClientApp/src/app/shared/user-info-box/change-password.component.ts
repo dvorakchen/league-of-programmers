@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
 import { CommonService, REDIRECT } from '../../services/common';
 import { UserService, ChangePassword } from '../../services/user.service';
+import { Global } from '../../global';
 
 @Component({
     selector: 'app-change-password',
@@ -37,7 +38,7 @@ export class ChangePasswordComponent implements OnInit {
         this.user.changePassword(this.changePassword).subscribe(r => {
             if (r.status === 204) {
                 this.common.snackOpen('修改成功，请重新登录');
-                
+                Global.loginInfo = null;
                 this.router.navigateByUrl(`/login?${REDIRECT}=${this.loc.path()}`);
                 this.dialogRef.close();
                 return;
