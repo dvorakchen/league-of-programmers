@@ -6,11 +6,23 @@ import { of, Observable, fromEvent, Subscription } from 'rxjs';
 export const CLIENT_SIDE = '/api/clients/';
 export const ADMINISTRATOR_SIDE = '/api/administrators/';
 
+/**
+ * 响应数据会在拦截器中包装成这个 Result
+ * 如果是 201，则会用 CreatedResult 包装
+ */
 export interface Result {
+  /**
+   * 状态码，对应原生 HTTP 状态码
+   */
   status: number;
+  /**
+   * 响应 body 里的数据
+   */
   data: any;
 }
-
+/**
+ * 201 的响应包装
+ */
 export class CreatedResult implements Result {
   status: number;
   data: any;
@@ -74,7 +86,7 @@ export class CommonService {
     private snack: MatSnackBar
   ) { }
 
-  snackOpen(message: string, duration?: number) {
+  snackOpen(message: string, duration: number = 2000) {
     if (!duration) {
       duration = null;
     }

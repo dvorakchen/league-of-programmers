@@ -16,6 +16,6 @@ namespace DB.Tables
         /// 图片缩略图或封面，如果小于64字节就不需要压缩了
         /// </summary>
         [Required, StringLength(64)]
-        public string Thumbnail { get; set; }
+        public string Thumbnail { get; set; } = "";
     }
 }

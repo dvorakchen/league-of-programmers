@@ -5,9 +5,10 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 /**
- * 头像文件最大字节数
+ * 头像文件最大字节数 Byte
  */
-export const AVATAR_MAX_SIZE = 64;
+// tslint:disable-next-line: no-bitwise
+export const AVATAR_MAX_SIZE = 64 << 10;
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +29,9 @@ export class FileService {
       };
       return of(R);
     }
-    const fileForm = new FormData()
-    .append('file', file);
+    const fileForm = new FormData();
+    fileForm.set('file', file);
+
     return this.http.post<Result | CreatedResult>(`/api/files`, fileForm)
     .pipe(
       catchError(this.base.handleError)

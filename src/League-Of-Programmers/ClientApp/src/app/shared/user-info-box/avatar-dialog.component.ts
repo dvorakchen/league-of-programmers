@@ -30,6 +30,7 @@ export class AvatarDialogComponent implements OnInit {
      * 待上传的头像
      */
     waitToUploadAvatar: any;
+    newAvatarPath = '';
 
     constructor(
         private common: CommonService,
@@ -61,12 +62,11 @@ export class AvatarDialogComponent implements OnInit {
 
     modifiAvator() {
         if (this.waitToUploadAvatar === null || this.waitToUploadAvatar === undefined) {
-            this.common.snackOpen('必须上传头像', 3000);
+            this.common.snackOpen('必须上传头像');
             return;
         }
-        // tslint:disable-next-line: no-bitwise
-        if ((this.waitToUploadAvatar.size as number >> 10) > AVATAR_MAX_SIZE) {
-            this.common.snackOpen(`头像大小必须小于${AVATAR_MAX_SIZE}字节`, 3000);
+        if (this.waitToUploadAvatar.size > AVATAR_MAX_SIZE) {
+            this.common.snackOpen(`头像大小必须小于${AVATAR_MAX_SIZE}字节`);
             return;
         }
         this.canModify = false;
@@ -75,20 +75,23 @@ export class AvatarDialogComponent implements OnInit {
                 //  得到 ID
                 const FILE_RESULT = r as CreatedResult;
                 this.user.modifyAvator(+FILE_RESULT.data).subscribe(avatarResp => {
-                    if (avatarResp.status === 204) {
-                        this.common.snackOpen('修改成功', 3000);
+                    if (avatarResp.status === 200) {
+                        this.common.snackOpen('修改成功');
+                        this.canModify = false;
+                        this.newAvatarPath = avatarResp.data;
+                        return;
                     } else {
-                        this.common.snackOpen(avatarResp.data, 3000);
+                        this.common.snackOpen(avatarResp.data);
                     }
+                    this.canModify = true;
                 });
             } else {
                 this.common.snackOpen(r.data);
             }
-            this.canModify = true;
         });
     }
 
     close() {
-        this.dialogRef.close();
+        this.dialogRef.close(this.newAvatarPath);
     }
 }

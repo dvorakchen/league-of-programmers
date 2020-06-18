@@ -38,7 +38,7 @@ namespace League_Of_Programmers.Controllers
                 return BadRequest("没有上传文件");
 
             if (!int.TryParse(configuration.GetSection("File:AvatarFileSizeLimet").Value, out int smallFileMaxLength))
-                smallFileMaxLength = 64;
+                smallFileMaxLength = 65_536;
 
             if (file.Length > smallFileMaxLength)
                 return BadRequest($"上传的文件最大只能限制在{smallFileMaxLength}字节");
@@ -55,17 +55,26 @@ namespace League_Of_Programmers.Controllers
             }
 
             string saveWebPath = configuration.GetSection("File:SaveWebPath").Value;
-            string saveFullPath = Path.Combine(Directory.GetCurrentDirectory(), saveWebPath, trustedFileNameForFileStorage);
+            saveWebPath = Path.Combine(saveWebPath, trustedFileNameForFileStorage);
+            string saveFullPath = Directory.GetCurrentDirectory() + saveWebPath;
 
-            await using var fileStream = System.IO.File.Create(saveFullPath);
-            await file.CopyToAsync(fileStream);
+            await using (var fileStream = System.IO.File.Create(saveFullPath))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+            try
+            {
+                (bool isSuccess, int id) = await Files.File.SaveToDBAsync(trustedFileNameForDisplay, trustedFileNameForFileStorage, file.Length);
+                if (isSuccess)
+                    return Created(saveWebPath, id);
+            }
+            catch (System.Exception)
+            {
+                //  delete the save file if save to DB fault
+                System.IO.File.Delete(saveFullPath);
+                throw;
+            }
 
-            (bool isSuccess, int id) = await Files.File.SaveToDBAsync(trustedFileNameForDisplay, trustedFileNameForFileStorage, file.Length);
-            if (isSuccess)
-                return Created(saveWebPath, id);
-
-            //  delete the save file if save to DB fault
-            System.IO.File.Delete(saveFullPath);
             return Accepted();
         }
 

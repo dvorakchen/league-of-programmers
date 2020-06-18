@@ -120,11 +120,12 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
 
         /* 
          * 当前用户修改头像
+         * 修改成功后会将新头像的访问链接返回
          *  
          *  /api/clients/users/avatar
          *
          *  return: 
-         *      204:    successfully
+         *      200:    successfully
          *      400:    defeated
          */
         [Authorize]
@@ -134,7 +135,7 @@ namespace League_Of_Programmers.Controllers.ClientsSide.Users
             var currentUser = await _userManager.GetClientAsync(CurrentUserId);
             (bool isSuccessfully, string msg) = await currentUser.ModifyAvatarAsync(avatarId);
             if (isSuccessfully)
-                return NoContent();
+                return Ok(msg);
             return BadRequest(msg);
         }
     }

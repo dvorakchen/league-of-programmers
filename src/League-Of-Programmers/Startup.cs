@@ -63,8 +63,8 @@ namespace League_Of_Programmers
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(typeof(Filters.ExceptionHandleAttribute));
-                //  如果返回的结果是空值，null，就填充进一个空对象
-                //  options.Filters.Add(typeof(Filters.FillDefaultResultInResponseIfNullAttribute));
+                //  如果返回的结果是字符串，就修改为 JSON 能够解析的字符串
+                options.Filters.Add(typeof(Filters.ChangeResultStringToJsonStringAttribute));
             });
             //  配置 DI
             services.AddScoped<IUserManager, UserManager>();

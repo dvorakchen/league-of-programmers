@@ -8,9 +8,11 @@
  *  
  */
 
+using Common;
 using DB;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Domain.Users
@@ -23,8 +25,12 @@ namespace Domain.Users
         public const int NAME_MIN_LENGTH = 4;
         public const int NAME_MAX_LENGTH = 20;
         public const string NAME_NOT_ALLOW_CHAR = "\\*/'.,;=?";
+        /// <summary>
+        /// 单位 字节
+        /// </summary>
+        public const int AVATAR_MAX_BYTES_COUNT = 64 << 10;
 
-        public const int AVATAR_MAX_BYTES_COUNT = 64;
+        public const int AVATAR_DEFAULT_ID = 1;
 
         /// <summary>
         /// 角色分类
@@ -157,7 +163,7 @@ namespace Domain.Users
         /// <summary>
         /// modify the user avatar
         /// </summary>
-        /// <returns></returns>
+        /// <returns>(bool: isSuccessfully, string: message when fault or avatar request path when successfully)</returns>
         public virtual async Task<(bool, string)> ModifyAvatarAsync(int avatarId)
         {
             await using var db = new LOPDbContext();
@@ -166,27 +172,39 @@ namespace Domain.Users
                 return (false, "该用户不存在");
             if (user.AvatarId == avatarId)
                 return (true, "");
-
-            user.AvatarId = avatarId;
             
-            int shouldChangeCount = 1;
+            DB.Tables.File SOURCE_AVATAR = user.Avatar;
+            int shouldChangeCount = 2;
             //  删除原头像
-            if (user.Avatar != null)
+            if (user.AvatarId != AVATAR_DEFAULT_ID && user.Avatar != null)
             {
-                db.Files.Remove(user.Avatar);
+                db.Files.Remove(SOURCE_AVATAR);
                 shouldChangeCount++;
             }
-            db.Update(user);
+
+            //  user.AvatarId = avatarId;
+            var avatarModel = await db.Files.AsNoTracking().FirstOrDefaultAsync(file => file.Id == avatarId);
+            if (avatarModel == null)
+                return (false, "该头像不存在");
+
+            user.Avatar = avatarModel;
+            db.Users.Update(user);
             int changeCount = await db.SaveChangesAsync();
             if (changeCount == shouldChangeCount)
             {
-                //  删除原头像文件
-                Files.File.Delete(user.Avatar.SaveName);
-                //  删除缩略图
-                Files.File.DeleteThumbnail(user.Avatar.Thumbnail);
+                if (SOURCE_AVATAR.Id != AVATAR_DEFAULT_ID)
+                {
+                    //  删除原头像文件
+                    Files.File.Delete(SOURCE_AVATAR.SaveName);
+                    //  删除缩略图
+                    Files.File.DeleteThumbnail(SOURCE_AVATAR.Thumbnail);
+                }
                 //  缓存用户更新后的数据
                 UserCache.SetUserModel(user);
-                return (true, "");
+                //  返回新头像的访问路径
+                string saveWebPath = Config.GetValue("File:SaveWebPath");
+                saveWebPath = Path.Combine(saveWebPath, avatarModel.SaveName);
+                return (true, saveWebPath);
             }
             throw new Exception("修改头像失败");
         }

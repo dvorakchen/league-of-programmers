@@ -93,10 +93,15 @@ export class UserInfoBoxComponent implements OnInit {
   }
 
   viewAvatar() {
-    this.dialog.open(AvatarDialogComponent, {
+    const DIA = this.dialog.open(AvatarDialogComponent, {
       data: {
         isSelf: this.isSelf,
         avatarPath: this.profile.avatar
+      }
+    });
+    DIA.afterClosed().subscribe(newAvatarPath => {
+      if (newAvatarPath) {
+        this.profile.avatar = newAvatarPath;
       }
     });
   }
