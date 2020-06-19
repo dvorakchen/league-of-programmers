@@ -35,6 +35,13 @@ namespace Domain.Users
         /// <returns>user or null if not exist</returns>
         Task<Administrator> GetAdministratorAsync(string account);
         /// <summary>
+        /// 获取用户列表
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="role">角色，null 为所有角色</param>
+        /// <returns></returns>
+        Task<Paginator> GetUserListAsync(Paginator pager, User.RoleCategories? role = null);
+        /// <summary>
         /// 是否有这个用户
         /// </summary>
         /// <param name="id"></param>

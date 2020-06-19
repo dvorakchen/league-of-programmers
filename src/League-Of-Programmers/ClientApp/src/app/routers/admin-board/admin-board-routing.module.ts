@@ -13,6 +13,10 @@ const routes: Routes = [
       {
         path: 'blogs',
         loadChildren: () => import('./blogs-manager/blogs-manager.module').then(mod => mod.BlogsManagerModule)
+      },
+      {
+        path: 'clients',
+        loadChildren: () => import('./clients/clients.module').then(mod => mod.ClientsModule)
       }
     ]
   }

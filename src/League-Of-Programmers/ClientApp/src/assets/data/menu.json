@@ -1,5 +1,14 @@
 {
   "menu": [{
+      "dirTitle": "客户管理",
+      "icon": "account_circle",
+      "child": [{
+        "title": "客户列表",
+        "route": "clients",
+        "icon": "list"
+      }]
+    },
+    {
       "dirTitle": "博文管理",
       "icon": "article",
       "child": [{

@@ -1,23 +1,14 @@
 ﻿using DB;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Domain.Users
 {
     public class UserManager : IUserManager
     {
-        ///// <summary>
-        ///// get user by user id
-        ///// </summary>
-        ///// <param name="id">user id</param>
-        ///// <returns>user or null if not exist</returns>
-        //internal async Task<User> GetUserAsync(int id)
-        //{
-        //    await using var db = new LOPDbContext();
-        //    var userModel = await db.Users.FirstOrDefaultAsync(user => user.Id == id);
-        //    return userModel == null ? null : User.Parse(userModel);
-        //}
 
         /// <summary>
         /// get client by id
@@ -27,7 +18,7 @@ namespace Domain.Users
         public async Task<Client> GetClientAsync(int id)
         {
             await using var db = new LOPDbContext();
-            var user = await db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+            var user = await db.Users.AsNoTracking().Include(u => u.Avatar).FirstOrDefaultAsync(u => u.Id == id);
             if (user is null)
                 throw new Exception($"{user} 不是客户");
             //  管理员也是客户
@@ -172,6 +163,40 @@ namespace Domain.Users
                 return (true, "");
             else
                 return (false, "注册失败，请重试");
+        }
+
+        /// <summary>
+        /// 获取用户列表
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public async Task<Paginator> GetUserListAsync(Paginator pager, User.RoleCategories? role = null)
+        {
+            string s = pager["s"] ?? "";
+
+            Expression<Func<DB.Tables.User, bool>> whereStatement = user => true;
+            if (role != null)
+                whereStatement = whereStatement.And(user => (user.Roles & (int)role) != 0);
+            if (!string.IsNullOrWhiteSpace(s))
+                whereStatement = whereStatement.And(user => user.Account.Contains(s, StringComparison.OrdinalIgnoreCase));
+
+            await using var db = new LOPDbContext();
+            pager.TotalSize = await db.Users.CountAsync(whereStatement);
+            pager.List = await db.Users.AsNoTracking()
+                                       .Where(whereStatement)
+                                       .Include(u => u.Blogs)
+                                       .Select(u => new Results.UserItem 
+                                       {
+                                           Id = u.Id,
+                                           UserName = u.Name,
+                                           Account = u.Account,
+                                           Email = u.Email,
+                                           BlogCounts = u.Blogs.Count,
+                                           CreateDate = u.CreateDate.ToString("yyyy/MM/dd HH:mm")
+                                       })
+                                       .ToListAsync();
+            return pager;
         }
     }
 }

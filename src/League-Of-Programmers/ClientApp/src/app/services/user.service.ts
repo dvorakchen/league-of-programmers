@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ServicesBase, Result, CLIENT_SIDE } from './common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ServicesBase, Result, CLIENT_SIDE, ADMINISTRATOR_SIDE } from './common';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { Global } from '../global';
 
 import sha256 from 'crypto-js/sha256';
@@ -23,6 +23,15 @@ export interface ChangePassword {
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
+}
+
+export interface UserItem {
+  id: number;
+  userName: string;
+  account: string;
+  email: string;
+  blogCounts: number;
+  createDate: string;
 }
 
 @Injectable({
@@ -74,6 +83,24 @@ export class UserService {
       .pipe(
         catchError(this.base.handleError)
       );
+  }
+
+  /**
+   * 获取客户列表
+   */
+  getClientsList(index: number, size: number, s: string): Observable<Result> {
+    let p: HttpParams = new HttpParams();
+    p = p.set('index', index.toString());
+    p = p.set('size', size.toString());
+    if (s && s.trim()) {
+      p = p.set('s', s.trim());
+    }
+
+    return this.http.get<Result>(`${ADMINISTRATOR_SIDE}clients?${p.toString()}`)
+    .pipe(
+      retry(1),
+      catchError(this.base.handleError)
+    );
   }
 
   /**

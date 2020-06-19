@@ -27,25 +27,6 @@ namespace Domain.Users
         }
 
         /// <summary>
-        /// 获取客户首页的个人信息
-        /// </summary>
-        /// <returns></returns>
-        public async Task<Results.ClientHomePageProfile> GetProfileAsync()
-        {
-            await using var db = new LOPDbContext();
-            DB.Tables.User user = await db.Users.AsNoTracking().Include(user => user.Avatar).FirstOrDefaultAsync(user => user.Id == Id);
-            if (user is null)
-                return null;
-            Results.ClientHomePageProfile result = new Results.ClientHomePageProfile
-            {
-                UserName = user.Account,
-                Email = user.Email,
-                Avatar = Path.Combine(Config.GetValue("File:SaveWebPath"), user.Avatar.SaveName)
-            };
-            return result;
-        }
-
-        /// <summary>
         /// 获取客户的博文
         /// </summary>
         /// <returns></returns>

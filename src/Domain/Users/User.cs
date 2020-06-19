@@ -85,25 +85,43 @@ namespace Domain.Users
             return other.Id == Id;
         }
 
-        ///// <summary>
-        ///// 用户对象只能通过这个方法获取
-        ///// </summary>
-        ///// <param name="userModel"></param>
-        ///// <returns></returns>
-        //internal static User Parse(DB.Tables.User userModel)
-        //{
-        //    if (userModel is null)
-        //        throw new NullReferenceException();
+        /// <summary>
+        /// 获取客户首页的个人信息
+        /// </summary>
+        /// <returns></returns>
+        public async virtual Task<Results.ClientHomePageProfile> GetProfileAsync()
+        {
+            DB.Tables.User user = await UserCache.GetUserModelAsync(Account, true);
+            if (user is null)
+                return null;
+            Results.ClientHomePageProfile result = new Results.ClientHomePageProfile
+            {
+                UserName = Name,
+                Email = user.Email,
+                Avatar = Path.Combine(Config.GetValue("File:SaveWebPath"), user.Avatar.SaveName)
+            };
+            return result;
+        }
 
-        //    return userModel.Roles switch
-        //    {
-        //        //  如果是管理员
-        //        var r when (r & (int)RoleCategories.Administrator) != 0 => new Administrator(userModel),
-        //        //  如果是客户
-        //        var r when (r & (int)RoleCategories.Client) != 0 => new Client(userModel),
-        //        _ => throw new Exception("未知的角色")
-        //    };
-        //}
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<Results.UserDetail> GetDetailAsync()
+        {
+            var userModel = await UserCache.GetUserModelAsync(Account, true);
+            if (userModel == null)
+                return null;
+            var result = new Results.UserDetail
+            { 
+                UserName = Name,
+                Account = Account,
+                Avatar = Path.Combine(Config.GetValue("File:SaveWebPath"), userModel.Avatar.SaveName),
+                Email = userModel.Email,
+                CreateDate = userModel.CreateDate.ToString("yyyy/MM/dd HH:mm")
+            };
+            return result;
+        }
 
         public virtual async Task<(bool, string)> ModifyUser(Models.ModifyUser model)
         {
