@@ -16,7 +16,7 @@
           <span *ngIf="isLoggedIn">
             <a mat-flat-button color="primary" [matMenuTriggerFor]="profile">{{userName}}</a>
             <mat-menu #profile>
-              <a [routerLink]="[userName]" mat-menu-item>
+              <a [routerLink]="[account]" mat-menu-item>
                 <mat-icon>face</mat-icon>
                 个人信息
               </a>
@@ -41,7 +41,7 @@
               登录
             </a>
             <div *ngIf="isLoggedIn">
-              <a [routerLink]="[userName]" mat-menu-item>
+              <a [routerLink]="[account]" mat-menu-item>
                 <mat-icon>face</mat-icon>
                 {{userName}}
               </a>

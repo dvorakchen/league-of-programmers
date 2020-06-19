@@ -15,12 +15,11 @@ export class NavMenuComponent implements OnInit {
   isLoggedIn = false;
   isAdministrator = false;
   userName = '';
+  account = '';
 
   constructor(
     private router: Router,
-    private common: CommonService,
-    private loc: Location,
-    private route: ActivatedRoute
+    private common: CommonService
   ) { }
 
   ngOnInit(): void {
@@ -33,6 +32,7 @@ export class NavMenuComponent implements OnInit {
     if (Global.loginInfo) {
       this.isLoggedIn = true;
       this.userName = Global.loginInfo.userName;
+      this.account = Global.loginInfo.account;
       // tslint:disable-next-line: no-bitwise
       this.isAdministrator = (Global.loginInfo.role & RoleCategories.Administrator) !== 0;
     } else {
