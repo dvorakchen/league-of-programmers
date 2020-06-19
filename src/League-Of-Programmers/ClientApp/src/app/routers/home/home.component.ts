@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BlogItem, BlogService } from '../../services/blog.service';
 import { Paginator, CommonService } from '../../services/common';
 import { PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.sass']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   index = 0;
   size = 10;
@@ -27,8 +28,13 @@ export class HomeComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
+  subScriptions: Subscription;
+  ngOnDestroy(): void {
+    this.subScriptions.unsubscribe();
+  }
+
   ngOnInit(): void {
-    this.route.paramMap.subscribe(r => {
+    this.subScriptions = this.route.paramMap.subscribe(r => {
       this.search = r.get('s');
       this.getBlogList();
     });
