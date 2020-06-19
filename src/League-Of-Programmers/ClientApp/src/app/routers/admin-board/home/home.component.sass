@@ -12,21 +12,19 @@
     align-items: center
     padding-top: 1rem
     .profile
-        width: 100%
-        max-height: 150px
         display: flex
         flex-direction: column
-        .avatar-placeholder
-            width: 100%
-            height: 150px
-            background-color: transparentize($shadow-color, .5)
-            margin: auto
-            display: flex
-            align-items: center
-            justify-content: center
-            font-size: 2rem
-            color: white
-
+        align-items: center
+        margin-bottom: 1rem
+        img
+            width: 100px
+            height: 100px
+            border-radius: 50%
+            margin-bottom: 1rem
+        .text
+            color: $text-color
+            padding: .3rem
+            
 .accordion-menu
     background-color: transparentize($primary-color,.9)
 
@@ -34,6 +32,7 @@
     display: flex
     flex-direction: column
     width: 100%
+    border-top: 1px solid $primary-color
 
 .router
     display: flex

@@ -2,9 +2,12 @@
   <mat-drawer #drawer opened="true" mode="side" class="side">
     <div class="side-content">
       <div class="profile">
-        <div class="avatar-placeholder">
+        <!-- <div class="avatar-placeholder">
           无头像
-        </div>
+        </div> -->
+        <img src="{{profile.avatar}}" alt="头像">
+        <div class="text">{{profile.userName}}</div>
+        <div class="text">{{profile.email}}</div>
       </div>
       <div class="menu">
 
