@@ -23,6 +23,8 @@ export class BlogDetailComponent implements OnInit {
   };
   liked = false;
 
+  loading = true;
+
   constructor(
     private route: ActivatedRoute,
     private blogService: BlogService
@@ -40,6 +42,7 @@ export class BlogDetailComponent implements OnInit {
       if (resp.status === 200) {
         this.detail = resp.data;
       }
+      this.loading = false;
     });
   }
 

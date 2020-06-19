@@ -16,6 +16,8 @@ export class HomeComponent implements OnInit {
   totalSize = 0;
   search = '';
 
+  loading = true;
+
   blogList: BlogItem[] = [];
 
   constructor(
@@ -46,8 +48,9 @@ export class HomeComponent implements OnInit {
         this.totalSize = RESP.totalSize;
         this.blogList = RESP.list;
       } else {
-        this.common.snackOpen('获取失败');
+        this.common.snackOpen('获取失败，请重试');
       }
+      this.loading = false;
     });
   }
 

@@ -1,6 +1,8 @@
 <div class="container">
   <div class="blog-list">
-    
+    <div class="spinner" *ngIf="loading">
+      <mat-spinner [diameter]="30"></mat-spinner>
+    </div>
     <div class="blog" *ngFor="let blog of blogList">
       <div class="blog-title">
         <a [routerLink]="['/blogs', blog.id, blog.title.replace(' ', '-')]">{{blog.title}}</a>
