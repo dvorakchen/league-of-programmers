@@ -104,6 +104,17 @@ export class UserService {
   }
 
   /**
+   * 获取一个客户详情
+   */
+  getClientDetail(id: number) {
+    return this.http.get<Result>(`${ADMINISTRATOR_SIDE}clients/${id}`)
+    .pipe(
+      retry(1),
+      catchError(this.base.handleError)
+    );
+  }
+
+  /**
    * 修改用户信息，
    * 用户名和邮箱
    *
