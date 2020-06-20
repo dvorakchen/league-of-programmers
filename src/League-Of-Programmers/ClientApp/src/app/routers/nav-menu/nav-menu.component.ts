@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { CommonService } from '../../services/common';
 import { Global, RoleCategories } from '../../global';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
   styleUrls: ['./nav-menu.component.sass']
 })
-export class NavMenuComponent implements OnInit {
+export class NavMenuComponent implements OnInit, OnDestroy {
 
   showActions = true;
   isLoggedIn = false;
@@ -22,8 +22,13 @@ export class NavMenuComponent implements OnInit {
     private common: CommonService
   ) { }
 
+  sub: Subscription;
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+
   ngOnInit(): void {
-    this.router.events.subscribe(event => {
+    this.sub = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const ROUTER = event.url.split(';')[0];
         this.showActions = ROUTER !== '/login';

@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ModifyBlog, BlogDetail, BlogService } from '../../../services/blog.service';
-import { IdentityService } from '../../../services/identity.service';
 import { CommonService } from '../../../services/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.sass']
 })
-export class EditComponent implements OnInit {
+export class EditComponent implements OnInit, OnDestroy {
 
   id: number;
   preview = ``;
@@ -31,8 +31,13 @@ export class EditComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
+  sub: Subscription;
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+
   ngOnInit(): void {
-    this.route.paramMap.subscribe(p => {
+    this.sub = this.route.paramMap.subscribe(p => {
       if (p.has('id')) {
         this.id = +p.get('id');
         this.getBlogDetail();

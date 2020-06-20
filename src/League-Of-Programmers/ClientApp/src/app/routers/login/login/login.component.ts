@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IdentityService } from '../../../services/identity.service';
 import { CommonService, REDIRECT } from '../../../services/common';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Global } from '../../../global';
 
 @Component({
@@ -27,8 +27,7 @@ export class LoginComponent implements OnInit {
     private identity: IdentityService,
     private common: CommonService,
     private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -47,7 +46,6 @@ export class LoginComponent implements OnInit {
         if (!red) {
           red = '/';
         }
-        //  this.router.navigateByUrl(red);
         location.href = red;
       } else {
         Global.loginInfo = null;
