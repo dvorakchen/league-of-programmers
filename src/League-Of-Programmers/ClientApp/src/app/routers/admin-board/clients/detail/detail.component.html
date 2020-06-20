@@ -1,1 +1,26 @@
-<p>detail works!</p>
+<div class="client-container">
+  <div class="detail">
+    <div class="client-informations">
+      <div class="avatar">
+        <img src="{{userDetail.avatar}}" alt="头像">
+      </div>
+      <div class="name">
+        <span class="user-name">{{userDetail.userName}}</span>
+        <span class="account">@{{userDetail.account}}</span>
+      </div>
+      <div class="email">邮箱：{{userDetail.email}}</div>
+      <div class="date">创建日期：{{userDetail.createDate}}</div>
+      <div class="blog-count">已发布博文数：{{blogs.length}}</div>
+      <div class="blogs">
+        <div *ngFor="let blog of blogs">
+
+        </div>
+        <mat-paginator [length]="totalSize" [pageIndex]="index" [pageSize]="size" (page)="pageChange($event)"
+          showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <button mat-button color="primary">按钮</button>
+  </div>
+</div>

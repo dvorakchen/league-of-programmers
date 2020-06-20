@@ -43,7 +43,7 @@ namespace League_Of_Programmers.Controllers.AdministratorsSide.Clients
          *      404:    not exist client
          */
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetClientDetailAsync(string id)
+        public async Task<IActionResult> GetClientDetailAsync(int id)
         {
             var client = await _userManager.GetClientAsync(id);
             if (client == null)
