@@ -32,8 +32,6 @@ export class Global {
     if (isDevMode()) {
       console.log(`get login info: username: ${USER_INFO.userName} - role: ${USER_INFO.role} - account: ${USER_INFO.account}`);
     }
-    // console.log(` -- ${(this.role & RoleCategories.Client) === 0}`);
-    // console.log(` -- ${(this.role & RoleCategories.Administrator) === 0}`);
     return USER_INFO;
   }
 
@@ -54,11 +52,7 @@ export class Global {
 
   private static get account(): string {
     const NAME = localStorage.getItem(this.ACCOUNT_STORE_KEY);
-    if (NAME) {
-      return NAME;
-    } else {
-      return null;
-    }
+    return NAME ? NAME : null;
   }
   private static set account(account: string) {
     localStorage.setItem(this.ACCOUNT_STORE_KEY, account);
@@ -66,11 +60,7 @@ export class Global {
 
   private static get userName(): string {
     const NAME = localStorage.getItem(this.USERNAME_STORE_KEY);
-    if (NAME) {
-      return NAME;
-    } else {
-      return null;
-    }
+    return NAME ? NAME : null;
   }
   private static set userName(name: string) {
     localStorage.setItem(this.USERNAME_STORE_KEY, name);

@@ -16,7 +16,7 @@ namespace Domain.Blogs.List
         public async Task<Paginator> GetListAsync(Paginator pager)
         {
             string account = pager["account"] ?? throw new ArgumentNullException("需要用户");
-            Expression<Func<DB.Tables.Blog, bool>> whereStatement = blog => blog.Author.Name.Equals(account, StringComparison.OrdinalIgnoreCase);
+            Expression<Func<DB.Tables.Blog, bool>> whereStatement = blog => blog.Author.Account.Equals(account, StringComparison.OrdinalIgnoreCase);
             string s = pager["s"] ?? "";
             if (!string.IsNullOrWhiteSpace(s))
                 whereStatement = whereStatement.And(blog => blog.Title.Contains(s));

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService, Paginator } from '../../../services/common';
 import { UserService } from '../../../services/user.service';
@@ -6,14 +6,13 @@ import { BlogService, BlogItem, BlogState } from '../../../services/blog.service
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import { DeleteConfirmDialogComponent } from '../../../shared/delete-confirm-dialog/delete-confirm-dialog.component';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-detail',
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.sass']
 })
-export class UserDetailComponent implements OnInit, OnDestroy {
+export class UserDetailComponent implements OnInit {
 
   index = 0;
   size = 10;
@@ -34,11 +33,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private pagerInit: MatPaginatorIntl
   ) { }
 
-  sub: Subscription;
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-  }
-
   ngOnInit(): void {
     this.pagerInit.nextPageLabel = '下一页';
     this.pagerInit.previousPageLabel = '上一页';
@@ -47,7 +41,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       return `${index} - ${size} 共 ${totalSize}`;
     };
 
-    this.sub = this.route.paramMap.subscribe(p => {
+    this.route.paramMap.subscribe(p => {
       this.account = p.get('name');
       if (this.account) {
         this.user.isSelf(this.account).subscribe(resp => {

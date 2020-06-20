@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     private identity: IdentityService,
     private common: CommonService,
     private fb: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
         if (!red) {
           red = '/';
         }
+        //  this.router.navigateByUrl(red);
         location.href = red;
       } else {
         Global.loginInfo = null;
