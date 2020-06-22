@@ -20,5 +20,6 @@ namespace DB.Tables
         public string TargetIds { get; set; } = "";
         [Required]
         public int Likes { get; set; } = 0;
+        public List<Comment> Comments { get; set; }
     }
 }
