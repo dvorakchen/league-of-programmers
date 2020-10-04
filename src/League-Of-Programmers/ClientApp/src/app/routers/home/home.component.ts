@@ -28,13 +28,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) { }
 
-  subScriptions: Subscription;
+  sub: Subscription;
   ngOnDestroy(): void {
-    this.subScriptions.unsubscribe();
+    this.sub.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.subScriptions = this.route.paramMap.subscribe(r => {
+    this.sub = this.route.paramMap.subscribe(r => {
       this.search = r.get('s');
       this.getBlogList();
     });

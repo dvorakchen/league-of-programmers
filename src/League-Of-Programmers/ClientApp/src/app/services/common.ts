@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ElementRef } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, Observable, fromEvent, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 export const CLIENT_SIDE = '/api/clients/';
 export const ADMINISTRATOR_SIDE = '/api/administrators/';
@@ -100,15 +101,15 @@ export class CommonService {
    * 设置 Tab 键为插入 '    ' <四个空格>
    */
   setTabEvent(ele: any): Subscription {
-    return fromEvent(ele, 'keydown').subscribe(k => {
-      const KEY_BOARD = k as any;
-      if (KEY_BOARD.key === 'Tab') {
-        const INSERT_CHARS = '    ';
-        KEY_BOARD.returnValue = false;
-        const INDEX = ele.selectionStart;
-        ele.value = ele.value.substring(0, INDEX) + INSERT_CHARS + ele.value.substring(INDEX);
-        ele.setSelectionRange(INDEX + INSERT_CHARS.length, INDEX + INSERT_CHARS.length);
-      }
+    return fromEvent(ele, 'keydown')
+    .pipe(filter(k => (k as KeyboardEvent).key === 'Tab'))
+    .subscribe(k => {
+      const KEY_BOARD = k as KeyboardEvent;
+      const INSERT_CHARS = '    ';
+      KEY_BOARD.returnValue = false;
+      const INDEX = ele.selectionStart;
+      ele.value = ele.value.substring(0, INDEX) + INSERT_CHARS + ele.value.substring(INDEX);
+      ele.setSelectionRange(INDEX + INSERT_CHARS.length, INDEX + INSERT_CHARS.length);
     });
   }
 }

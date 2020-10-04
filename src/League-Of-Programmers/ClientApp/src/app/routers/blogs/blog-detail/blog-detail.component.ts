@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BlogDetail, BlogService } from '../../../services/blog.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-blog-detail',
   templateUrl: './blog-detail.component.html',
   styleUrls: ['./blog-detail.component.sass']
 })
-export class BlogDetailComponent implements OnInit {
+export class BlogDetailComponent implements OnInit, OnDestroy {
 
   id: number;
   detail: BlogDetail = {
@@ -30,8 +31,13 @@ export class BlogDetailComponent implements OnInit {
     private blogService: BlogService
   ) { }
 
+  sub: Subscription;
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+
   ngOnInit(): void {
-    this.route.paramMap.subscribe(p => {
+    this.sub = this.route.paramMap.subscribe(p => {
       this.id = +p.get('id');
       this.getDetail();
     });

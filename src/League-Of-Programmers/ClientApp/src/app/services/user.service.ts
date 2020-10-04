@@ -34,6 +34,14 @@ export interface UserItem {
   createDate: string;
 }
 
+export interface UserDetail {
+  userName: string;
+  account: string;
+  avatar: string;
+  email: string;
+  createDate: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -104,7 +112,7 @@ export class UserService {
   }
 
   /**
-   * 获取一个客户详情
+   * 管理员端获取一个客户详情
    */
   getClientDetail(id: number) {
     return this.http.get<Result>(`${ADMINISTRATOR_SIDE}clients/${id}`)

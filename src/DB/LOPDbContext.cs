@@ -15,5 +15,6 @@ namespace DB
         public DbSet<Tables.Target> Targets { get; set; }
         public DbSet<Tables.Blog> Blogs { get; set; }
         public DbSet<Tables.Notification> Notifications { get; set; }
+        public DbSet<Tables.Comment> Comments { get; set; }
     }
 }

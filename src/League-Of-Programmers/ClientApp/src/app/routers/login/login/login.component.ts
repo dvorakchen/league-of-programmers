@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     private identity: IdentityService,
     private common: CommonService,
     private fb: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
